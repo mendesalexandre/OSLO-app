@@ -1,9 +1,68 @@
+// === CORES PRINCIPAIS (mantidas da sua paleta) ===
 $primary: #667eea; // Azul-roxo principal
 $secondary: #764ba2; // Roxo secundário
 $accent: #f093fb; // Rosa accent
-$positive: #00f5a0; // Verde neon
-$negative: #ff4757; // Vermelho vibrante
-$warning: #feca57; // Amarelo dourado
-$info: #48dbfb; // Azul ciano
 $dark: #2f3542; // Cinza escuro
 $light: #f1f2f6; // Cinza muito claro
+
+// === CORES DE STATUS (adaptadas para Lemo) ===
+$positive: #00f5a0; // Verde neon (mantido - combina com folhas)
+$negative: #ff4757; // Vermelho vibrante (mantido)
+$info: #48dbfb; // Azul ciano (mantido)
+
+// === CORES LEMO INTEGRADAS ===
+$warning: #ffd32a; // Amarelo Lemo principal (mais vibrante que o atual)
+$lemo-primary: #ffd32a; // Amarelo limão vibrante
+$lemo-secondary: #fff152; // Amarelo limão claro
+$lemo-accent: #65c368; // Verde folha (complementar)
+
+// === PALETA ESTENDIDA LEMO ===
+$lemo-yellow-50: #fffef7; // Amarelo quase branco
+$lemo-yellow-100: #fffbeb; // Amarelo muito claro
+$lemo-yellow-200: #fff3c4; // Amarelo claro
+$lemo-yellow-300: #ffe066; // Amarelo médio
+$lemo-yellow-400: #ffd32a; // Amarelo principal
+$lemo-yellow-500: #f5c542; // Amarelo dourado
+$lemo-yellow-600: #eab308; // Amarelo escuro
+$lemo-yellow-700: #ca8a04; // Amarelo muito escuro
+
+$lemo-green-50: #f0fdf4; // Verde muito claro
+$lemo-green-100: #dcfce7; // Verde claro
+$lemo-green-200: #bbf7d0; // Verde médio claro
+$lemo-green-300: #86efac; // Verde médio
+$lemo-green-400: #65c368; // Verde principal
+$lemo-green-500: #22c55e; // Verde vibrante
+$lemo-green-600: #16a34a; // Verde escuro
+
+// === GRADIENTES LEMO ===
+$lemo-gradient-primary: linear-gradient(135deg, #ffd32a 0%, #fff152 100%);
+$lemo-gradient-secondary: linear-gradient(135deg, #65c368 0%, #22c55e 100%);
+$lemo-gradient-fresh: linear-gradient(135deg, #ffd32a 0%, #65c368 100%);
+
+// // === COMO USAR NO QUASAR 2 ===
+// // 1. No quasar.conf.js (ou quasar.config.js):
+// /*
+// css: [
+//   'app.scss'
+// ],
+// framework: {
+//   config: {
+//     brand: {
+//       primary: '#667eea',
+//       secondary: '#764ba2',
+//       accent: '#f093fb',
+//       positive: '#00f5a0',
+//       negative: '#ff4757',
+//       info: '#48dbfb',
+//       warning: '#ffd32a', // Novo amarelo Lemo
+//       dark: '#2f3542',
+//       'dark-page': '#121212',
+
+//       // Cores customizadas Lemo
+//       'lemo-primary': '#ffd32a',
+//       'lemo-secondary': '#fff152',
+//       'lemo-accent': '#65c368',
+//     }
+//   }
+// }
+// */
