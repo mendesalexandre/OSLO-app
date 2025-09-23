@@ -4,6 +4,15 @@ $generic-border-radius: 2px; // ou qualquer valor desejado, ex: 8px, 0.5rem, etc
 // importa o tema do Quasar depois das variáveis
 // @import "quasar/src/css/index.sass"; // importa SASS padrão do Quasar
 
+body {
+  font-family: "Roboto", sans-serif !important; // Define a fonte padrão para o corpo do documento
+  background-color: #f5f5f5 !important; // Cor de fundo clara e neutra
+  color: #212529 !important; // Cor do texto padrão
+  margin: 0 !important; // Remove margens padrão do navegador
+  padding: 0 !important; // Remove padding padrão do navegador
+  box-sizing: border-box !important; // Define o box-sizing para border-box para facilitar o layouts
+}
+
 .w-full {
   width: 100%;
 }

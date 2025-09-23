@@ -101,6 +101,13 @@ const routes = [
           // },
         ],
       },
+
+      // NATUREZA
+      {
+        path: "administracao/natureza",
+        component: () => import("src/pages/natureza/Index.vue"),
+        name: "natureza.index",
+      },
     ],
   },
 
