@@ -15,7 +15,7 @@
         <q-item clickable v-ripple exact>
           <q-item-section>
             <q-item-label>
-              <q-icon name="fa-duotone fa-compass" size="16px" />
+              <q-icon name="fa-duotone fa-location-arrow" size="18px" />
             </q-item-label>
           </q-item-section>
         </q-item>
@@ -23,7 +23,7 @@
         <q-item clickable v-ripple exact>
           <q-item-section>
             <q-item-label>
-              <q-icon name="fa-duotone fa-grid-2" size="18px" />
+              <q-icon name="fa-regular fa-bars" size="18px" />
             </q-item-label>
           </q-item-section>
         </q-item>
@@ -31,7 +31,7 @@
         <q-item clickable v-ripple exact>
           <q-item-section>
             <q-item-label>
-              <q-icon name="fa-duotone fa-solid fa-square-plus" size="20px" />
+              <q-icon name="fa-duotone fa-solid fa-square-plus" size="16px" />
             </q-item-label>
           </q-item-section>
         </q-item>
@@ -40,7 +40,8 @@
         <q-item clickable v-ripple>
           <q-item-section>
             <q-item-label>
-              <q-icon name="fa-duotone fa-house" size="16px" />
+              <q-icon name="fa-duotone fa-magnifying-glass" size="16px" />
+
             </q-item-label>
           </q-item-section>
         </q-item>
@@ -390,6 +391,34 @@ const alterarSenha = () => {
 .logout-item:hover {
   background-color: #fef2f2;
   color: #dc2626;
+}
+
+/* Ícones do menu */
+.menu-icon {
+  transition: all 0.3s ease;
+  --fa-primary-color: #667eea;
+  --fa-secondary-color: #a5b3f7;
+  --fa-secondary-opacity: 0.6;
+}
+
+.menu-item:hover .menu-icon {
+  transform: scale(1.1);
+  --fa-primary-color: #5a6fd8;
+  --fa-secondary-color: #8b9df6;
+}
+
+.menu-item--active .menu-icon {
+  --fa-primary-color: #4c63d2;
+  --fa-secondary-color: #7986f4;
+}
+
+/* Badge de notificações */
+.notification-badge {
+  font-size: 10px;
+  min-width: 16px;
+  height: 16px;
+  top: -8px !important;
+  right: -8px !important;
 }
 
 /* Ícone de logout com cor especial */

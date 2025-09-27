@@ -2,7 +2,7 @@
   <q-page>
     <!-- Header compacto -->
     <q-header class="text-dark bg-white shadow-sm compact-header" elevated>
-      <q-toolbar>
+      <q-toolbar style="min-height: 40px;">
         <div class="row items-center full-width q-gutter-sm">
           <!-- Título e Tabs na mesma linha -->
           <div class="protocolo-titulo">
@@ -16,7 +16,7 @@
                 name: 'protocolo.geral',
                 params: { id: $route.params.id },
               }">
-                Geral
+                Informações Gerais
               </q-route-tab>
 
               <q-route-tab name="ato_registro" :to="{ name: 'protocolo.atos', params: { id: $route.params.id } }">
@@ -294,40 +294,41 @@ onMounted(async () => {
 .tabs-container {
   padding: 0 1rem;
   background: #fff;
-  border-top: 1px solid #e0e0e0;
+  // border-top: 1px solid #e0e0e0;
 
   :deep(.q-tabs) {
     background: transparent;
 
     .q-tab {
       padding: 0px 16px;
-      min-height: 30px !important;
       border-radius: 0;
       text-transform: none;
       color: #37474f;
-      font-weight: 400;
+      // font-weight: 400 !important;
       letter-spacing: 0.5px;
 
       &.q-tab--active {
         color: #495057;
-        font-weight: 600;
+        font-weight: 600 !important;
+        font-size: 12px !important;
       }
 
       &:hover {
         color: #495057;
         background-color: rgba(0, 0, 0, 0.04);
+
       }
     }
 
     .q-tab__indicator {
       height: 1px !important;
-      background-color: #37474f;
+      background-color: #f5f5f5 !important;
     }
 
     .q-tab__label {
-      font-weight: 600;
+      font-weight: 400 !important;
       text-transform: uppercase;
-      font-size: 0.75rem;
+      font-size: 1.75rem !important;
       letter-spacing: 0.5px;
       color: #37474f;
     }
@@ -358,7 +359,7 @@ onMounted(async () => {
 // Footer compacto
 .protocolo-footer {
   border-top: 1px solid #f0f0f0;
-  min-height: 60px;
+  // min-height: 60px;
   box-shadow: 0 1px 3px 0 #0000001a, 0 1px 2px -1px #0000001a !important;
 }
 
