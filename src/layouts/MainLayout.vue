@@ -433,54 +433,6 @@ const alterarSenha = () => {
   --fa-primary-color: #b91c1c;
 }
 
-/* Animações suaves */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.menu-item {
-  animation: fadeInUp 0.3s ease forwards;
-}
-
-.menu-item:nth-child(1) {
-  animation-delay: 0.05s;
-}
-
-.menu-item:nth-child(2) {
-  animation-delay: 0.1s;
-}
-
-.menu-item:nth-child(3) {
-  animation-delay: 0.15s;
-}
-
-.menu-item:nth-child(4) {
-  animation-delay: 0.2s;
-}
-
-.menu-item:nth-child(5) {
-  animation-delay: 0.25s;
-}
-
-.menu-item:nth-child(6) {
-  animation-delay: 0.3s;
-}
-
-.menu-item:nth-child(7) {
-  animation-delay: 0.35s;
-}
-
-.menu-item:nth-child(8) {
-  animation-delay: 0.4s;
-}
 
 /* Responsividade para telas pequenas */
 @media (max-width: 500px) {

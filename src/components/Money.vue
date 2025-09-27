@@ -1,21 +1,13 @@
 <template>
   <q-field v-bind="$attrs">
     <template v-slot:control="{ id, floatingLabel, modelValue, emitValue }">
-      <Money
-        :id="id"
-        :model-value="modelValue"
-        @update:model-value="
-          (val) => {
-            emitValue(val);
-            emit('update:modelValue', val);
-          }
-        "
-        v-bind="config"
-        v-show="floatingLabel"
-        :disabled="props.disabled"
-        :class="props.cssClass || 'q-field__input'"
-        :aria-label="$attrs.label || 'Campo de moeda'"
-      >
+      <Money :id="id" :model-value="modelValue" @update:model-value="
+        (val) => {
+          emitValue(val);
+          emit('update:modelValue', val);
+        }
+      " v-bind="config" v-show="floatingLabel" :disabled="props.disabled" :class="props.cssClass || 'q-field__input'"
+        :aria-label="$attrs.label || 'Campo de moeda'">
         <template v-for="(_, slot) in slots" :key="slot" v-slot:[slot]="scope">
           <slot :name="slot" v-bind="scope" :key="slot" />
         </template>
