@@ -114,6 +114,48 @@ const routes = [
         component: () => import("src/pages/matricula/Index.vue"),
         name: "matricula.index",
       },
+
+      // PROTOCOLO
+      {
+        path: "/protocolo/:id",
+        name: "protocolo.index",
+        props: true,
+        component: () => import("pages/protocolo/Protocolo.vue"),
+
+        children: [
+          {
+            path: "",
+            redirect: (to) => {
+              const id = to.params.id;
+              return { name: "protocolo.geral", params: { id } };
+            },
+            name: "protocolo.redirect",
+          },
+          {
+            path: "/protocolo/:id/geral",
+            name: "protocolo.geral",
+            props: true,
+            meta: { title: "Protocolo - Geral" },
+            component: () => import("pages/protocolo/geral/Index.vue"),
+          },
+
+          {
+            path: "/protocolo/:id/atos",
+            name: "protocolo.atos",
+            props: true,
+            meta: { title: "Protocolo - Atos" },
+            component: () => import("pages/protocolo/atos/Index.vue"),
+          },
+
+          {
+            path: "/protocolo/:id/financeiro",
+            name: "protocolo.financeiro",
+            props: true,
+            meta: { title: "Protocolo - Financeiro" },
+            component: () => import("pages/protocolo/financeiro/Index.vue"),
+          },
+        ],
+      },
     ],
   },
 

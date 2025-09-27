@@ -13,70 +13,35 @@
         <div class="row q-col-gutter-xs">
           <div class="col-md-6 col-sm-12 col-xs-12">
             <label class="form-label text-weight-medium">Serviço</label>
-            <q-select
-              :options="tabelaCustas"
-              option-label="nome"
-              v-model="tabelaCusta.servico_selecionado"
-              option-value="id"
-              map-options
-              emit-value
-              outlined
-              dense
-              class="ds-input"
-              placeholder="Selecione um serviço"
-            />
+            <q-select :options="tabelaCustas" option-label="nome" v-model="tabelaCusta.servico_selecionado"
+              option-value="id" map-options emit-value outlined dense class="ds-input"
+              placeholder="Selecione um serviço" />
           </div>
 
           <div class="col-md-2 col-sm-12 col-xs-12">
             <label class="form-label text-weight-medium">Base de Cálculo</label>
-            <money
-              v-model.number="tabelaCusta.base_calculo"
-              outlined
-              dense
-              :disable="desativarValorBaseCalculo"
-              placeholder="R$ 0,00"
-            />
+            <money v-model.number="tabelaCusta.base_calculo" outlined dense :disable="desativarValorBaseCalculo"
+              placeholder="R$ 0,00" />
           </div>
 
           <div class="col-md-1 col-sm-12 col-xs-12">
             <label class="form-label text-weight-medium">Qtde.</label>
-            <q-input
-              v-model="tabelaCusta.quantidade"
-              outlined
-              dense
-              min="1"
-              class="ds-input"
-              input-mode="numeric"
-              placeholder="1"
-            />
+            <q-input v-model="tabelaCusta.quantidade" outlined dense min="1" class="ds-input" input-mode="numeric"
+              placeholder="1" />
           </div>
 
           <div class="col-md-2 col-sm-12 col-xs-12">
             <label class="form-label text-weight-medium">Nº de Matrícula</label>
-            <q-input
-              v-model="tabelaCusta.quantidade"
-              outlined
-              dense
-              min="1"
-              class="ds-input"
-              input-mode="numeric"
-              placeholder="1"
-            />
+            <q-input v-model="tabelaCusta.quantidade" outlined dense min="1" class="ds-input" input-mode="numeric"
+              placeholder="1" />
           </div>
           <div class="col-md-1 col-sm-12 col-xs-12">
             <v-label :label="'&nbsp;'" />
 
-            <q-btn
-              :icon="
-                adicionarAtoLoading
-                  ? 'eva-loader-outline'
-                  : 'eva-arrow-circle-down-outline'
-              "
-              color="primary"
-              outline
-              @click="calcularEmolumento()"
-              :disable="!tabelaCusta.servico_selecionado"
-            />
+            <q-btn :icon="adicionarAtoLoading
+              ? 'eva-loader-outline'
+              : 'eva-arrow-circle-down-outline'
+              " color="primary" outline @click="calcularEmolumento()" :disable="!tabelaCusta.servico_selecionado" />
           </div>
         </div>
       </q-card-section>
@@ -89,36 +54,15 @@
           <q-icon name="eva-list-outline" class="q-mr-sm" />
           <span class="ds-header-title">Atos Cadastrados</span>
           <q-space />
-          <q-chip
-            :label="atos.length"
-            color="blue-grey-3"
-            text-color="blue-grey-8"
-            size="sm"
-            class="rounded-borders"
-          />
-          <q-btn
-            label="Enviar Todos"
-            color="green-6"
-            icon="eva-paper-plane-outline"
-            size="sm"
-            outline
-            class="rounded-borders"
-            @click="mostrarDialogEnviarTodos"
-            v-if="atosNaoEnviados.length > 0"
-          />
+          <q-chip :label="atos.length" color="blue-grey-3" text-color="blue-grey-8" size="sm" class="rounded-borders" />
+          <q-btn label="Enviar Todos" color="green-6" icon="eva-paper-plane-outline" size="sm" outline
+            class="rounded-borders" @click="mostrarDialogEnviarTodos" v-if="atosNaoEnviados.length > 0" />
         </div>
       </q-card-section>
 
       <q-card-section class="q-pa-none">
-        <q-table
-          bordered
-          :rows="atos"
-          :columns="colunas"
-          class="ds-compact-table"
-          hide-bottom
-          :rows-per-page-options="[0]"
-          dense
-        >
+        <q-table bordered :rows="atos" :columns="colunas" class="ds-compact-table" hide-bottom
+          :rows-per-page-options="[0]" dense>
           <template #header-cell="props">
             <q-th :props="props" class="ds-table-header">
               {{ props.col.label }}
@@ -128,11 +72,7 @@
           <template #body="props">
             <q-tr :props="props" class="ds-table-row">
               <q-td key="is_pago" :props="props" class="text-center">
-                <q-icon
-                  size="12px"
-                  name="eva-radio-button-on-outline"
-                  :color="props.row.is_pago ? 'green-6' : 'red-6'"
-                >
+                <q-icon size="12px" name="eva-radio-button-on-outline" :color="props.row.is_pago ? 'green-6' : 'red-6'">
                   <q-tooltip>
                     {{
                       props.row.is_pago
@@ -156,13 +96,8 @@
               </q-td>
 
               <q-td key="quantidade" :props="props" class="text-center">
-                <q-chip
-                  :label="props.row?.quantidade"
-                  color="blue-grey-2"
-                  text-color="blue-grey-8"
-                  size="sm"
-                  class="rounded-borders"
-                />
+                <q-chip :label="props.row?.quantidade" color="blue-grey-2" text-color="blue-grey-8" size="sm"
+                  class="rounded-borders" />
               </q-td>
 
               <q-td key="valor_emolumento" :props="props" class="text-right">
@@ -185,46 +120,20 @@
 
               <q-td key="acao" :props="props" class="text-center">
                 <div class="row q-gutter-xs justify-center">
-                  <q-btn
-                    icon="eva-edit-outline"
-                    flat
-                    round
-                    size="sm"
-                    color="grey-7"
-                    @click="editar(props.row)"
-                  >
+                  <q-btn icon="eva-edit-outline" flat round size="sm" color="grey-7" @click="editar(props.row)">
                     <q-tooltip>Editar</q-tooltip>
                   </q-btn>
 
-                  <q-btn
-                    v-if="!props.row.lancamento_id"
-                    icon="eva-paper-plane-outline"
-                    flat
-                    round
-                    size="sm"
-                    color="grey-7"
-                    @click="enviarParaFinanceiro(props.row)"
-                  >
+                  <q-btn v-if="!props.row.lancamento_id" icon="eva-paper-plane-outline" flat round size="sm"
+                    color="grey-7" @click="enviarParaFinanceiro(props.row)">
                     <q-tooltip>Enviar ao Financeiro</q-tooltip>
                   </q-btn>
 
-                  <q-icon
-                    v-else
-                    name="eva-checkmark-circle-outline"
-                    color="green-6"
-                    size="sm"
-                  >
+                  <q-icon v-else name="eva-checkmark-circle-outline" color="green-6" size="sm">
                     <q-tooltip>Já enviado ao financeiro</q-tooltip>
                   </q-icon>
 
-                  <q-btn
-                    icon="eva-trash-2-outline"
-                    flat
-                    round
-                    size="sm"
-                    color="red-8"
-                    @click="excluir(props.row)"
-                  >
+                  <q-btn icon="eva-trash-2-outline" flat round size="sm" color="red-8" @click="excluir(props.row)">
                     <q-tooltip>Excluir</q-tooltip>
                   </q-btn>
                 </div>
@@ -238,12 +147,7 @@
     <!-- Estado vazio -->
     <q-card bordered class="rounded-borders" v-else>
       <q-card-section class="text-center q-py-xl">
-        <q-icon
-          name="eva-calculator-outline"
-          size="4em"
-          color="blue-grey-4"
-          class="q-mb-md"
-        />
+        <q-icon name="eva-calculator-outline" size="4em" color="blue-grey-4" class="q-mb-md" />
         <div class="text-h6 text-grey-8 q-mb-sm">Nenhum ato cadastrado</div>
         <div class="text-caption text-grey-6">
           Selecione um serviço e calcule o emolumento para começar
@@ -252,90 +156,47 @@
     </q-card>
 
     <!-- Dialog de Exclusão -->
-    <CustomDialog
-      v-model="showDeleteDialog"
-      type="danger"
-      title="Confirmar Exclusão"
-      content-title="Excluir Ato"
+    <CustomDialog v-model="showDeleteDialog" type="danger" title="Confirmar Exclusão" content-title="Excluir Ato"
       :message="`Tem certeza que deseja excluir o ato <strong>&quot;${atoParaExcluir?.nome}&quot;</strong>?`"
-      warning="Esta ação não pode ser desfeita."
-      footer-info="Última chance para cancelar"
-      icon="eva-alert-triangle-outline"
-      main-icon="eva-trash-outline"
-      confirm-label="Excluir Definitivamente"
-      confirm-color="red-6"
-      confirm-icon="eva-trash-2-outline"
-      cancel-label="Manter Ato"
-      :loading="excludingAto"
-      loading-text="Excluindo..."
-      @confirm="confirmarExclusao"
-      @cancel="cancelarExclusao"
-    />
+      warning="Esta ação não pode ser desfeita." footer-info="Última chance para cancelar"
+      icon="eva-alert-triangle-outline" main-icon="eva-trash-outline" confirm-label="Excluir Definitivamente"
+      confirm-color="red-6" confirm-icon="eva-trash-2-outline" cancel-label="Manter Ato" :loading="excludingAto"
+      loading-text="Excluindo..." @confirm="confirmarExclusao" @cancel="cancelarExclusao" />
 
     <!-- Dialog de Envio Individual -->
-    <CustomDialog
-      v-model="showFinanceDialog"
-      type="info"
-      title="Enviar ao Financeiro"
-      content-title="Confirmar Envio"
+    <CustomDialog v-model="showFinanceDialog" type="info" title="Enviar ao Financeiro" content-title="Confirmar Envio"
       :message="`Enviar o ato <strong>&quot;${atoParaEnviar?.nome}&quot;</strong> para o sistema financeiro?`"
-      icon="eva-paper-plane-outline"
-      main-icon="eva-credit-card-outline"
-      confirm-label="Enviar para Financeiro"
-      confirm-color="blue-6"
-      confirm-icon="eva-paper-plane-outline"
-      :loading="sendingToFinance"
-      loading-text="Enviando..."
-      @confirm="confirmarEnvioFinanceiro"
-    />
+      icon="eva-paper-plane-outline" main-icon="eva-credit-card-outline" confirm-label="Enviar para Financeiro"
+      confirm-color="blue-6" confirm-icon="eva-paper-plane-outline" :loading="sendingToFinance"
+      loading-text="Enviando..." @confirm="confirmarEnvioFinanceiro" />
 
     <!-- Dialog de Envio em Massa -->
-    <CustomDialog
-      v-model="showMassFinanceDialog"
-      type="warning"
-      title="Enviar Todos ao Financeiro"
+    <CustomDialog v-model="showMassFinanceDialog" type="warning" title="Enviar Todos ao Financeiro"
       content-title="Envio em Massa"
       :message="`Enviar <strong>${atosNaoEnviados.length} ato(s)</strong> para o sistema financeiro?`"
-      :footer-info="`Total: ${formatarDinheiroBrasil(totalAtosNaoEnviados)}`"
-      icon="eva-paper-plane-outline"
-      main-icon="eva-archive-outline"
-      confirm-label="Enviar Todos"
-      confirm-color="green-6"
-      confirm-icon="eva-paper-plane-outline"
-      :loading="sendingAllToFinance"
-      loading-text="Enviando atos..."
-      @confirm="confirmarEnvioTodos"
-    />
+      :footer-info="`Total: ${formatarDinheiroBrasil(totalAtosNaoEnviados)}`" icon="eva-paper-plane-outline"
+      main-icon="eva-archive-outline" confirm-label="Enviar Todos" confirm-color="green-6"
+      confirm-icon="eva-paper-plane-outline" :loading="sendingAllToFinance" loading-text="Enviando atos..."
+      @confirm="confirmarEnvioTodos" />
 
     <!-- Dialog de Sucesso -->
-    <CustomDialog
-      v-model="showSuccessDialog"
-      type="success"
-      title="Operação Realizada"
-      :content-title="successTitle"
-      :message="successMessage"
-      icon="eva-checkmark-circle-outline"
-      main-icon="eva-checkmark-circle-outline"
-      confirm-label="Entendi"
-      confirm-color="green-6"
-      confirm-icon="eva-checkmark-outline"
-      :show-cancel-button="false"
-      :show-close-button="false"
-      @confirm="showSuccessDialog = false"
-    />
+    <CustomDialog v-model="showSuccessDialog" type="success" title="Operação Realizada" :content-title="successTitle"
+      :message="successMessage" icon="eva-checkmark-circle-outline" main-icon="eva-checkmark-circle-outline"
+      confirm-label="Entendi" confirm-color="green-6" confirm-icon="eva-checkmark-outline" :show-cancel-button="false"
+      :show-close-button="false" @confirm="showSuccessDialog = false" />
   </div>
 </template>
 
 <script setup>
 import { storeToRefs } from "pinia";
-import { useTabelaCustaStore } from "src/stores/tabela-custa";
-import { useProtocoloStore } from "src/stores/protocolo";
-import { useServicoStore } from "src/stores/servico";
+// import { useTabelaCustaStore } from "src/stores/tabela-custa";
+// import { useProtocoloStore } from "src/stores/protocolo";
+// import { useServicoStore } from "src/stores/servico";
 import { onMounted, ref, computed } from "vue";
 import { formatarDinheiroBrasil } from "src/Utils";
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
-import CustomDialog from "src/components/Modal/CustomDialog.vue";
+// import CustomDialog from "src/components/Modal/CustomDialog.vue";
 
 const $q = useQuasar();
 const protocoloStore = useProtocoloStore();
