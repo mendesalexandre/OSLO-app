@@ -1,35 +1,41 @@
 <template>
-  <q-dialog v-model="model" :persistent="persistente" allow-focus-outside :maximized="mobile">
-    <div class="modal-dialogo" :class="[`modal-${tamanho}`]" :style="{ width: largura, height: altura }">
-      <q-card class="modal-card-container">
-        <!-- HEADER FIXO -->
-        <q-card-section class="modal-header-fixed" :style="{ backgroundColor: corCabecalho }">
-          <div class="flex justify-between align-items-center">
-            <!-- TÍTULO À ESQUERDA -->
-            <div>
-              <span :class="corTituloCabecalho">
-                {{ titulo }}
-              </span>
-            </div>
-
-            <!-- BOTÃO FECHAR À DIREITA -->
-            <div>
-              <q-btn flat round icon="close" @click="fechar" size="sm" color="grey-7" />
-            </div>
+  <q-dialog v-model="model" :persistent="persistente" allow-focus-outside :maximized="mobile" class="modal-custom-size">
+    <div class="modal-dialogo" :class="`modal-${tamanho}`">
+      <q-card :style="cardStyles" class="mover-modal modal-cabecalho" :class="cardCompleto ? 'h-full' : ''">
+        <!-- Cabeçalho -->
+        <q-card-section class="row items-center" :style="{ backgroundColor: corCabecalho }">
+          <div class="text-h6 text-wrap" :class="corTituloCabecalho">
+            {{ titulo }}
           </div>
+          <q-space />
+          <slot name="controles">
+            <q-btn icon="close" round dense flat color="grey-7" @click="fechar()" :aria-label="'Fechar ' + titulo" />
+          </slot>
         </q-card-section>
 
-        <q-separator />
+        <!-- Separador -->
+        <q-separator v-if="separador" />
 
-        <!-- CONTEÚDO COM SCROLL -->
-        <div class="modal-content-scroll">
+        <!-- Área de Tabs (se existir slot tabs) -->
+        <div v-if="$slots.tabs" class="modal-tabs-container">
+          <slot name="tabs"></slot>
+        </div>
+
+        <!-- Separador após tabs -->
+        <q-separator v-if="$slots.tabs && separador" />
+
+        <!-- Conteúdo -->
+        <div class="modal-conteudo" :class="[
+          background,
+          $slots.tabs ? 'modal-has-tabs' : 'modal-no-tabs',
+        ]">
           <slot></slot>
         </div>
 
-        <!-- FOOTER FIXO (se houver conteúdo) -->
+        <!-- Rodapé -->
         <template v-if="$slots.rodape">
-          <q-separator />
-          <div class="modal-footer-fixed">
+          <q-separator v-if="separador" />
+          <div class="modal-rodape">
             <slot name="rodape"></slot>
           </div>
         </template>
@@ -86,173 +92,235 @@ const props = defineProps({
   },
   corTituloCabecalho: {
     type: String,
-    default: "text-dark",
+    default: "text-primary",
   },
-  tamanho: {
-    type: String,
-    default: "md",
+  cardCompleto: {
+    type: Boolean,
+    default: false,
   },
   mobile: {
     type: Boolean,
     default: false,
+  },
+  // Prop de tamanho
+  tamanho: {
+    type: String,
+    default: "md",
+    validator: (value) => ["xs", "sm", "md", "lg", "xl"].includes(value),
   },
 });
 
 const emit = defineEmits(["close"]);
 const model = defineModel({ default: false });
 
-const fechar = (confirmar) => {
-  model.value = !model.value;
+// Computed para definir o width do card baseado no tamanho
+const cardStyles = computed(() => {
+  const tamanhos = {
+    xs: "400px",
+    sm: "500px",
+    md: "700px",
+    lg: "900px",
+    xl: "1200px",
+  };
+
+  let styles = {
+    width: tamanhos[props.tamanho],
+  };
+
+  // Se cor do cabeçalho foi definida via prop, aplicar aqui também
+  if (props.corCabecalho) {
+    styles.backgroundColor = props.corCabecalho;
+  }
+
+  return styles;
+});
+
+const fechar = (confirmar = false) => {
+  model.value = false;
   emit("close", confirmar);
+  if (e.keyCode === 27 && this.closeEsc && this.closeable) {
+    emit("close", confirmar);
+  }
 };
 </script>
 
 <style lang="scss" scoped>
+// QCARD MODAL CABECALHO
 .modal-dialogo {
-  width: 100%;
-  height: 100%;
+  width: 100% !important;
+  height: 100% !important;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.modal-card-container {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  max-height: calc(100vh - 100px);
-  border-radius: 2px !important;
-  overflow: hidden;
-  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+.modal-cabecalho {
+  position: relative;
 }
 
-.q-dialog__inner>div {
-  border-radius: 2px !important;
-}
+// Container para tabs - Estilo baseado na imagem
+.modal-tabs-container {
+  // border-bottom: 1px solid #e0e0e0;
+  // padding: 0 1rem;
 
-// Header fixo - COMPACTO
-.modal-header-fixed {
-  flex-shrink: 0;
-  background: #ffffff;
-  border-bottom: 1px solid #dee2e6;
-  min-height: 48px; // Reduzido
+  :deep(.q-tabs) {
+    background: transparent;
 
-  span {
-    font-size: 1rem !important; // Tamanho menor
-    font-weight: 500 !important;
-    line-height: 1.2;
-  }
-}
+    .q-tab {
+      padding: 0px 16px;
+      min-height: 30px !important;
+      border-radius: 0;
+      text-transform: none;
+      color: #37474f;
+      font-weight: 400;
+      letter-spacing: 0.5px;
 
-// Conteúdo com scroll
-.modal-content-scroll {
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 1rem; // Reduzido
-  background: #f8f9fa;
+      &.q-tab--active {
+        color: #495057;
+        font-weight: 400;
+      }
 
-  &::-webkit-scrollbar {
-    width: 6px; // Mais fino
-  }
+      &:hover {
+        color: #495057;
+        background-color: rgba(0, 0, 0, 0.04);
+      }
+    }
 
-  &::-webkit-scrollbar-track {
-    background: #f8f9fa;
-    // border-radius: 2px !important;
-  }
+    .q-tab__indicator {
+      height: 1px;
+      background-color: #37474f;
+    }
 
-  &::-webkit-scrollbar-thumb {
-    background: #ccc;
-    // border-radius: 2px !important;
+    .q-tab__label {
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+      color: #37474f;
+    }
 
-    &:hover {
-      background: #495057;
+    // Remove o ripple effect
+    .q-ripple {
+      display: none;
     }
   }
 }
 
-// Footer fixo
-.modal-footer-fixed {
-  flex-shrink: 0;
-  padding: 0.75rem 1rem; // Reduzido
-  background: #ffffff;
-  border-top: 1px solid #dee2e6;
-  min-height: 48px; // Reduzido
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 0.5rem; // Reduzido
+.modal-conteudo {
+  height: 100%;
+  overflow-y: auto;
+  padding: 16px !important;
+  background-color: #f5f5f5 !important;
+
+  // Sem tabs (Header + Rodapé = ~150px)
+  &.modal-no-tabs {
+    max-height: calc(100vh - 200px);
+  }
+
+  // Com tabs (Header + Tabs + Rodapé = ~250px)
+  &.modal-has-tabs {
+    max-height: calc(100vh - 250px);
+  }
+}
+
+
+.modal-rodape {
+  background-color: #fff !important;
+  border-radius: 2px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
 }
 
 // Tamanhos do modal
-.modal-md {
-  min-width: 800px;
-  min-height: 500px;
+.modal-xs .modal-cabecalho {
+  max-width: 400px !important;
+  width: 100% !important;
 }
 
-.modal-lg {
-  min-width: 1000px;
-  min-height: 600px;
+.modal-sm .modal-cabecalho {
+  max-width: 500px !important;
+  width: 100% !important;
 }
 
-.modal-xl {
-  min-width: 1200px;
-  min-height: 700px;
+.modal-md .modal-cabecalho {
+  max-width: 700px !important;
+  width: 100% !important;
 }
 
-.modal-sm {
-  min-width: 500px;
-  min-height: 300px;
+.modal-lg .modal-cabecalho {
+  max-width: 900px;
+  width: 100% !important;
 }
 
-// Responsividade
-@media (max-width: 1024px) {
-  .modal-dialogo {
-    padding: 1rem;
-  }
-
-  .modal-xl,
-  .modal-lg,
-  .modal-md {
-    min-width: auto;
-    width: 100%;
-    max-width: 95vw;
-  }
+.modal-xl .modal-cabecalho {
+  max-width: 1200px;
+  width: 100% !important;
 }
 
+// Responsividade para mobile
 @media (max-width: 768px) {
-  .modal-card-container {
-    max-height: calc(100vh - 2rem);
-  }
 
-  .modal-header-fixed {
-    min-height: 44px;
-
-    span {
-      font-size: 0.9rem !important;
+  .modal-xs,
+  .modal-sm,
+  .modal-md,
+  .modal-lg,
+  .modal-xl {
+    .modal-cabecalho {
+      width: 100% !important;
+      max-width: none !important;
     }
   }
 
-  .modal-content-scroll {
-    padding: 0.75rem;
-  }
+  .modal-conteudo {
+    &.modal-no-tabs {
+      max-height: calc(100vh - 100px) !important;
+    }
 
-  .modal-footer-fixed {
-    padding: 0.5rem 0.75rem;
-    min-height: 44px;
+    &.modal-has-tabs {
+      max-height: calc(100vh - 120px) !important;
+    }
+
+    padding: 12px !important;
   }
 }
 
-// Mobile maximizado
-@media (max-width: 600px) {
-  .modal-dialogo {
-    padding: 0;
+@media (max-width: 480px) {
+
+  .modal-xs,
+  .modal-sm,
+  .modal-md,
+  .modal-lg,
+  .modal-xl {
+    .modal-cabecalho {
+      width: 98% !important;
+    }
+  }
+}
+</style>
+
+<!-- CSS específico para este modal -->
+<style lang="scss">
+// Sobrescrever limitações do Quasar APENAS para este modal
+.modal-custom-size {
+  .q-dialog__inner {
+    >div {
+      max-width: none !important;
+      max-height: none !important;
+    }
   }
 
-  .modal-card-container {
-    max-height: 100vh;
-    border-radius: 2px !important;
+  @media (min-width: 600px) {
+    &.q-dialog__inner--minimized {
+      >div {
+        max-width: none !important;
+      }
+    }
+
+    // Ou se a estrutura for diferente, pode tentar esta:
+    .q-dialog__inner--minimized {
+      >div {
+        max-width: none !important;
+      }
+    }
   }
 }
 </style>
