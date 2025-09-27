@@ -108,6 +108,12 @@ const routes = [
         component: () => import("src/pages/natureza/Index.vue"),
         name: "natureza.index",
       },
+
+      {
+        path: "matricula",
+        component: () => import("src/pages/matricula/Index.vue"),
+        name: "matricula.index",
+      },
     ],
   },
 
