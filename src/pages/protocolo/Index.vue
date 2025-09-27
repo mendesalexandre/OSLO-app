@@ -2,52 +2,44 @@
   <q-page>
     <!-- Header compacto -->
     <q-header class="text-dark bg-white shadow-sm compact-header" elevated>
-      <q-toolbar class="q-py-xs">
+      <q-toolbar>
         <div class="row items-center full-width q-gutter-sm">
-          <!-- Info do protocolo compacta -->
-          <div class="protocol-badge-compact">
-            <q-chip :label="titulo" color="blue-grey-2" text-color="blue-grey-8" size="sm"
-              class="rounded-borders text-weight-medium" />
+          <!-- Título e Tabs na mesma linha -->
+          <div class="protocolo-titulo">
+            {{ titulo }}
           </div>
 
-          <!-- TABS COMPACTAS -->
-          <q-tabs no-caps v-model="tab" align="left" class="compact-tabs" active-color="primary"
-            indicator-color="primary" dense>
-            <q-route-tab name="geral" class="compact-tab" :to="{
-              name: 'protocolo.geral',
-              params: { id: $route.params.id },
-            }">
-              <div class="tab-content-compact">
-                <q-icon name="eva-info-outline" size="16px" />
-                <span class="tab-label-compact">Geral</span>
-              </div>
-            </q-route-tab>
+          <!-- TABS na mesma linha do título -->
+          <div class="tabs-inline">
+            <q-tabs v-model="tab" align="left" active-color="primary" indicator-color="primary">
+              <q-route-tab name="geral" :to="{
+                name: 'protocolo.geral',
+                params: { id: $route.params.id },
+              }">
+                Geral
+              </q-route-tab>
 
-            <q-route-tab name="ato_registro" class="compact-tab"
-              :to="{ name: 'protocolo.atos', params: { id: $route.params.id } }">
-              <div class="tab-content-compact">
-                <q-icon name="eva-calculator-outline" size="16px" />
-                <span class="tab-label-compact">Atos</span>
-                <q-chip v-if="totalAtos > 0" :label="totalAtos" color="orange-3" text-color="orange-8" size="xs"
-                  class="rounded-borders tab-badge-compact" />
-              </div>
-            </q-route-tab>
+              <q-route-tab name="ato_registro" :to="{ name: 'protocolo.atos', params: { id: $route.params.id } }">
+                <div class="tab-with-badge">
+                  <span>Atos</span>
+                  <q-chip v-if="totalAtos > 0" :label="totalAtos" color="orange-3" text-color="orange-8" size="xs"
+                    class="rounded-borders q-ml-sm" />
+                </div>
+              </q-route-tab>
 
-            <q-route-tab name="financeiro" class="compact-tab" :to="{
-              name: 'protocolo.financeiro',
-              params: { id: $route.params.id },
-            }">
-              <div class="tab-content-compact">
-                <q-icon name="eva-credit-card-outline" size="16px" />
-                <span class="tab-label-compact">Financeiro</span>
-                <q-chip v-if="valorRestante > 0" label="!" color="red-3" text-color="red-8" size="xs"
-                  class="rounded-borders tab-badge-compact" />
-              </div>
-            </q-route-tab>
-          </q-tabs>
-
+              <q-route-tab name="financeiro" :to="{
+                name: 'protocolo.financeiro',
+                params: { id: $route.params.id },
+              }">
+                <div class="tab-with-badge">
+                  <span>Financeiro</span>
+                  <q-chip v-if="valorRestante > 0" label="!" color="red-3" text-color="red-8" size="xs"
+                    class="rounded-borders q-ml-sm" />
+                </div>
+              </q-route-tab>
+            </q-tabs>
+          </div>
           <q-space />
-
           <!-- Ações principais compactas -->
           <div class="row q-gutter-xs">
             <q-btn v-if="valorRestante > 0" color="green-6" size="sm" icon="eva-credit-card-outline"
@@ -100,12 +92,12 @@
     </q-header>
 
     <!-- Conteúdo principal -->
-    <div class="protocol-content-compact">
+    <div class="protocolo-content-compact">
       <router-view />
     </div>
 
     <!-- Footer financeiro compacto -->
-    <q-footer class="bg-white text-dark compact-footer" elevated>
+    <q-footer class="bg-white text-dark protocolo-footer" elevated>
       <q-card-section class="q-py-sm">
         <div class="row items-center justify-between">
           <!-- Resumo financeiro inline -->
@@ -150,8 +142,9 @@
           <!-- Status visual -->
           <div class="col-auto">
             <q-chip v-if="valorRestante > 0" label="Pendente" color="orange-3" text-color="orange-8" size="sm"
-              class="rounded-borders" />
-            <q-chip v-else label="Quitado" color="green-3" text-color="green-8" size="sm" class="rounded-borders" />
+              class="rounded-borders" outline />
+            <q-chip v-else label="Quitado" color="green-3" text-color="green-8" size="sm" class="rounded-borders"
+              outline />
           </div>
         </div>
       </q-card-section>
@@ -286,78 +279,87 @@ onMounted(async () => {
 <style lang="scss" scoped>
 // Header compacto
 .compact-header {
-  min-height: 56px;
   border-bottom: 1px solid #f0f0f0;
 }
 
-.protocol-badge-compact {
-  margin-right: 8px;
+.protocolo-titulo {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #37474f;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
 }
 
-// Tabs compactas
-.compact-tabs {
-  background: transparent;
+// Container de tabs - EXATAMENTE igual ao modal
+.tabs-container {
+  padding: 0 1rem;
+  background: #fff;
+  border-top: 1px solid #e0e0e0;
 
-  .compact-tab {
-    min-height: 40px;
-    padding: 0;
-    transition: all 0.2s ease;
+  :deep(.q-tabs) {
+    background: transparent;
 
-    &:hover {
-      background: rgba(var(--q-primary-rgb), 0.05);
-    }
+    .q-tab {
+      padding: 0px 16px;
+      min-height: 30px !important;
+      border-radius: 0;
+      text-transform: none;
+      color: #37474f;
+      font-weight: 400;
+      letter-spacing: 0.5px;
 
-    &.q-tab--active {
-      background: rgba(var(--q-primary-rgb), 0.1);
+      &.q-tab--active {
+        color: #495057;
+        font-weight: 600;
+      }
 
-      .tab-content-compact {
-        .q-icon {
-          color: var(--q-primary);
-        }
-
-        .tab-label-compact {
-          color: var(--q-primary);
-          font-weight: 600;
-        }
+      &:hover {
+        color: #495057;
+        background-color: rgba(0, 0, 0, 0.04);
       }
     }
 
-    .tab-content-compact {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 12px;
-      position: relative;
+    .q-tab__indicator {
+      height: 1px !important;
+      background-color: #37474f;
+    }
 
-      .q-icon {
-        color: #666;
-        transition: color 0.2s ease;
-      }
+    .q-tab__label {
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+      color: #37474f;
+    }
 
-      .tab-label-compact {
-        font-size: 0.8rem;
-        font-weight: 500;
-        color: #555;
-        transition: all 0.2s ease;
-      }
-
-      .tab-badge-compact {
-        margin-left: 4px;
-      }
+    // Remove o ripple effect
+    .q-ripple {
+      display: none;
     }
   }
 }
 
+// Styling para tabs com badges
+.tab-with-badge {
+  display: flex;
+  align-items: center;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
 // Conteúdo principal
-.protocol-content-compact {
-  min-height: calc(100vh - 120px);
-  padding-bottom: 60px; // Espaço para o footer
+.protocolo-content-compact {
+  min-height: calc(100vh - 160px); // Ajustado para o header maior
+  padding-bottom: 60px;
 }
 
 // Footer compacto
-.compact-footer {
+.protocolo-footer {
   border-top: 1px solid #f0f0f0;
   min-height: 60px;
+  box-shadow: 0 1px 3px 0 #0000001a, 0 1px 2px -1px #0000001a !important;
 }
 
 .financial-summary-compact {
@@ -371,22 +373,26 @@ onMounted(async () => {
 // Responsividade
 @media (max-width: 768px) {
   .compact-header {
-    min-height: 52px;
+    min-height: 88px; // Reduzido no mobile
   }
 
-  .compact-tabs {
-    .compact-tab {
-      min-height: 36px;
+  .tabs-container {
+    padding: 0 0.5rem;
 
-      .tab-content-compact {
-        padding: 6px 8px;
-        gap: 4px;
+    :deep(.q-tabs) {
+      .q-tab {
+        padding: 0px 12px;
+        min-height: 36px !important;
 
-        .tab-label-compact {
-          font-size: 0.75rem;
+        .tab-with-badge {
+          font-size: 0.7rem;
         }
       }
     }
+  }
+
+  .protocolo-content-compact {
+    min-height: calc(100vh - 148px);
   }
 
   .financial-summary-compact {
@@ -400,17 +406,18 @@ onMounted(async () => {
   }
 }
 
-// Mobile muito pequeno
 @media (max-width: 480px) {
-  .compact-tabs {
-    .compact-tab {
-      .tab-content-compact {
-        .tab-label-compact {
-          display: none;
-        }
+  .tabs-container {
+    :deep(.q-tabs) {
+      .q-tab {
+        padding: 0px 8px;
 
-        .q-icon {
-          font-size: 18px;
+        .tab-with-badge {
+          font-size: 0.65rem;
+
+          span {
+            display: none; // Esconde texto no mobile muito pequeno
+          }
         }
       }
     }
