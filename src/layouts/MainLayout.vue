@@ -1,12 +1,12 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header bordered elevated class="bg-white">
+    <!-- <q-header bordered elevated class="bg-white">
       <q-toolbar>
         <q-btn flat dense round aria-label="Menu" @click="toggleLeftDrawer" color="dark" icon="fa-solid fa-bars"
           size="sm">
         </q-btn>
       </q-toolbar>
-    </q-header>
+    </q-header> -->
 
     <q-drawer bordered v-model="leftDrawerOpen" show-if-above side="left" :width="60" :breakpoint="500">
       <q-list class="text-center text-caption w-full">

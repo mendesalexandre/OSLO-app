@@ -101,10 +101,7 @@
 
     <!-- Conteúdo principal -->
     <div class="protocol-content-compact">
-      <q-page-container>
-        <router-view />
-      </q-page-container>
-
+      <router-view />
     </div>
 
     <!-- Footer financeiro compacto -->
@@ -177,6 +174,113 @@ defineOptions({
 import { useQuasar } from "quasar";
 import { formatarDinheiroBrasil } from "src/Utils";
 
+const protocoloStore = useProtocoloStore();
+const { protocolo, protocoloSelecionado, totalEmolumentoGeral } =
+  storeToRefs(protocoloStore);
+const $route = useRoute();
+const $router = useRouter();
+const $q = useQuasar();
+
+const valorPago = ref(10.0);
+const desconto = ref(100.0);
+const valorDesconto = ref(0);
+
+const valorRestante = computed(() => {
+  return totalEmolumentoGeral.value - valorPago.value - desconto.value;
+});
+
+// Computed para as badges das tabs
+const totalAtos = computed(() => {
+  return protocolo.value?.atos?.length || 0;
+});
+
+const titulo = computed(() =>
+  protocolo.value?.id
+    ? `#${protocolo.value.numero_protocolo_formatado}`
+    : "Novo Protocolo"
+);
+
+// Métodos de ação
+const receberPagamento = () => {
+  $q.notify({
+    color: "positive",
+    message: "Abrindo tela de pagamento",
+    icon: "eva-credit-card-outline",
+    position: "top-right",
+  });
+};
+
+const imprimirProtocolo = () => {
+  window.print();
+};
+
+const duplicarProtocolo = () => {
+  $q.dialog({
+    title: "Duplicar Protocolo",
+    message: "Deseja criar uma cópia deste protocolo?",
+    cancel: true,
+    persistent: true,
+  }).onOk(() => {
+    $q.notify({
+      color: "positive",
+      message: "Protocolo duplicado com sucesso",
+      icon: "eva-copy-outline",
+      position: "top-right",
+    });
+  });
+};
+
+const arquivarProtocolo = () => {
+  $q.dialog({
+    title: "Arquivar Protocolo",
+    message: "Este protocolo será movido para o arquivo.",
+    cancel: true,
+    persistent: true,
+  }).onOk(() => {
+    $q.notify({
+      color: "info",
+      message: "Protocolo arquivado",
+      icon: "eva-archive-outline",
+      position: "top-right",
+    });
+  });
+};
+
+const excluirProtocolo = () => {
+  $q.dialog({
+    title: "Excluir Protocolo",
+    message: "ATENÇÃO: Esta ação não pode ser desfeita. Confirma a exclusão?",
+    cancel: true,
+    persistent: true,
+    color: "negative",
+  }).onOk(() => {
+    $q.notify({
+      color: "negative",
+      message: "Protocolo excluído",
+      icon: "eva-trash-2-outline",
+      position: "top-right",
+    });
+    // $router.push({ name: "home" });
+  });
+};
+
+onMounted(async () => {
+  if (!protocoloStore.protocoloSelecionado) {
+    try {
+      await protocoloStore.show($route.params.id);
+    } catch (error) {
+      console.warn("Erro ao carregar protocolo após refresh:", error);
+      $q.notify({
+        color: "negative",
+        message: "Não foi possível carregar o protocolo.",
+        icon: "eva-alert-circle-outline",
+        position: "top-right",
+      });
+      // $router.push({ name: "home" });
+    } finally {
+    }
+  }
+});
 </script>
 
 <style lang="scss" scoped>
@@ -247,7 +351,7 @@ import { formatarDinheiroBrasil } from "src/Utils";
 // Conteúdo principal
 .protocol-content-compact {
   min-height: calc(100vh - 120px);
-  // padding-bottom: 60px; // Espaço para o footer
+  padding-bottom: 60px; // Espaço para o footer
 }
 
 // Footer compacto

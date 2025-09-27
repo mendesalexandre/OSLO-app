@@ -139,21 +139,21 @@ const routes = [
             component: () => import("pages/protocolo/geral/Index.vue"),
           },
 
-          {
-            path: "/protocolo/:id/atos",
-            name: "protocolo.atos",
-            props: true,
-            meta: { title: "Protocolo - Atos" },
-            component: () => import("pages/protocolo/atos/Index.vue"),
-          },
+          // {
+          //   path: "/protocolo/:id/atos",
+          //   name: "protocolo.atos",
+          //   props: true,
+          //   meta: { title: "Protocolo - Atos" },
+          //   component: () => import("pages/protocolo/atos/Index.vue"),
+          // },
 
-          {
-            path: "/protocolo/:id/financeiro",
-            name: "protocolo.financeiro",
-            props: true,
-            meta: { title: "Protocolo - Financeiro" },
-            component: () => import("pages/protocolo/financeiro/Index.vue"),
-          },
+          // {
+          //   path: "/protocolo/:id/financeiro",
+          //   name: "protocolo.financeiro",
+          //   props: true,
+          //   meta: { title: "Protocolo - Financeiro" },
+          //   component: () => import("pages/protocolo/financeiro/Index.vue"),
+          // },
         ],
       },
     ],
