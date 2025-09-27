@@ -1,86 +1,75 @@
 <template>
-  <q-page class="financial-dashboard">
-    <!-- Header -->
-    <div class="dashboard-header">
-      <h1 class="dashboard-title">Gestão Financeira</h1>
+  <!-- Header -->
+  <div class="dashboard-header">
+    <h1 class="dashboard-title">Gestão Financeira</h1>
+  </div>
+
+  <!-- Cards Financeiros -->
+  <div class="financial-cards">
+    <!-- Despesa -->
+    <div class="financial-card card-despesa" @click="navigateTo('despesa')">
+      <div class="card-icon">
+        <q-icon name="eva-trending-down-outline" size="32px" />
+      </div>
+      <div class="card-label">DESPESA</div>
     </div>
 
-    <!-- Cards Financeiros -->
-    <div class="financial-cards">
-      <!-- Despesa -->
-      <div class="financial-card card-despesa" @click="navigateTo('despesa')">
-        <div class="card-icon">
-          <q-icon name="eva-trending-down-outline" size="32px" />
-        </div>
-        <div class="card-label">DESPESA</div>
+    <!-- Receita -->
+    <div class="financial-card card-receita" @click="navigateTo('receita')">
+      <div class="card-icon">
+        <q-icon name="eva-trending-up-outline" size="32px" />
       </div>
-
-      <!-- Receita -->
-      <div class="financial-card card-receita" @click="navigateTo('receita')">
-        <div class="card-icon">
-          <q-icon name="eva-trending-up-outline" size="32px" />
-        </div>
-        <div class="card-label">RECEITA</div>
-      </div>
-
-      <!-- Transferências -->
-      <div
-        class="financial-card card-transferencia"
-        @click="navigateTo('transferencia')"
-      >
-        <div class="card-icon">
-          <q-icon name="eva-swap-outline" size="32px" />
-        </div>
-        <div class="card-label">TRANSF.</div>
-      </div>
-
-      <!-- Cheques -->
-      <div class="financial-card card-cheques" @click="navigateTo('cheques')">
-        <div class="card-icon">
-          <q-icon name="eva-credit-card-outline" size="32px" />
-        </div>
-        <div class="card-label">CHEQUES</div>
-      </div>
-
-      <!-- Extrato Geral -->
-      <div class="financial-card card-extrato" @click="navigateTo('extrato')">
-        <div class="card-icon">
-          <q-icon name="eva-file-text-outline" size="32px" />
-        </div>
-        <div class="card-label">EXTRATO GERAL</div>
-      </div>
-
-      <!-- Notas Fiscais -->
-      <div
-        class="financial-card card-notas"
-        @click="navigateTo('notas-fiscais')"
-      >
-        <div class="card-icon">
-          <q-icon name="eva-archive-outline" size="32px" />
-        </div>
-        <div class="card-label">NOTAS FISCAIS</div>
-      </div>
-
-      <!-- Caixas Inativos -->
-      <div
-        class="financial-card card-caixas"
-        @click="navigateTo('caixas-inativos')"
-      >
-        <div class="card-icon">
-          <q-icon name="eva-cube-outline" size="32px" />
-        </div>
-        <div class="card-label">CAIXAS INATIVOS</div>
-      </div>
-
-      <!-- Valores a Receber/Devolver -->
-      <div class="financial-card card-valores" @click="navigateTo('valores')">
-        <div class="card-icon">
-          <q-icon name="eva-refresh-outline" size="32px" />
-        </div>
-        <div class="card-label">VALORES A RECEBER/DEVOLVER</div>
-      </div>
+      <div class="card-label">RECEITA</div>
     </div>
-  </q-page>
+
+    <!-- Transferências -->
+    <div class="financial-card card-transferencia" @click="navigateTo('transferencia')">
+      <div class="card-icon">
+        <q-icon name="eva-swap-outline" size="32px" />
+      </div>
+      <div class="card-label">TRANSF.</div>
+    </div>
+
+    <!-- Cheques -->
+    <div class="financial-card card-cheques" @click="navigateTo('cheques')">
+      <div class="card-icon">
+        <q-icon name="eva-credit-card-outline" size="32px" />
+      </div>
+      <div class="card-label">CHEQUES</div>
+    </div>
+
+    <!-- Extrato Geral -->
+    <div class="financial-card card-extrato" @click="navigateTo('extrato')">
+      <div class="card-icon">
+        <q-icon name="eva-file-text-outline" size="32px" />
+      </div>
+      <div class="card-label">EXTRATO GERAL</div>
+    </div>
+
+    <!-- Notas Fiscais -->
+    <div class="financial-card card-notas" @click="navigateTo('notas-fiscais')">
+      <div class="card-icon">
+        <q-icon name="eva-archive-outline" size="32px" />
+      </div>
+      <div class="card-label">NOTAS FISCAIS</div>
+    </div>
+
+    <!-- Caixas Inativos -->
+    <div class="financial-card card-caixas" @click="navigateTo('caixas-inativos')">
+      <div class="card-icon">
+        <q-icon name="eva-cube-outline" size="32px" />
+      </div>
+      <div class="card-label">CAIXAS INATIVOS</div>
+    </div>
+
+    <!-- Valores a Receber/Devolver -->
+    <div class="financial-card card-valores" @click="navigateTo('valores')">
+      <div class="card-icon">
+        <q-icon name="eva-refresh-outline" size="32px" />
+      </div>
+      <div class="card-label">VALORES A RECEBER/DEVOLVER</div>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -326,6 +315,7 @@ const navigateTo = (module) => {
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

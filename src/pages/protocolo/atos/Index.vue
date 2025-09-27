@@ -1,473 +1,318 @@
 <template>
-  <div class="q-pa-md">
-    <!-- Formulário Compacto -->
-    <q-card bordered class="q-mb-md rounded-borders">
-      <q-card-section class="q-pa-none">
-        <div class="ds-header">
-          <q-icon name="eva-bookmark-outline" class="q-mr-sm" />
-          <span class="ds-header-title">Calcular Emolumento</span>
-        </div>
-      </q-card-section>
-
-      <q-card-section>
-        <div class="row q-col-gutter-xs">
-          <div class="col-md-6 col-sm-12 col-xs-12">
-            <label class="form-label text-weight-medium">Serviço</label>
-            <q-select :options="tabelaCustas" option-label="nome" v-model="tabelaCusta.servico_selecionado"
-              option-value="id" map-options emit-value outlined dense class="ds-input"
-              placeholder="Selecione um serviço" />
+  <q-page>
+    <!-- Header compacto -->
+    <q-header class="text-dark bg-white shadow-sm compact-header" elevated>
+      <q-toolbar class="q-py-xs">
+        <div class="row items-center full-width q-gutter-sm">
+          <!-- Info do protocolo compacta -->
+          <div class="protocol-badge-compact">
+            <q-chip :label="titulo" color="blue-grey-2" text-color="blue-grey-8" size="sm"
+              class="rounded-borders text-weight-medium" />
           </div>
 
-          <div class="col-md-2 col-sm-12 col-xs-12">
-            <label class="form-label text-weight-medium">Base de Cálculo</label>
-            <money v-model.number="tabelaCusta.base_calculo" outlined dense :disable="desativarValorBaseCalculo"
-              placeholder="R$ 0,00" />
-          </div>
+          <!-- TABS COMPACTAS -->
+          <q-tabs no-caps v-model="tab" align="left" class="compact-tabs" active-color="primary"
+            indicator-color="primary" dense>
+            <q-route-tab name="geral" class="compact-tab" :to="{
+              name: 'protocolo.geral',
+              params: { id: $route.params.id },
+            }">
+              <div class="tab-content-compact">
+                <q-icon name="eva-info-outline" size="16px" />
+                <span class="tab-label-compact">Geral</span>
+              </div>
+            </q-route-tab>
 
-          <div class="col-md-1 col-sm-12 col-xs-12">
-            <label class="form-label text-weight-medium">Qtde.</label>
-            <q-input v-model="tabelaCusta.quantidade" outlined dense min="1" class="ds-input" input-mode="numeric"
-              placeholder="1" />
-          </div>
+            <q-route-tab name="ato_registro" class="compact-tab"
+              :to="{ name: 'protocolo.atos', params: { id: $route.params.id } }">
+              <div class="tab-content-compact">
+                <q-icon name="eva-calculator-outline" size="16px" />
+                <span class="tab-label-compact">Atos</span>
+                <q-chip v-if="totalAtos > 0" :label="totalAtos" color="orange-3" text-color="orange-8" size="xs"
+                  class="rounded-borders tab-badge-compact" />
+              </div>
+            </q-route-tab>
 
-          <div class="col-md-2 col-sm-12 col-xs-12">
-            <label class="form-label text-weight-medium">Nº de Matrícula</label>
-            <q-input v-model="tabelaCusta.quantidade" outlined dense min="1" class="ds-input" input-mode="numeric"
-              placeholder="1" />
-          </div>
-          <div class="col-md-1 col-sm-12 col-xs-12">
-            <v-label :label="'&nbsp;'" />
+            <q-route-tab name="financeiro" class="compact-tab" :to="{
+              name: 'protocolo.financeiro',
+              params: { id: $route.params.id },
+            }">
+              <div class="tab-content-compact">
+                <q-icon name="eva-credit-card-outline" size="16px" />
+                <span class="tab-label-compact">Financeiro</span>
+                <q-chip v-if="valorRestante > 0" label="!" color="red-3" text-color="red-8" size="xs"
+                  class="rounded-borders tab-badge-compact" />
+              </div>
+            </q-route-tab>
+          </q-tabs>
 
-            <q-btn :icon="adicionarAtoLoading
-              ? 'eva-loader-outline'
-              : 'eva-arrow-circle-down-outline'
-              " color="primary" outline @click="calcularEmolumento()" :disable="!tabelaCusta.servico_selecionado" />
-          </div>
-        </div>
-      </q-card-section>
-    </q-card>
-
-    <!-- Tabela de Atos -->
-    <q-card bordered class="rounded-borders" v-if="atos.length">
-      <q-card-section class="q-pa-none">
-        <div class="ds-header">
-          <q-icon name="eva-list-outline" class="q-mr-sm" />
-          <span class="ds-header-title">Atos Cadastrados</span>
           <q-space />
-          <q-chip :label="atos.length" color="blue-grey-3" text-color="blue-grey-8" size="sm" class="rounded-borders" />
-          <q-btn label="Enviar Todos" color="green-6" icon="eva-paper-plane-outline" size="sm" outline
-            class="rounded-borders" @click="mostrarDialogEnviarTodos" v-if="atosNaoEnviados.length > 0" />
+
+          <!-- Ações principais compactas -->
+          <div class="row q-gutter-xs">
+            <q-btn v-if="valorRestante > 0" color="green-6" size="sm" icon="eva-credit-card-outline"
+              @click="receberPagamento" class="rounded-borders" dense>
+              <q-tooltip>Receber Pagamento</q-tooltip>
+            </q-btn>
+
+            <q-btn color="blue-6" size="sm" icon="eva-printer-outline" outline @click="imprimirProtocolo"
+              class="rounded-borders" dense>
+              <q-tooltip>Imprimir</q-tooltip>
+            </q-btn>
+
+            <q-btn icon="eva-more-vertical-outline" flat round size="sm" color="grey-7">
+              <q-menu class="rounded-borders">
+                <q-list dense>
+                  <q-item clickable @click="duplicarProtocolo" class="q-py-xs">
+                    <q-item-section avatar>
+                      <q-icon name="eva-copy-outline" size="16px" />
+                    </q-item-section>
+                    <q-item-section>
+                      <div class="text-caption">Duplicar</div>
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item clickable @click="arquivarProtocolo" class="q-py-xs">
+                    <q-item-section avatar>
+                      <q-icon name="eva-archive-outline" size="16px" />
+                    </q-item-section>
+                    <q-item-section>
+                      <div class="text-caption">Arquivar</div>
+                    </q-item-section>
+                  </q-item>
+
+                  <q-separator />
+
+                  <q-item clickable @click="excluirProtocolo" class="text-negative q-py-xs">
+                    <q-item-section avatar>
+                      <q-icon name="eva-trash-2-outline" size="16px" />
+                    </q-item-section>
+                    <q-item-section>
+                      <div class="text-caption">Excluir</div>
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </q-menu>
+            </q-btn>
+          </div>
+        </div>
+      </q-toolbar>
+    </q-header>
+
+    <!-- Conteúdo principal -->
+    <div class="protocol-content-compact">
+      <router-view />
+    </div>
+
+    <!-- Footer financeiro compacto -->
+    <q-footer class="bg-white text-dark compact-footer" elevated>
+      <q-card-section class="q-py-sm">
+        <div class="row items-center justify-between">
+          <!-- Resumo financeiro inline -->
+          <div class="col">
+            <div class="financial-summary-compact">
+              <div class="row items-center q-gutter-md">
+                <div class="summary-item-compact">
+                  <span class="text-caption text-grey-6">Total:</span>
+                  <span class="text-weight-bold text-grey-8 q-ml-xs">
+                    {{ formatarDinheiroBrasil(totalEmolumentoAtual) }}
+                  </span>
+                </div>
+
+                <div v-if="valorDesconto > 0" class="summary-item-compact">
+                  <span class="text-caption text-grey-6">Desconto:</span>
+                  <span class="text-weight-medium text-red-6 q-ml-xs">
+                    -{{ formatarDinheiroBrasil(valorDesconto) }}
+                  </span>
+                </div>
+
+                <div v-if="valorPago > 0" class="summary-item-compact">
+                  <span class="text-caption text-grey-6">Pago:</span>
+                  <span class="text-weight-medium text-green-6 q-ml-xs">
+                    {{ formatarDinheiroBrasil(valorPago) }}
+                  </span>
+                </div>
+
+                <div class="summary-item-compact">
+                  <span class="text-caption text-grey-6">Restante:</span>
+                  <span class="text-weight-bold text-primary q-ml-xs">
+                    {{ formatarDinheiroBrasil(valorRestante) }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Status visual -->
+          <div class="col-auto">
+            <q-chip v-if="valorRestante > 0" label="Pendente" color="orange-3" text-color="orange-8" size="sm"
+              class="rounded-borders" />
+            <q-chip v-else label="Quitado" color="green-3" text-color="green-8" size="sm" class="rounded-borders" />
+          </div>
         </div>
       </q-card-section>
-
-      <q-card-section class="q-pa-none">
-        <q-table bordered :rows="atos" :columns="colunas" class="ds-compact-table" hide-bottom
-          :rows-per-page-options="[0]" dense>
-          <template #header-cell="props">
-            <q-th :props="props" class="ds-table-header">
-              {{ props.col.label }}
-            </q-th>
-          </template>
-
-          <template #body="props">
-            <q-tr :props="props" class="ds-table-row">
-              <q-td key="is_pago" :props="props" class="text-center">
-                <q-icon size="12px" name="eva-radio-button-on-outline" :color="props.row.is_pago ? 'green-6' : 'red-6'">
-                  <q-tooltip>
-                    {{
-                      props.row.is_pago
-                        ? "Emolumento já pago"
-                        : "Emolumento não pago"
-                    }}
-                  </q-tooltip>
-                </q-icon>
-              </q-td>
-
-              <q-td key="nome" :props="props" class="text-left">
-                <div class="text-body2 text-weight-medium">
-                  {{ props.row.nome }}
-                </div>
-              </q-td>
-
-              <q-td key="valor_base_calculo" :props="props" class="text-right">
-                <div class="text-body2">
-                  {{ formatarDinheiroBrasil(props.row.valor_base_calculo) }}
-                </div>
-              </q-td>
-
-              <q-td key="quantidade" :props="props" class="text-center">
-                <q-chip :label="props.row?.quantidade" color="blue-grey-2" text-color="blue-grey-8" size="sm"
-                  class="rounded-borders" />
-              </q-td>
-
-              <q-td key="valor_emolumento" :props="props" class="text-right">
-                <div class="text-body2">
-                  {{ formatarDinheiroBrasil(props.row?.valor_emolumento) }}
-                </div>
-              </q-td>
-
-              <q-td key="valor_iss" :props="props" class="text-right">
-                <div class="text-body2">
-                  {{ formatarDinheiroBrasil(props.row?.valor_iss) }}
-                </div>
-              </q-td>
-
-              <q-td key="valor_total" :props="props" class="text-right">
-                <div class="text-weight-bold text-green-7">
-                  {{ formatarDinheiroBrasil(props.row?.valor_total) }}
-                </div>
-              </q-td>
-
-              <q-td key="acao" :props="props" class="text-center">
-                <div class="row q-gutter-xs justify-center">
-                  <q-btn icon="eva-edit-outline" flat round size="sm" color="grey-7" @click="editar(props.row)">
-                    <q-tooltip>Editar</q-tooltip>
-                  </q-btn>
-
-                  <q-btn v-if="!props.row.lancamento_id" icon="eva-paper-plane-outline" flat round size="sm"
-                    color="grey-7" @click="enviarParaFinanceiro(props.row)">
-                    <q-tooltip>Enviar ao Financeiro</q-tooltip>
-                  </q-btn>
-
-                  <q-icon v-else name="eva-checkmark-circle-outline" color="green-6" size="sm">
-                    <q-tooltip>Já enviado ao financeiro</q-tooltip>
-                  </q-icon>
-
-                  <q-btn icon="eva-trash-2-outline" flat round size="sm" color="red-8" @click="excluir(props.row)">
-                    <q-tooltip>Excluir</q-tooltip>
-                  </q-btn>
-                </div>
-              </q-td>
-            </q-tr>
-          </template>
-        </q-table>
-      </q-card-section>
-    </q-card>
-
-    <!-- Estado vazio -->
-    <q-card bordered class="rounded-borders" v-else>
-      <q-card-section class="text-center q-py-xl">
-        <q-icon name="eva-calculator-outline" size="4em" color="blue-grey-4" class="q-mb-md" />
-        <div class="text-h6 text-grey-8 q-mb-sm">Nenhum ato cadastrado</div>
-        <div class="text-caption text-grey-6">
-          Selecione um serviço e calcule o emolumento para começar
-        </div>
-      </q-card-section>
-    </q-card>
-
-    <!-- Dialog de Exclusão -->
-    <CustomDialog v-model="showDeleteDialog" type="danger" title="Confirmar Exclusão" content-title="Excluir Ato"
-      :message="`Tem certeza que deseja excluir o ato <strong>&quot;${atoParaExcluir?.nome}&quot;</strong>?`"
-      warning="Esta ação não pode ser desfeita." footer-info="Última chance para cancelar"
-      icon="eva-alert-triangle-outline" main-icon="eva-trash-outline" confirm-label="Excluir Definitivamente"
-      confirm-color="red-6" confirm-icon="eva-trash-2-outline" cancel-label="Manter Ato" :loading="excludingAto"
-      loading-text="Excluindo..." @confirm="confirmarExclusao" @cancel="cancelarExclusao" />
-
-    <!-- Dialog de Envio Individual -->
-    <CustomDialog v-model="showFinanceDialog" type="info" title="Enviar ao Financeiro" content-title="Confirmar Envio"
-      :message="`Enviar o ato <strong>&quot;${atoParaEnviar?.nome}&quot;</strong> para o sistema financeiro?`"
-      icon="eva-paper-plane-outline" main-icon="eva-credit-card-outline" confirm-label="Enviar para Financeiro"
-      confirm-color="blue-6" confirm-icon="eva-paper-plane-outline" :loading="sendingToFinance"
-      loading-text="Enviando..." @confirm="confirmarEnvioFinanceiro" />
-
-    <!-- Dialog de Envio em Massa -->
-    <CustomDialog v-model="showMassFinanceDialog" type="warning" title="Enviar Todos ao Financeiro"
-      content-title="Envio em Massa"
-      :message="`Enviar <strong>${atosNaoEnviados.length} ato(s)</strong> para o sistema financeiro?`"
-      :footer-info="`Total: ${formatarDinheiroBrasil(totalAtosNaoEnviados)}`" icon="eva-paper-plane-outline"
-      main-icon="eva-archive-outline" confirm-label="Enviar Todos" confirm-color="green-6"
-      confirm-icon="eva-paper-plane-outline" :loading="sendingAllToFinance" loading-text="Enviando atos..."
-      @confirm="confirmarEnvioTodos" />
-
-    <!-- Dialog de Sucesso -->
-    <CustomDialog v-model="showSuccessDialog" type="success" title="Operação Realizada" :content-title="successTitle"
-      :message="successMessage" icon="eva-checkmark-circle-outline" main-icon="eva-checkmark-circle-outline"
-      confirm-label="Entendi" confirm-color="green-6" confirm-icon="eva-checkmark-outline" :show-cancel-button="false"
-      :show-close-button="false" @confirm="showSuccessDialog = false" />
-  </div>
+    </q-footer>
+  </q-page>
 </template>
 
 <script setup>
 import { storeToRefs } from "pinia";
-// import { useTabelaCustaStore } from "src/stores/tabela-custa";
-// import { useProtocoloStore } from "src/stores/protocolo";
-// import { useServicoStore } from "src/stores/servico";
-import { onMounted, ref, computed } from "vue";
-import { formatarDinheiroBrasil } from "src/Utils";
+import { useProtocoloStore } from "src/stores/protocolo";
+import { computed, onMounted, ref, readonly } from "vue";
+import { useRoute, useRouter } from "vue-router";
+
+const tab = ref("geral");
+
+defineOptions({
+  name: "ProtocoloIndex",
+});
+
 import { useQuasar } from "quasar";
-import { api } from "src/boot/axios";
-// import CustomDialog from "src/components/Modal/CustomDialog.vue";
+import { formatarDinheiroBrasil } from "src/Utils";
 
-const $q = useQuasar();
-const protocoloStore = useProtocoloStore();
-const { protocolo, atos } = storeToRefs(protocoloStore);
-
-const servicoStore = useServicoStore();
-const { servico } = storeToRefs(servicoStore);
-
-const tabelaCustaAto = useTabelaCustaStore();
-const { tabelaCusta, tabelaCustas } = storeToRefs(tabelaCustaAto);
-
-const desativarValorBaseCalculo = ref(false);
-
-// Estados dos dialogs
-const showDeleteDialog = ref(false);
-const showFinanceDialog = ref(false);
-const showMassFinanceDialog = ref(false);
-const showSuccessDialog = ref(false);
-
-// Estados de loading
-const adicionarAtoLoading = ref(false);
-const excludingAto = ref(false);
-const sendingToFinance = ref(false);
-const sendingAllToFinance = ref(false);
-
-// Dados dos dialogs
-const atoParaExcluir = ref(null);
-const atoParaEnviar = ref(null);
-const successTitle = ref("");
-const successMessage = ref("");
-
-// Computed para atos não enviados
-const atosNaoEnviados = computed(() => {
-  return atos.value.filter((a) => !a.lancamento_id);
+const titulo = computed(() => {
+  if (!protocolo.value?.id) return "Novo Protocolo";
+  return `#${protocolo.value.numero_protocolo_formatado || protocolo.value.id}`;
 });
 
-// Computed para total dos atos não enviados
-const totalAtosNaoEnviados = computed(() => {
-  return atosNaoEnviados.value.reduce(
-    (total, ato) => total + (ato.valor_total || 0),
-    0
-  );
-});
 
-const calcularEmolumento = async () => {
-  if (!tabelaCusta.value.servico_selecionado) {
-    $q.notify({
-      color: "warning",
-      message: "Selecione um serviço",
-      icon: "eva-alert-triangle-outline",
-      position: "top-right",
-    });
-    return;
-  }
+// MUDANÇA 5: Simplifique o onMounted
+</script>
 
-  try {
-    const response = await tabelaCustaAto.calcularEmolumento({
-      servico_id: tabelaCusta.value.servico_selecionado,
-      base_calculo: tabelaCusta.value.base_calculo,
-      quantidade: tabelaCusta.value.quantidade,
-      protocolo_id: protocolo.value.id,
-    });
+<style lang="scss" scoped>
+// CSS mantido igual ao original
+.compact-header {
+  min-height: 56px;
+  border-bottom: 1px solid #f0f0f0;
+}
 
-    protocolo?.value?.atos.push(response?.data);
-    await protocoloStore.show(protocolo.value.uuid);
+.protocol-badge-compact {
+  margin-right: 8px;
+}
 
-    // Limpar formulário
-    tabelaCusta.value.servico_selecionado = null;
-    tabelaCusta.value.base_calculo = 0;
-    tabelaCusta.value.quantidade = 1;
+.compact-tabs {
+  background: transparent;
 
-    $q.notify({
-      color: "positive",
-      message: "Ato adicionado com sucesso",
-      icon: "eva-checkmark-circle-outline",
-      position: "top-right",
-    });
-  } catch (e) {
-    console.log(e);
-    $q.notify({
-      color: "negative",
-      message: "Erro ao calcular emolumento",
-      icon: "eva-alert-circle-outline",
-      position: "top-right",
-    });
-  }
-};
+  .compact-tab {
+    min-height: 40px;
+    padding: 0;
+    transition: all 0.2s ease;
 
-const editar = (ato) => {
-  $q.notify({
-    color: "info",
-    message: "Função de edição em desenvolvimento",
-    icon: "eva-edit-outline",
-    position: "top-right",
-  });
-};
-
-// Funções de exclusão
-const excluir = (ato) => {
-  atoParaExcluir.value = ato;
-  showDeleteDialog.value = true;
-};
-
-const confirmarExclusao = async () => {
-  excludingAto.value = true;
-
-  try {
-    // Simula API call por 1 segundo
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    // Sua lógica de exclusão aqui
-    // await api.delete(`/api/atos/${atoParaExcluir.value.id}`);
-
-    successTitle.value = "Ato Excluído";
-    successMessage.value = `O ato <strong>"${atoParaExcluir.value.nome}"</strong> foi removido com sucesso.`;
-    showSuccessDialog.value = true;
-
-    showDeleteDialog.value = false;
-
-    // Recarregar dados se necessário
-    // await protocoloStore.show(protocolo.value.uuid);
-  } catch (error) {
-    $q.notify({
-      color: "negative",
-      message: "Erro ao excluir ato",
-      icon: "eva-alert-circle-outline",
-      position: "top-right",
-    });
-  } finally {
-    excludingAto.value = false;
-  }
-};
-
-const cancelarExclusao = () => {
-  atoParaExcluir.value = null;
-};
-
-// Funções de envio ao financeiro
-const enviarParaFinanceiro = (ato) => {
-  atoParaEnviar.value = ato;
-  showFinanceDialog.value = true;
-};
-
-const confirmarEnvioFinanceiro = async () => {
-  sendingToFinance.value = true;
-
-  try {
-    const payload = {
-      descricao: `Emolumento: ${atoParaEnviar.value.nome}`,
-      valor: atoParaEnviar.value.valor_total,
-      tipo: "receita",
-      data_vencimento: new Date(),
-      cliente_id: protocolo.value?.solicitante_id,
-      protocolo_id: protocolo.value.id,
-      ato_id: atoParaEnviar.value.id,
-    };
-
-    const { data } = await api.post("/api/contas-receber", payload);
-
-    successTitle.value = "Enviado para Financeiro";
-    successMessage.value = `O ato <strong>"${atoParaEnviar.value.nome}"</strong> foi enviado para o sistema financeiro.`;
-    showSuccessDialog.value = true;
-
-    showFinanceDialog.value = false;
-    await protocoloStore.show(protocolo.value.uuid);
-  } catch (error) {
-    console.error(error);
-    $q.notify({
-      color: "negative",
-      message: "Erro ao enviar para o financeiro.",
-      icon: "eva-alert-circle-outline",
-      position: "top-right",
-    });
-  } finally {
-    sendingToFinance.value = false;
-  }
-};
-
-// Funções de envio em massa
-const mostrarDialogEnviarTodos = () => {
-  showMassFinanceDialog.value = true;
-};
-
-const confirmarEnvioTodos = async () => {
-  sendingAllToFinance.value = true;
-
-  try {
-    for (const ato of atosNaoEnviados.value) {
-      const payload = {
-        descricao: `Emolumento: ${ato.nome}`,
-        valor: ato.valor_total,
-        tipo: "receita",
-        data_vencimento: new Date(),
-        cliente_id: protocolo.value?.solicitante_id,
-        protocolo_id: protocolo.value.id,
-        ato_id: ato.id,
-      };
-      await api.post("/api/contas-receber", payload);
+    &:hover {
+      background: rgba(var(--q-primary-rgb), 0.05);
     }
 
-    successTitle.value = "Atos Enviados em Massa";
-    successMessage.value = `<strong>${atosNaoEnviados.value.length} ato(s)</strong> foram enviados para o sistema financeiro com sucesso!`;
-    showSuccessDialog.value = true;
+    &.q-tab--active {
+      background: rgba(var(--q-primary-rgb), 0.1);
 
-    showMassFinanceDialog.value = false;
-    await protocoloStore.show(protocolo.value.uuid);
-  } catch (error) {
-    console.error(error);
-    $q.notify({
-      color: "negative",
-      message: "Erro ao enviar atos em massa.",
-      icon: "eva-alert-circle-outline",
-      position: "top-right",
-    });
-  } finally {
-    sendingAllToFinance.value = false;
+      .tab-content-compact {
+        .q-icon {
+          color: var(--q-primary);
+        }
+
+        .tab-label-compact {
+          color: var(--q-primary);
+          font-weight: 600;
+        }
+      }
+    }
+
+    .tab-content-compact {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      position: relative;
+
+      .q-icon {
+        color: #666;
+        transition: color 0.2s ease;
+      }
+
+      .tab-label-compact {
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: #555;
+        transition: all 0.2s ease;
+      }
+
+      .tab-badge-compact {
+        margin-left: 4px;
+      }
+    }
   }
-};
+}
 
-const colunas = ref([
-  { name: "is_pago", label: "", align: "center", style: "width: 40px" },
-  { name: "nome", label: "Serviço", align: "left", field: (row) => row.nome },
-  {
-    name: "valor_base_calculo",
-    label: "Base de Cálculo",
-    align: "right",
-    field: (row) => formatarDinheiroBrasil(row.valor_base_calculo),
-    style: "width: 120px",
-  },
-  {
-    name: "quantidade",
-    label: "Qtd",
-    align: "center",
-    field: (row) => row.quantidade,
-    style: "width: 80px",
-  },
-  {
-    name: "valor_emolumento",
-    label: "Emolumento",
-    align: "right",
-    field: (row) => formatarDinheiroBrasil(row.valor_emolumento),
-    style: "width: 120px",
-  },
-  {
-    name: "valor_iss",
-    label: "ISS",
-    align: "right",
-    field: (row) => formatarDinheiroBrasil(row.valor_iss),
-    style: "width: 100px",
-  },
-  {
-    name: "valor_total",
-    label: "Total",
-    align: "right",
-    field: (row) => formatarDinheiroBrasil(row.valor_total),
-    style: "width: 120px",
-  },
-  { name: "acao", label: "Ações", align: "center", style: "width: 150px" },
-]);
+.protocol-content-compact {
+  min-height: calc(100vh - 120px);
+  padding-bottom: 60px;
+}
 
-onMounted(async () => {
-  try {
-    await tabelaCustaAto.index();
-  } catch (error) {
-    console.error("Erro ao carregar tabela de custas:", error);
-    $q.notify({
-      color: "negative",
-      message: "Erro ao carregar tabela de custas.",
-      icon: "eva-alert-circle-outline",
-      position: "top-right",
-    });
+.compact-footer {
+  border-top: 1px solid #f0f0f0;
+  min-height: 60px;
+}
+
+.financial-summary-compact {
+  .summary-item-compact {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
   }
-});
-</script>
+}
+
+@media (max-width: 768px) {
+  .compact-header {
+    min-height: 52px;
+  }
+
+  .compact-tabs {
+    .compact-tab {
+      min-height: 36px;
+
+      .tab-content-compact {
+        padding: 6px 8px;
+        gap: 4px;
+
+        .tab-label-compact {
+          font-size: 0.75rem;
+        }
+      }
+    }
+  }
+
+  .financial-summary-compact {
+    .row {
+      gap: 8px;
+    }
+
+    .summary-item-compact {
+      font-size: 0.8rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .compact-tabs {
+    .compact-tab {
+      .tab-content-compact {
+        .tab-label-compact {
+          display: none;
+        }
+
+        .q-icon {
+          font-size: 18px;
+        }
+      }
+    }
+  }
+
+  .financial-summary-compact {
+    .row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+  }
+}
+</style>

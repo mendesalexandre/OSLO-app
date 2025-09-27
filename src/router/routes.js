@@ -120,7 +120,7 @@ const routes = [
         path: "/protocolo/:id",
         name: "protocolo.index",
         props: true,
-        component: () => import("pages/protocolo/Protocolo.vue"),
+        component: () => import("pages/protocolo/Index.vue"),
 
         children: [
           {

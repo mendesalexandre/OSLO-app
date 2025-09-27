@@ -101,7 +101,10 @@
 
     <!-- Conteúdo principal -->
     <div class="protocol-content-compact">
-      <router-view />
+      <q-page-container>
+        <router-view />
+      </q-page-container>
+
     </div>
 
     <!-- Footer financeiro compacto -->
@@ -115,7 +118,7 @@
                 <div class="summary-item-compact">
                   <span class="text-caption text-grey-6">Total:</span>
                   <span class="text-weight-bold text-grey-8 q-ml-xs">
-                    {{ formatarDinheiroBrasil(totalEmolumentoAtual) }}
+                    {{ formatarDinheiroBrasil(totalEmolumentoGeral) }}
                   </span>
                 </div>
 
@@ -136,7 +139,11 @@
                 <div class="summary-item-compact">
                   <span class="text-caption text-grey-6">Restante:</span>
                   <span class="text-weight-bold text-primary q-ml-xs">
-                    {{ formatarDinheiroBrasil(valorRestante) }}
+                    {{
+                      formatarDinheiroBrasil(
+                        totalEmolumentoGeral - valorDesconto - valorPago
+                      )
+                    }}
                   </span>
                 </div>
               </div>
@@ -158,7 +165,7 @@
 <script setup>
 import { storeToRefs } from "pinia";
 import { useProtocoloStore } from "src/stores/protocolo";
-import { computed, onMounted, ref, readonly } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 const tab = ref("geral");
@@ -170,126 +177,10 @@ defineOptions({
 import { useQuasar } from "quasar";
 import { formatarDinheiroBrasil } from "src/Utils";
 
-const protocoloStore = useProtocoloStore();
-const { protocolo, protocoloSelecionado } = storeToRefs(protocoloStore);
-const $route = useRoute();
-const $router = useRouter();
-const $q = useQuasar();
-
-// MUDANÇA 1: Use refs normais em vez de computed para valores locais
-const valorPago = ref(10.0);
-const desconto = ref(100.0);
-const valorDesconto = ref(0);
-
-// MUDANÇA 2: Crie uma versão local e reativa do totalEmolumentoGeral
-const totalEmolumentoAtual = computed(() => {
-  // Evite dependência direta do store para evitar loops
-  return protocolo.value?.total_emolumento || 0;
-});
-
-// MUDANÇA 3: Simplifique o cálculo do valor restante
-const valorRestante = computed(() => {
-  const total = totalEmolumentoAtual.value;
-  const pago = valorPago.value;
-  const desc = desconto.value;
-  return Math.max(0, total - pago - desc);
-});
-
-// MUDANÇA 4: Simplifique computed properties com validações
-const totalAtos = computed(() => {
-  return protocolo.value?.atos?.length || 0;
-});
-
-const titulo = computed(() => {
-  if (!protocolo.value?.id) return "Novo Protocolo";
-  return `#${protocolo.value.numero_protocolo_formatado || protocolo.value.id}`;
-});
-
-// Métodos de ação (mantidos iguais)
-const receberPagamento = () => {
-  $q.notify({
-    color: "positive",
-    message: "Abrindo tela de pagamento",
-    icon: "eva-credit-card-outline",
-    position: "top-right",
-  });
-};
-
-const imprimirProtocolo = () => {
-  window.print();
-};
-
-const duplicarProtocolo = () => {
-  $q.dialog({
-    title: "Duplicar Protocolo",
-    message: "Deseja criar uma cópia deste protocolo?",
-    cancel: true,
-    persistent: true,
-  }).onOk(() => {
-    $q.notify({
-      color: "positive",
-      message: "Protocolo duplicado com sucesso",
-      icon: "eva-copy-outline",
-      position: "top-right",
-    });
-  });
-};
-
-const arquivarProtocolo = () => {
-  $q.dialog({
-    title: "Arquivar Protocolo",
-    message: "Este protocolo será movido para o arquivo.",
-    cancel: true,
-    persistent: true,
-  }).onOk(() => {
-    $q.notify({
-      color: "info",
-      message: "Protocolo arquivado",
-      icon: "eva-archive-outline",
-      position: "top-right",
-    });
-  });
-};
-
-const excluirProtocolo = () => {
-  $q.dialog({
-    title: "Excluir Protocolo",
-    message: "ATENÇÃO: Esta ação não pode ser desfeita. Confirma a exclusão?",
-    cancel: true,
-    persistent: true,
-    color: "negative",
-  }).onOk(() => {
-    $q.notify({
-      color: "negative",
-      message: "Protocolo excluído",
-      icon: "eva-trash-2-outline",
-      position: "top-right",
-    });
-    $router.push({ name: "dashboard" });
-  });
-};
-
-// MUDANÇA 5: Simplifique o onMounted
-onMounted(async () => {
-  if (!protocoloStore.protocoloSelecionado && $route.params.id) {
-    try {
-      await protocoloStore.show($route.params.id);
-    } catch (error) {
-      console.warn("Erro ao carregar protocolo:", error);
-      $q.notify({
-        color: "negative",
-        message: "Não foi possível carregar o protocolo.",
-        icon: "eva-alert-circle-outline",
-        position: "top-right",
-      });
-      $router.push({ name: "dashboard" });
-    }
-  }
-});
 </script>
 
 <style lang="scss" scoped>
-// CSS mantido igual ao original
+// Header compacto
 .compact-header {
   min-height: 56px;
   border-bottom: 1px solid #f0f0f0;
@@ -299,6 +190,7 @@ onMounted(async () => {
   margin-right: 8px;
 }
 
+// Tabs compactas
 .compact-tabs {
   background: transparent;
 
@@ -352,11 +244,13 @@ onMounted(async () => {
   }
 }
 
+// Conteúdo principal
 .protocol-content-compact {
   min-height: calc(100vh - 120px);
-  padding-bottom: 60px;
+  // padding-bottom: 60px; // Espaço para o footer
 }
 
+// Footer compacto
 .compact-footer {
   border-top: 1px solid #f0f0f0;
   min-height: 60px;
@@ -370,6 +264,7 @@ onMounted(async () => {
   }
 }
 
+// Responsividade
 @media (max-width: 768px) {
   .compact-header {
     min-height: 52px;
@@ -401,6 +296,7 @@ onMounted(async () => {
   }
 }
 
+// Mobile muito pequeno
 @media (max-width: 480px) {
   .compact-tabs {
     .compact-tab {
