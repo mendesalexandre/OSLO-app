@@ -12,24 +12,21 @@
       <q-card-section class="q-pa-md">
         <!-- Tipo de Protocolo -->
         <div class="col-12">
-          <v-label label="Tipo de Protocolo" required />
+          <v-label label="Tipo de Protocolo" obrigatorio />
           <q-btn-toggle v-model="getOpcaoSelecionada" :options="[
-            { label: 'Normal', value: 'NORMAL', icon: 'fa-duotone fa-file' },
-            { label: 'Orçamento', value: 'ORCAMENTO', icon: 'fa-duotone fa-calculator' },
-            { label: 'Processo Interno', value: 'PROCESSO_INTERNO', icon: 'fa-duotone fa-folder-gear' },
-            { label: 'Exame e Cálculo', value: 'EXAME_CALCULO', icon: 'fa-duotone fa-magnifying-glass-chart' }
-          ]" spread no-caps flat class="protocol-toggle q-mt-sm" />
+            { label: 'Normal', value: 'NORMAL', icon: 'fa-regular fa-file' },
+            { label: 'Orçamento', value: 'ORCAMENTO', icon: 'fa-regular fa-calculator' },
+            { label: 'Processo Interno', value: 'PROCESSO_INTERNO', icon: 'fa-regular fa-folder-gear' },
+            { label: 'Exame e Cálculo', value: 'EXAME_CALCULO', icon: 'fa-regular fa-magnifying-glass-chart' }
+          ]" spread no-caps unelevated class="tipo-protocolo " />
         </div>
       </q-card-section>
-
-
 
       <q-card-section class="q-pa-md">
         <div class="row q-col-gutter-md">
           <!-- Meio de Solicitação -->
           <div class="col-md-12 col-sm-12 col-xs-12">
-            <v-label label="Meio de Solicitação" required />
-
+            <v-label label="Meio de Solicitação" obrigatorio />
             <q-select v-model="protocolo.meio_solicitacao_id" :options="meiosSolicitacao" option-value="id" dense
               option-label="nome" outlined input-debounce="500" placeholder="Selecione o meio de solicitação">
               <!-- <template v-slot:prepend>
@@ -145,7 +142,7 @@
 
           <!-- Serviço Principal e Estado -->
           <div class="col-md-8 col-sm-12">
-            <v-label label="Serviço Principal" required />
+            <v-label label="Serviço Principal" obrigatorio />
 
             <q-select v-model="protocolo.natureza_id" :options="servicos" option-value="id" option-label="nome" outlined
               dense input-debounce="500" placeholder="Selecione o serviço principal">
@@ -186,7 +183,7 @@
           </div>
 
           <div class="col-md-4 col-sm-12 col-xs-12">
-            <v-label label="Estado" required />
+            <v-label label="Estado" obrigatorio />
 
             <q-select v-model="protocolo.estado_id" :options="estados" option-value="id" option-label="nome" outlined
               dense input-debounce="500" placeholder="Selecione o estado">
@@ -698,6 +695,25 @@ watch(model, (newVal) => {
   .q-icon {
     color: #607d8b;
     font-size: 1rem;
+  }
+}
+
+
+.tipo-protocolo {
+  :deep(.q-btn) {
+    background-color: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    color: #37474f;
+
+    &.q-btn--active {
+      background-color: #1976d2;
+      color: white;
+      border-color: #1976d2;
+    }
+
+    &:hover:not(.q-btn--active) {
+      background-color: #e9ecef;
+    }
   }
 }
 </style>

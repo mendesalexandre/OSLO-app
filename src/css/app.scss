@@ -168,7 +168,16 @@ body {
 
 .q-btn--rectangle {
   border-radius: 2px !important;
+  // font-size: 0.875rem;
+  // font-weight: 400;
+  // color: #37474f;
+  // text-transform: uppercase;
 }
+
+.q-btn-group {
+  border-radius: 2px !important;
+}
+
 // Q LAYOUT
 .q-layout__shadow:after {
   content: "";
