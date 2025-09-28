@@ -1,7 +1,7 @@
 <template>
   <modal v-model="model" :titulo="titulo" tamanho="lg">
     <!-- Seção Principal -->
-    <q-card bordered class="q-mb-md">
+    <q-card bordered>
       <q-card-section class="q-pa-none">
         <div class="section-header">
           <q-icon name="fa-duotone fa-file-plus" class="q-mr-sm" />
@@ -15,8 +15,8 @@
           <div class="col-md-12 col-sm-12 col-xs-12">
             <v-label label="Meio de Solicitação" required />
 
-            <q-select v-model="protocolo.meio_solicitacao_id" :options="meiosSolicitacao" option-value="id"
-              option-label="nome" outlined dense input-debounce="500" placeholder="Selecione o meio de solicitação">
+            <q-select v-model="protocolo.meio_solicitacao_id" :options="meiosSolicitacao" option-value="id" dense
+              option-label="nome" outlined input-debounce="500" placeholder="Selecione o meio de solicitação">
               <template v-slot:prepend>
                 <q-icon name="fa-duotone fa-envelope" size="14px" />
               </template>
@@ -219,7 +219,7 @@
 
           <!-- Cartório -->
           <div class="col-12">
-            <v-label label="Cartório" required />
+            <v-label label="Cartório" obrigatorio />
 
             <q-select v-model="protocolo.cartorio_id" :options="cartorios" option-value="id" option-label="nome"
               outlined dense input-debounce="500" placeholder="Selecione o cartório">
@@ -290,10 +290,6 @@
     <template v-slot:rodape>
       <q-card-section>
         <div class="row justify-between items-center">
-          <div class="text-caption text-grey-6">
-            <q-icon name="fa-duotone fa-circle-info" class="q-mr-xs" />
-            Campos marcados com * são obrigatórios
-          </div>
           <div class="row q-gutter-sm">
             <q-btn label="Cancelar" color="grey-7" outline @click="cancelar" icon="fa-duotone fa-xmark"
               :disable="salvando" />
@@ -529,91 +525,3 @@ watch(model, (newVal) => {
   }
 });
 </script>
-
-<style lang="scss" scoped>
-// Headers das seções
-.section-header {
-  display: flex;
-  align-items: center;
-  padding: 12px 16px;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  border-radius: 2px;
-
-  .section-title {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: #37474f;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .q-icon {
-    color: #607d8b;
-    font-size: 1.1rem;
-  }
-}
-
-// Toggle de protocolo personalizado
-.protocol-toggle {
-  :deep(.q-btn) {
-    background-color: #f8f9fa;
-    border: 1px solid #e0e0e0;
-    color: #37474f;
-
-    &.q-btn--active {
-      background-color: #1976d2;
-      color: white;
-      border-color: #1976d2;
-    }
-
-    &:hover:not(.q-btn--active) {
-      background-color: #e9ecef;
-    }
-  }
-}
-
-// Botão customizado
-.custom-btn {
-  transition: all 0.2s ease;
-
-  &:hover {
-    transform: scale(1.05);
-  }
-}
-
-// Modal de sucesso
-.success-modal {
-  min-width: 400px;
-
-  .success-header {
-    display: flex;
-    align-items: center;
-    padding: 12px 16px;
-    background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);
-
-    .success-title {
-      font-size: 0.875rem;
-      font-weight: 600;
-      color: #155724;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .q-icon {
-      color: #28a745;
-      font-size: 1.1rem;
-    }
-  }
-}
-
-// Responsividade
-@media (max-width: 768px) {
-  .section-header {
-    padding: 8px 12px;
-
-    .section-title {
-      font-size: 0.8rem;
-    }
-  }
-}
-</style>
