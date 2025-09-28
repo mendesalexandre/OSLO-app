@@ -61,9 +61,7 @@
 
             <q-select v-model="protocolo.natureza_id" :options="servicos" option-value="id" option-label="nome" outlined
               dense input-debounce="500" placeholder="Selecione o serviço principal">
-              <template v-slot:prepend>
-                <q-icon name="fa-duotone fa-briefcase" size="14px" />
-              </template>
+
 
               <template v-slot:selected-item="scope">
                 <q-item v-bind="scope.itemProps">
@@ -270,7 +268,7 @@
               { label: 'Orçamento', value: 'ORCAMENTO', icon: 'fa-duotone fa-calculator' },
               { label: 'Processo Interno', value: 'PROCESSO_INTERNO', icon: 'fa-duotone fa-folder-gear' },
               { label: 'Exame e Cálculo', value: 'EXAME_CALCULO', icon: 'fa-duotone fa-magnifying-glass-chart' }
-            ]" spread no-caps flat />
+            ]" spread no-caps flat class="protocol-toggle q-mt-sm" />
           </div>
 
           <!-- Observações -->
