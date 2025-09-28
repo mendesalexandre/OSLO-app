@@ -437,17 +437,21 @@
 
     <template v-slot:rodape>
       <q-card-section>
-        <div class="row justify-between items-center">
-          <div class="row q-gutter-sm">
-            <q-btn label="Cancelar" color="grey-7" outline @click="cancelar" icon="fa-duotone fa-xmark"
-              :disable="salvando" />
-            <q-btn label="Criar Protocolo" color="primary" icon="fa-duotone fa-check" @click="salvar"
-              :loading="salvando" :disable="!formValido">
-              <template v-slot:loading>
-                <q-spinner class="q-mr-sm" />
-                Salvando...
-              </template>
-            </q-btn>
+        <div class="row">
+          <div class="flex justify-between">
+            <div>
+              <q-btn label="Cancelar" color="grey-7" outline @click="cancelar" icon="fa-duotone fa-xmark"
+                :disable="salvando" />
+            </div>
+            <div>
+              <q-btn label="Salvar" color="blue-10" icon="fa-regular fa-check" @click="salvar" outline
+                :loading="salvando">
+                <template v-slot:loading>
+                  <q-spinner class="q-mr-sm" />
+                  Salvando...
+                </template>
+              </q-btn>
+            </div>
           </div>
         </div>
       </q-card-section>
@@ -699,23 +703,28 @@ watch(model, (newVal) => {
 }
 
 
-.tipo-protocolo {
+:deep(.q-btn-group) {
+  border: none !important;
+  border-radius: 2px !important;
+  background-color: #fafafa;
+  column-gap: 4px !important;
+}
 
-  :deep(.q-btn) {
-    border: 1px solid #e0e0e0;
-    color: #37474f;
+:deep(.q-btn) {
+  border: 1px solid #e0e0e0;
+  color: #37474f;
 
-    &.q-btn--active {
-      // background-color: #0D6EFD !important;
-      color: white;
-      border-color: none !important;
-    }
+  &.q-btn--active {
+    // background-color: #0D6EFD !important;
+    color: white;
+    border-color: $primary !important;
+    border-radius: 2px !important;
+  }
 
-    // &:hover:not(.q-btn--active) {}
+  // &:hover:not(.q-btn--active) {}
 
-    .q-icon {
-      font-size: 16px;
-    }
+  .q-icon {
+    font-size: 16px;
   }
 }
 </style>
