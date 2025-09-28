@@ -18,7 +18,7 @@
             { label: 'Orçamento', value: 'ORCAMENTO', icon: 'fa-regular fa-calculator' },
             { label: 'Processo Interno', value: 'PROCESSO_INTERNO', icon: 'fa-regular fa-folder-gear' },
             { label: 'Exame e Cálculo', value: 'EXAME_CALCULO', icon: 'fa-regular fa-magnifying-glass-chart' }
-          ]" spread no-caps unelevated class="tipo-protocolo " />
+          ]" spread unelevated class="tipo-protocolo" />
         </div>
       </q-card-section>
 
@@ -700,19 +700,21 @@ watch(model, (newVal) => {
 
 
 .tipo-protocolo {
+
   :deep(.q-btn) {
-    background-color: #f8f9fa;
     border: 1px solid #e0e0e0;
     color: #37474f;
 
     &.q-btn--active {
-      background-color: #1976d2;
+      // background-color: #0D6EFD !important;
       color: white;
-      border-color: #1976d2;
+      border-color: none !important;
     }
 
-    &:hover:not(.q-btn--active) {
-      background-color: #e9ecef;
+    // &:hover:not(.q-btn--active) {}
+
+    .q-icon {
+      font-size: 16px;
     }
   }
 }
