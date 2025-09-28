@@ -3,9 +3,9 @@
     <!-- Seção Principal -->
     <q-card bordered>
       <q-card-section class="q-pa-none">
-        <div class="section-header">
-          <q-icon name="fa-duotone fa-file-plus" class="q-mr-sm" />
-          <span class="section-title">Informações do Protocolo</span>
+        <div class="corpo-secao">
+          <q-icon name="fa-regular fa-file-plus" class="q-mr-sm" />
+          <span class="titulo-secao">Informações do Protocolo</span>
         </div>
       </q-card-section>
 
@@ -165,7 +165,7 @@
                   use-input outlined dense input-debounce="300" @filter="filterClients" :loading="loading"
                   hide-dropdown-icon placeholder="digite o nome ou documento para buscar...">
                   <template v-slot:prepend>
-                    <q-icon name="fa-duotone fa-user" size="14px" />
+                    <q-icon name="fa-regular fa-user" size="14px" />
                   </template>
 
                   <template v-slot:selected-item="scope">
@@ -220,10 +220,9 @@
                 </q-select>
               </div>
 
-
               <div class="col-auto">
-                <q-btn icon="fa-duotone fa-user-plus" color="primary" outline @click="abrirModalCriarCliente"
-                  class="full-height">
+                <q-btn icon="fa-regular fa-user-plus" color="grey-5" outline @click="abrirModalCriarCliente"
+                  class="full-height" size="sm">
                   <q-tooltip>Adicionar novo cliente</q-tooltip>
                 </q-btn>
               </div>
@@ -239,7 +238,7 @@
                   use-input outlined dense input-debounce="300" @filter="filterClients" :loading="loading"
                   hide-dropdown-icon placeholder="digite o nome ou documento para buscar...">
                   <template v-slot:prepend>
-                    <q-icon name="fa-duotone fa-user" size="14px" />
+                    <q-icon name="fa-regular fa-user" size="14px" />
                   </template>
 
                   <template v-slot:selected-item="scope">
@@ -296,7 +295,7 @@
 
 
               <div class="col-auto">
-                <q-btn icon="fa-duotone fa-user-plus" color="primary" outline @click="abrirModalCriarCliente"
+                <q-btn icon="fa-regular fa-user-plus" color="grey-5" outline @click="abrirModalCriarCliente" size="sm"
                   class="full-height">
                   <q-tooltip>Adicionar novo cliente</q-tooltip>
                 </q-btn>
