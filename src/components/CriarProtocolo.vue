@@ -10,6 +10,21 @@
       </q-card-section>
 
       <q-card-section class="q-pa-md">
+        <!-- Tipo de Protocolo -->
+        <div class="col-12">
+          <v-label label="Tipo de Protocolo" required />
+          <q-btn-toggle v-model="getOpcaoSelecionada" :options="[
+            { label: 'Normal', value: 'NORMAL', icon: 'fa-duotone fa-file' },
+            { label: 'Orçamento', value: 'ORCAMENTO', icon: 'fa-duotone fa-calculator' },
+            { label: 'Processo Interno', value: 'PROCESSO_INTERNO', icon: 'fa-duotone fa-folder-gear' },
+            { label: 'Exame e Cálculo', value: 'EXAME_CALCULO', icon: 'fa-duotone fa-magnifying-glass-chart' }
+          ]" spread no-caps flat class="protocol-toggle q-mt-sm" />
+        </div>
+      </q-card-section>
+
+
+
+      <q-card-section class="q-pa-md">
         <div class="row q-col-gutter-md">
           <!-- Meio de Solicitação -->
           <div class="col-md-12 col-sm-12 col-xs-12">
@@ -143,12 +158,86 @@
 
           <!-- Solicitante -->
           <div class="col-12">
-            <v-label label="Solicitante" required />
+            <v-label label="Solicitante" obrigatorio />
             <div class="row q-gutter-sm">
               <div class="col">
                 <q-select v-model="clienteSelecionado" :options="options" option-value="id" option-label="nome"
                   use-input outlined dense input-debounce="300" @filter="filterClients" :loading="loading"
-                  hide-dropdown-icon placeholder="Digite para buscar cliente...">
+                  hide-dropdown-icon placeholder="digite o nome ou documento para buscar...">
+                  <template v-slot:prepend>
+                    <q-icon name="fa-duotone fa-user" size="14px" />
+                  </template>
+
+                  <template v-slot:selected-item="scope">
+                    <q-item v-bind="scope.itemProps">
+                      <q-item-section avatar>
+                        <q-avatar size="24px" color="blue-grey-6" text-color="white">
+                          {{ scope.opt.nome.charAt(0).toUpperCase() }}
+                        </q-avatar>
+                      </q-item-section>
+                      <q-item-section>
+                        <q-item-label class="text-weight-medium text-primary">
+                          {{ scope.opt.nome }}
+                        </q-item-label>
+                        <q-item-label caption class="text-grey-6">
+                          {{ scope.opt.cpf_cnpj }}
+                        </q-item-label>
+                      </q-item-section>
+                    </q-item>
+                  </template>
+
+                  <template v-slot:option="scope">
+                    <q-item v-bind="scope.itemProps">
+                      <q-item-section avatar>
+                        <q-avatar size="32px" color="blue-grey-6" text-color="white">
+                          {{ scope.opt.nome.charAt(0).toUpperCase() }}
+                        </q-avatar>
+                      </q-item-section>
+                      <q-item-section>
+                        <q-item-label class="text-weight-medium text-primary">
+                          {{ scope.opt.nome }}
+                        </q-item-label>
+                        <q-item-label caption class="text-grey-6">
+                          {{ scope.opt.cpf_cnpj }} • {{ scope.opt.tipo || 'Cliente' }}
+                        </q-item-label>
+                      </q-item-section>
+                    </q-item>
+                  </template>
+
+                  <template v-slot:no-option>
+                    <q-item>
+                      <q-item-section class="text-center">
+                        <div class="text-grey-5 q-py-md">
+                          <q-icon name="fa-duotone fa-magnifying-glass" size="2em" />
+                          <div class="q-mt-sm">Nenhum cliente encontrado</div>
+                          <div class="text-caption">
+                            Digite pelo menos 2 caracteres
+                          </div>
+                        </div>
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
+              </div>
+
+
+              <div class="col-auto">
+                <q-btn icon="fa-duotone fa-user-plus" color="primary" outline @click="abrirModalCriarCliente"
+                  class="full-height">
+                  <q-tooltip>Adicionar novo cliente</q-tooltip>
+                </q-btn>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-12">
+            <v-label label="Interessado" obrigatorio />
+            <div class="row q-gutter-sm">
+              <div class="col">
+                <q-select v-model="clienteSelecionado" :options="options" option-value="id" option-label="nome"
+                  use-input outlined dense input-debounce="300" @filter="filterClients" :loading="loading"
+                  hide-dropdown-icon placeholder="digite o nome ou documento para buscar...">
                   <template v-slot:prepend>
                     <q-icon name="fa-duotone fa-user" size="14px" />
                   </template>
@@ -260,16 +349,6 @@
             </q-select>
           </div>
 
-          <!-- Tipo de Protocolo -->
-          <div class="col-12">
-            <v-label label="Tipo de Protocolo" required />
-            <q-btn-toggle v-model="getOpcaoSelecionada" :options="[
-              { label: 'Normal', value: 'NORMAL', icon: 'fa-duotone fa-file' },
-              { label: 'Orçamento', value: 'ORCAMENTO', icon: 'fa-duotone fa-calculator' },
-              { label: 'Processo Interno', value: 'PROCESSO_INTERNO', icon: 'fa-duotone fa-folder-gear' },
-              { label: 'Exame e Cálculo', value: 'EXAME_CALCULO', icon: 'fa-duotone fa-magnifying-glass-chart' }
-            ]" spread no-caps flat class="protocol-toggle q-mt-sm" />
-          </div>
 
           <!-- Observações -->
           <!-- <div class="col-12">

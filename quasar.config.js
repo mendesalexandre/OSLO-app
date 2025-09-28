@@ -14,7 +14,10 @@ export default defineConfig((ctx) => {
     boot: ["fontawesome", "i18n", "axios", "setDefaults", "components"],
 
     // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-file#css
-    css: ["app.scss", "estilo.scss"],
+    css: [
+      "app.scss",
+      //  "estilo.scss"
+    ],
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
