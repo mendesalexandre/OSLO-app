@@ -70,8 +70,82 @@
             </q-select>
           </div>
 
+          <!-- NATUREZA FORMAL DO TITULO -->
+          <div class="col-12">
+            <v-label label="Natureza Formal do Título" obrigatorio />
+            <div class="row q-gutter-sm">
+              <div class="col">
+                <q-select v-model="clienteSelecionado" :options="options" option-value="id" option-label="nome"
+                  use-input outlined dense input-debounce="300" @filter="filterClients" :loading="loading"
+                  hide-dropdown-icon placeholder="digite o nome ou documento para buscar...">
+                  <template v-slot:prepend>
+                    <q-icon name="fa-regular fa-user" size="14px" />
+                  </template>
+
+                  <template v-slot:selected-item="scope">
+                    <q-item v-bind="scope.itemProps">
+                      <q-item-section avatar>
+                        <q-avatar size="24px" color="blue-grey-6" text-color="white">
+                          {{ scope.opt.nome.charAt(0).toUpperCase() }}
+                        </q-avatar>
+                      </q-item-section>
+                      <q-item-section>
+                        <q-item-label class="text-weight-medium text-primary">
+                          {{ scope.opt.nome }}
+                        </q-item-label>
+                        <q-item-label caption class="text-grey-6">
+                          {{ scope.opt.cpf_cnpj }}
+                        </q-item-label>
+                      </q-item-section>
+                    </q-item>
+                  </template>
+
+                  <template v-slot:option="scope">
+                    <q-item v-bind="scope.itemProps">
+                      <q-item-section avatar>
+                        <q-avatar size="32px" color="blue-grey-6" text-color="white">
+                          {{ scope.opt.nome.charAt(0).toUpperCase() }}
+                        </q-avatar>
+                      </q-item-section>
+                      <q-item-section>
+                        <q-item-label class="text-weight-medium text-primary">
+                          {{ scope.opt.nome }}
+                        </q-item-label>
+                        <q-item-label caption class="text-grey-6">
+                          {{ scope.opt.cpf_cnpj }} • {{ scope.opt.tipo || 'Cliente' }}
+                        </q-item-label>
+                      </q-item-section>
+                    </q-item>
+                  </template>
+
+                  <template v-slot:no-option>
+                    <q-item>
+                      <q-item-section class="text-center">
+                        <div class="text-grey-5 q-py-md">
+                          <q-icon name="fa-duotone fa-magnifying-glass" size="2em" />
+                          <div class="q-mt-sm">Nenhum cliente encontrado</div>
+                          <div class="text-caption">
+                            Digite pelo menos 2 caracteres
+                          </div>
+                        </div>
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
+              </div>
+
+
+              <div class="col-auto">
+                <q-btn icon="fa-regular fa-user-plus" color="grey-5" outline @click="abrirModalCriarCliente" size="sm"
+                  class="full-height">
+                  <q-tooltip>Adicionar novo cliente</q-tooltip>
+                </q-btn>
+              </div>
+            </div>
+          </div>
+
           <!-- Serviço Principal e Estado -->
-          <div class="col-md-6 col-sm-12">
+          <div class="col-md-8 col-sm-12">
             <v-label label="Serviço Principal" required />
 
             <q-select v-model="protocolo.natureza_id" :options="servicos" option-value="id" option-label="nome" outlined
@@ -112,7 +186,7 @@
             </q-select>
           </div>
 
-          <div class="col-md-6 col-sm-12 col-xs-12">
+          <div class="col-md-4 col-sm-12 col-xs-12">
             <v-label label="Estado" required />
 
             <q-select v-model="protocolo.estado_id" :options="estados" option-value="id" option-label="nome" outlined
@@ -228,6 +302,8 @@
               </div>
             </div>
           </div>
+
+
 
 
           <div class="col-12">
