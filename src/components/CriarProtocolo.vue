@@ -9,7 +9,7 @@
         </div>
       </q-card-section>
 
-      <q-card-section class="q-pa-md">
+      <q-card-section>
         <!-- Tipo de Protocolo -->
         <div class="col-12 grupo-tipo-protocolo">
           <v-label label="Tipo de Protocolo" obrigatorio />
@@ -22,7 +22,7 @@
         </div>
       </q-card-section>
 
-      <q-card-section class="q-pa-md">
+      <q-card-section>
         <div class="row q-col-gutter-md">
           <!-- Meio de Solicitação -->
           <div class="col-md-12 col-sm-12 col-xs-12">
@@ -455,32 +455,6 @@
       </q-card-section>
     </template>
   </modal>
-
-  <!-- Modal de sucesso -->
-  <q-dialog v-model="mostrarSucesso" persistent>
-    <q-card flat bordered class="success-modal">
-      <q-card-section class="q-pa-none">
-        <div class="success-header">
-          <q-icon name="fa-duotone fa-circle-check" class="q-mr-sm" />
-          <span class="success-title">Protocolo Criado com Sucesso!</span>
-        </div>
-      </q-card-section>
-
-      <q-card-section class="text-center q-pa-lg">
-        <q-icon name="fa-duotone fa-circle-check" size="4rem" color="green-6" class="q-mb-md" />
-        <div class="text-h6 q-mb-sm text-grey-8">Protocolo Criado!</div>
-        <div class="text-body2 text-grey-7 q-mb-lg">
-          Protocolo
-          <strong class="text-primary">{{ protocoloCriado?.codigo }}</strong>
-          foi criado com sucesso.
-        </div>
-        <div class="row q-gutter-sm justify-center">
-          <q-btn label="Criar Novo" outline color="primary" @click="criarNovo" icon="fa-duotone fa-plus" />
-          <q-btn label="Fechar" color="primary" @click="mostrarSucesso = false" icon="fa-duotone fa-check" />
-        </div>
-      </q-card-section>
-    </q-card>
-  </q-dialog>
 
   <ProtocoloShow v-model="showModalProtocolo" />
 </template>
