@@ -531,7 +531,10 @@ const estados = ref([
   { id: 1, nome: 'São Paulo', sigla: 'SP' },
   { id: 2, nome: 'Rio de Janeiro', sigla: 'RJ' },
   { id: 3, nome: 'Minas Gerais', sigla: 'MG' },
-  { id: 4, nome: 'Bahia', sigla: 'BA' }
+  { id: 4, nome: 'Bahia', sigla: 'BA' },
+  { id: 5, nome: 'Mato Grosso', sigla: 'MT' },
+  { id: 6, nome: 'Distrito Federal', sigla: 'DF' },
+  { id: 7, nome: 'Rio Grande do Sul', sigla: 'RS' }
 ]);
 
 const cartorios = ref([
@@ -677,3 +680,25 @@ watch(model, (newVal) => {
   }
 });
 </script>
+
+<style lang="scss" scoped>
+.corpo-secao {
+  align-items: center;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 2px;
+
+  .titulo-secao {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #37474f;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .q-icon {
+    color: #607d8b;
+    font-size: 1rem;
+  }
+}
+</style>
