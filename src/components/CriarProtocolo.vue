@@ -32,9 +32,9 @@
 
             <q-select v-model="protocolo.meio_solicitacao_id" :options="meiosSolicitacao" option-value="id" dense
               option-label="nome" outlined input-debounce="500" placeholder="Selecione o meio de solicitação">
-              <template v-slot:prepend>
+              <!-- <template v-slot:prepend>
                 <q-icon name="fa-duotone fa-envelope" size="14px" />
-              </template>
+              </template> -->
 
               <template v-slot:selected-item="scope">
                 <q-item v-bind="scope.itemProps">
@@ -62,7 +62,6 @@
               <template v-slot:no-option>
                 <q-item>
                   <q-item-section class="text-center text-grey">
-                    <q-icon name="fa-duotone fa-circle-exclamation" class="q-mb-sm" size="14px" />
                     <div>Nenhum meio de solicitação encontrado</div>
                   </q-item-section>
                 </q-item>
@@ -166,9 +165,9 @@
 
               <template v-slot:option="scope">
                 <q-item v-bind="scope.itemProps">
-                  <q-item-section avatar>
+                  <!-- <q-item-section avatar>
                     <q-icon name="fa-duotone fa-briefcase" />
-                  </q-item-section>
+                  </q-item-section> -->
                   <q-item-section>
                     <q-item-label>{{ scope.opt.nome }}</q-item-label>
                   </q-item-section>
@@ -191,9 +190,9 @@
 
             <q-select v-model="protocolo.estado_id" :options="estados" option-value="id" option-label="nome" outlined
               dense input-debounce="500" placeholder="Selecione o estado">
-              <template v-slot:prepend>
+              <!-- <template v-slot:prepend>
                 <q-icon name="fa-duotone fa-map-location" size="14px" />
-              </template>
+              </template> -->
 
               <template v-slot:selected-item="scope">
                 <q-item v-bind="scope.itemProps">
