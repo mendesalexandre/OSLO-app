@@ -270,11 +270,11 @@
               { label: 'Orçamento', value: 'ORCAMENTO', icon: 'fa-duotone fa-calculator' },
               { label: 'Processo Interno', value: 'PROCESSO_INTERNO', icon: 'fa-duotone fa-folder-gear' },
               { label: 'Exame e Cálculo', value: 'EXAME_CALCULO', icon: 'fa-duotone fa-magnifying-glass-chart' }
-            ]" spread no-caps unelevated class="protocol-toggle q-mt-sm" />
+            ]" spread no-caps flat />
           </div>
 
           <!-- Observações -->
-          <div class="col-12">
+          <!-- <div class="col-12">
             <v-label label="Observações" />
             <q-input v-model="observacoes" type="textarea" rows="3" outlined dense
               placeholder="Informações adicionais sobre o protocolo..." class="custom-input">
@@ -282,7 +282,7 @@
                 <q-icon name="fa-duotone fa-note-sticky" size="14px" />
               </template>
             </q-input>
-          </div>
+          </div> -->
         </div>
       </q-card-section>
     </q-card>
