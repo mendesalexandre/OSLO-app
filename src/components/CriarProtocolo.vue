@@ -11,7 +11,7 @@
 
       <q-card-section class="q-pa-md">
         <!-- Tipo de Protocolo -->
-        <div class="col-12">
+        <div class="col-12 grupo-tipo-protocolo">
           <v-label label="Tipo de Protocolo" obrigatorio />
           <q-btn-toggle v-model="getOpcaoSelecionada" :options="[
             { label: 'Normal', value: 'NORMAL', icon: 'fa-regular fa-file' },
@@ -437,21 +437,19 @@
 
     <template v-slot:rodape>
       <q-card-section>
-        <div class="row">
-          <div class="flex justify-between">
-            <div>
-              <q-btn label="Cancelar" color="grey-7" outline @click="cancelar" icon="fa-duotone fa-xmark"
-                :disable="salvando" />
-            </div>
-            <div>
-              <q-btn label="Salvar" color="blue-10" icon="fa-regular fa-check" @click="salvar" outline
-                :loading="salvando">
-                <template v-slot:loading>
-                  <q-spinner class="q-mr-sm" />
-                  Salvando...
-                </template>
-              </q-btn>
-            </div>
+        <div class="flex justify-between">
+          <div>
+            <q-btn label="Cancelar" color="grey-7" outline @click="cancelar" icon="fa-duotone fa-xmark"
+              :disable="salvando" />
+          </div>
+          <div class="q-mr-md">
+            <q-btn label="Salvar" color="blue-10" icon="fa-regular fa-check" @click="salvar" outline
+              :loading="salvando">
+              <template v-slot:loading>
+                <q-spinner class="q-mr-sm" />
+                Salvando...
+              </template>
+            </q-btn>
           </div>
         </div>
       </q-card-section>
@@ -702,29 +700,38 @@ watch(model, (newVal) => {
   }
 }
 
+.grupo-tipo-protocolo {
+  :deep(.q-btn) {
+    color: #37474f;
+    border-radius: 2px !important;
+    border: 1px solid #e0e0e0 !important;
+
+
+    &.q-btn--active {
+      color: white;
+      border-radius: 2px !important;
+      border: 1px solid $primary !important;
+    }
+
+    // &:hover:not(.q-btn--active) {}
+
+    .q-icon {
+      font-size: 16px;
+    }
+
+    // &.q-btn--outline {
+    //   border: 1px solid #e0e0e0;
+    //   background-color: white;
+    // }
+  }
+
+}
+
 
 :deep(.q-btn-group) {
   border: none !important;
   border-radius: 2px !important;
   background-color: #fafafa;
   column-gap: 4px !important;
-}
-
-:deep(.q-btn) {
-  border: 1px solid #e0e0e0;
-  color: #37474f;
-
-  &.q-btn--active {
-    // background-color: #0D6EFD !important;
-    color: white;
-    border-color: $primary !important;
-    border-radius: 2px !important;
-  }
-
-  // &:hover:not(.q-btn--active) {}
-
-  .q-icon {
-    font-size: 16px;
-  }
 }
 </style>
