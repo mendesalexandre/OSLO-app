@@ -9,7 +9,8 @@
           </div>
           <q-space />
           <slot name="controles">
-            <q-btn icon="close" round dense flat color="grey-7" @click="fechar()" :aria-label="'Fechar ' + titulo" />
+            <q-btn icon="close" size="sm" round dense flat color="grey-7" @click="fechar()"
+              :aria-label="'Fechar ' + titulo" />
           </slot>
         </q-card-section>
 

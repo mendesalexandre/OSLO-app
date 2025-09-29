@@ -1,5 +1,5 @@
 <template>
-  <modal v-model="model" :titulo="titulo" tamanho="lg">
+  <modal v-model="model" :titulo="titulo" tamanho="lg" cor-titulo-cabecalho="text-grey-9 text-uppercase">
     <!-- Seção Principal -->
     <q-card bordered>
       <q-card-section class="q-pa-none">
@@ -707,5 +707,12 @@ watch(model, (newVal) => {
   border-radius: 2px !important;
   background-color: #fafafa;
   column-gap: 4px !important;
+}
+
+.titulo {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #37474f;
+  text-transform: uppercase;
 }
 </style>
