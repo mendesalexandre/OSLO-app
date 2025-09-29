@@ -6,12 +6,12 @@
     <q-card-section>
       <div class="row q-col-gutter-sm">
         <div class="col-md-6 col-sm-12 col-xs-12">
-          <label for="">Cliente ID</label>
+          <v-label label="Cliente ID" obrigatorio />
           <q-input outline />
         </div>
 
         <div class="col-md-6 col-sm-12 col-xs-12">
-          <label for="">Cliente Secret</label>
+          <v-label label="Cliente Secret" obrigatorio />
           <q-input outline />
         </div>
       </div>
@@ -19,19 +19,20 @@
   </q-card>
 
   <q-card bordered class="q-mt-md">
-    <q-card-section><label for="">
-        CEI - Central Eletrônica de Integração e Informações dos Serviços
-        Notariais e Registrais do Estado de Mato Grosso</label></q-card-section>
+    <q-card-section>
+      <v-label label=" CEI - Central Eletrônica de Integração e Informações dos Serviços
+        Notariais e Registrais do Estado de Mato Grosso" obrigatorio />
+    </q-card-section>
     <q-separator />
     <q-card-section>
       <div class="row q-col-gutter-sm">
         <div class="col-md-6 col-sm-12 col-xs-12">
-          <label for="">Usuário (E-mail)</label>
+          <v-label label="Usuário (E-mail)" obrigatorio />
           <q-input outline />
         </div>
 
         <div class="col-md-6 col-sm-12 col-xs-12">
-          <label for="">Senha</label>
+          <v-label label="Senha" obrigatorio />
           <q-input outline type="password" />
         </div>
       </div>
