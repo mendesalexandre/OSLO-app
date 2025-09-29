@@ -184,7 +184,7 @@ const navegarPara = (rota) => {
 .card-menu {
   transition: all 0.3s ease;
   border: 1px solid #e0e0e0;
-  min-height: 140px;
+  min-height: 120px;
   display: flex;
   align-items: center;
   justify-content: center;
