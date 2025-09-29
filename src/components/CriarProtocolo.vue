@@ -70,20 +70,31 @@
             <div class="row q-gutter-sm">
               <div class="col">
                 <q-select v-model="clienteSelecionado" :options="options" option-value="id" option-label="nome"
-                  use-input outlined dense input-debounce="300" @filter="filterClients" :loading="loading"
-                  hide-dropdown-icon placeholder="digite a natureza para buscar...">
+                  use-input outlined dense input-debounce="300" @filter="getNaturezaByNome" :loading="loading"
+                  hide-dropdown-icon :placeholder="clienteSelecionado ? '' : 'digite a natureza para buscar...'">
+
                   <!-- <template v-slot:before>
                     <q-icon name="fa-regular fa-search" size="14px" />
                   </template> -->
 
-                  <template v-slot:selected-item="scope">
+                  <!-- <template v-slot:selected-item="scope">
                     <q-item v-bind="scope.itemProps">
                       <q-item-section>
                         <q-item-label class="text-weight-medium text-primary">
                           {{ scope.opt.nome }}
                         </q-item-label>
-                        <q-item-label caption class="text-grey-6">
-                          {{ scope.opt.cpf_cnpj }}
+                      </q-item-section>
+                    </q-item>
+                  </template> -->
+
+                  <template v-slot:selected-item="scope">
+                    <q-item v-bind="scope.itemProps">
+                      <q-item-section>
+                        <q-item-label>
+                          <q-chip icon-remove="none">
+                            <!-- {{ scope.opt.nome }}/{{ scope.opt.sigla }} -->
+                            {{ scope.opt.nome }}
+                          </q-chip>
                         </q-item-label>
                       </q-item-section>
                     </q-item>
@@ -95,9 +106,6 @@
                         <q-item-label class="text-weight-medium text-primary">
                           {{ scope.opt.nome }}
                         </q-item-label>
-                        <q-item-label caption class="text-grey-6">
-                          {{ scope.opt.cpf_cnpj }} • {{ scope.opt.tipo || 'Cliente' }}
-                        </q-item-label>
                       </q-item-section>
                     </q-item>
                   </template>
@@ -107,7 +115,7 @@
                       <q-item-section class="text-center">
                         <div class="text-grey-5 q-py-md">
                           <q-icon name="fa-duotone fa-magnifying-glass" size="2em" />
-                          <div class="q-mt-sm">Nenhum cliente encontrado</div>
+                          <div class="q-mt-sm">Nenhuma natureza encontrada</div>
                           <div class="text-caption">
                             Digite pelo menos 2 caracteres
                           </div>
@@ -419,6 +427,7 @@ import { computed, onMounted, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useQuasar } from "quasar";
 import { useEstadoStore } from "src/stores/estado";
+import { useNaturezaStore } from "src/stores/natureza";
 
 const $q = useQuasar();
 const model = defineModel({ default: false });
@@ -592,6 +601,28 @@ const filterClients = (val, update) => {
     loading.value = false;
   }, 500);
 };
+
+
+const naturezaStore = useNaturezaStore();
+const getNaturezaByNome = async (val, update, abort) => {
+  // Se o texto for muito curto, não busca
+  if (val.length < 2) {
+    abort();
+    return;
+  }
+
+  loading.value = true;
+
+  // Chama a action da store passando o filtro
+  const resultados = await naturezaStore.fetchNaturezas(val);
+
+  // Atualiza as opções do select
+  update(() => {
+    options.value = resultados;
+    loading.value = false;
+  });
+};
+
 
 const abrirModalCriarCliente = () => {
   showModalProtocolo.value = !showModalProtocolo.value;
