@@ -1,9 +1,8 @@
 <template>
   <q-card bordered>
     <q-card-section>
-      <label for=""></label></q-card-section>
-    <v-label label="ONR - Operador Nacional do Sistema de Registro Eletrônico de
-        Imóveis" />
+      <v-label label="ONR - Operador Nacional do Sistema de Registro Eletrônico de
+        Imóveis" /></q-card-section>
     <q-separator />
     <q-card-section>
       <div class="row q-col-gutter-sm">
