@@ -74,9 +74,9 @@
                 <q-select v-model="clienteSelecionado" :options="options" option-value="id" option-label="nome"
                   use-input outlined dense input-debounce="300" @filter="filterClients" :loading="loading"
                   hide-dropdown-icon placeholder="digite o nome ou documento para buscar...">
-                  <template v-slot:prepend>
-                    <q-icon name="fa-regular fa-user" size="14px" />
-                  </template>
+                  <!-- <template v-slot:before>
+                    <q-icon name="fa-regular fa-search" size="14px" />
+                  </template> -->
 
                   <template v-slot:selected-item="scope">
                     <q-item v-bind="scope.itemProps">
@@ -215,9 +215,9 @@
                 <q-select v-model="clienteSelecionado" :options="options" option-value="id" option-label="nome"
                   use-input outlined dense input-debounce="300" @filter="filterClients" :loading="loading"
                   hide-dropdown-icon placeholder="digite o nome ou documento para buscar...">
-                  <template v-slot:prepend>
-                    <q-icon name="fa-regular fa-user" size="14px" />
-                  </template>
+                  <!-- <template v-slot:before>
+                    <q-icon name="fa-regular fa-search" size="14px" />
+                  </template> -->
 
                   <template v-slot:selected-item="scope">
                     <q-item v-bind="scope.itemProps">
@@ -239,11 +239,6 @@
 
                   <template v-slot:option="scope">
                     <q-item v-bind="scope.itemProps">
-                      <q-item-section avatar>
-                        <q-avatar size="32px" color="blue-grey-6" text-color="white">
-                          {{ scope.opt.nome.charAt(0).toUpperCase() }}
-                        </q-avatar>
-                      </q-item-section>
                       <q-item-section>
                         <q-item-label class="text-weight-medium text-primary">
                           {{ scope.opt.nome }}
@@ -279,9 +274,6 @@
               </div>
             </div>
           </div>
-
-
-
 
           <div class="col-12">
             <v-label label="Interessado" obrigatorio />
@@ -347,7 +339,7 @@
               </div>
 
               <div class="col-auto">
-                <q-btn icon="fa-regular fa-user-plus" color="grey-5" outline @click="abrirModalCriarCliente" size="10px"
+                <q-btn icon="fa-regular fa-user-plus" color="grey-5" outline @click="abrirModalCriarCliente" size="8px"
                   class="full-height">
                   <q-tooltip>Adicionar novo cliente</q-tooltip>
                 </q-btn>
@@ -361,9 +353,6 @@
 
             <q-select v-model="protocolo.cartorio_id" :options="cartorios" option-value="id" option-label="nome"
               outlined dense input-debounce="500" placeholder="Selecione o cartório">
-              <template v-slot:prepend>
-                <q-icon name="fa-duotone fa-building-columns" size="14px" />
-              </template>
 
               <template v-slot:selected-item="scope">
                 <q-item v-bind="scope.itemProps">
@@ -399,18 +388,6 @@
               </template>
             </q-select>
           </div>
-
-
-          <!-- Observações -->
-          <!-- <div class="col-12">
-            <v-label label="Observações" />
-            <q-input v-model="observacoes" type="textarea" rows="3" outlined dense
-              placeholder="Informações adicionais sobre o protocolo..." class="custom-input">
-              <template v-slot:prepend>
-                <q-icon name="fa-duotone fa-note-sticky" size="14px" />
-              </template>
-            </q-input>
-          </div> -->
         </div>
       </q-card-section>
     </q-card>
