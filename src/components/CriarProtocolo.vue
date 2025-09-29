@@ -180,6 +180,7 @@
                   <q-item-section>
                     <q-item-label>
                       <q-chip icon-remove="none">
+                        <!-- {{ scope.opt.nome }}/{{ scope.opt.sigla }} -->
                         {{ scope.opt.nome }}
                       </q-chip>
                     </q-item-label>
@@ -190,8 +191,9 @@
               <template v-slot:option="scope">
                 <q-item v-bind="scope.itemProps">
                   <q-item-section>
+                    <!-- <q-item-label>{{ scope.opt.nome }}/{{ scope.opt.sigla }}</q-item-label> -->
                     <q-item-label>{{ scope.opt.nome }}</q-item-label>
-                    <q-item-label caption>{{ scope.opt.sigla }}</q-item-label>
+                    <!-- <q-item-label caption>{{ scope.opt.sigla }}</q-item-label> -->
                   </q-item-section>
                 </q-item>
               </template>
@@ -421,10 +423,16 @@ import { storeToRefs } from "pinia";
 import { computed, onMounted, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useQuasar } from "quasar";
+import { useEstadoStore } from "src/stores/estado";
 
 const $q = useQuasar();
 const model = defineModel({ default: false });
 const showModalProtocolo = ref(false);
+
+
+
+const estadoStore = useEstadoStore();
+const { estado, estados } = storeToRefs(estadoStore);
 
 const titulo = ref("Criar Novo Protocolo");
 const salvando = ref(false);
@@ -454,16 +462,6 @@ const servicos = ref([
   { id: 2, nome: 'Certidão de Casamento' },
   { id: 3, nome: 'Certidão de Óbito' },
   { id: 4, nome: 'Reconhecimento de Firma' }
-]);
-
-const estados = ref([
-  { id: 1, nome: 'São Paulo', sigla: 'SP' },
-  { id: 2, nome: 'Rio de Janeiro', sigla: 'RJ' },
-  { id: 3, nome: 'Minas Gerais', sigla: 'MG' },
-  { id: 4, nome: 'Bahia', sigla: 'BA' },
-  { id: 5, nome: 'Mato Grosso', sigla: 'MT' },
-  { id: 6, nome: 'Distrito Federal', sigla: 'DF' },
-  { id: 7, nome: 'Rio Grande do Sul', sigla: 'RS' }
 ]);
 
 const cartorios = ref([

@@ -28,7 +28,7 @@
           </q-item-section>
         </q-item>
 
-        <q-item clickable v-ripple exact>
+        <q-item clickable v-ripple exact @click="abrirModalCriarProtocolo">
           <q-item-section>
             <q-item-label>
               <q-icon name="fa-duotone fa-solid fa-square-plus" size="16px" />
@@ -178,6 +178,7 @@ import { useQuasar } from "quasar";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import CriarProtocolo from "src/components/CriarProtocolo.vue";
+import { useEstadoStore } from "src/stores/estado";
 
 defineOptions({
   name: "MainLayout",
@@ -188,11 +189,27 @@ const router = useRouter();
 
 // Adicione suas variáveis reativas aqui
 const leftDrawerOpen = ref(false);
-const modalCriarProtocolo = ref(true);
+const modalCriarProtocolo = ref(false);
 
 // Adicione seus métodos aqui
 const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value;
+};
+
+const estadoStore = useEstadoStore();
+const { estado, estados } = storeToRefs(estadoStore);
+
+const abrirModalCriarProtocolo = async () => {
+  try {
+    await estadoStore.index()
+    modalCriarProtocolo.value = true;
+  } catch (error) {
+    console.error('Erro ao carregar estados:', error);
+    $q.notify({
+      type: 'negative',
+      message: 'Erro ao carregar estados. Tente novamente mais tarde.'
+    });
+  }
 };
 
 const logout = () => {
