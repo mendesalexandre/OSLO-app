@@ -672,16 +672,16 @@ watch(model, (newVal) => {
     }
 
     /* Ou force o hover diretamente no botão */
-    &:hover {
-      // background-color: rgba(0, 0, 0, 0.04) !important;
-    }
+    // &:hover {
+    //   // background-color: rgba(0, 0, 0, 0.04) !important;
+    // }
 
     /* Hover no botão selecionado */
-    &.bg-primary:hover,
-    &[aria-pressed="true"]:hover {
-      // background-color: #1565c0 !important;
-      /* Azul mais escuro */
-    }
+    // &.bg-primary:hover,
+    // &[aria-pressed="true"]:hover {
+    //   // background-color: #1565c0 !important;
+    //   /* Azul mais escuro */
+    // }
   }
 }
 
