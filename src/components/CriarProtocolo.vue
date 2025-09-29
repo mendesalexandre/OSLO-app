@@ -658,7 +658,7 @@ watch(model, (newVal) => {
   align-items: center;
   padding: 12px 16px;
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  border-radius: 2px;
+  // border-radius: 2px;
 
   .titulo-secao {
     font-size: 0.875rem;
