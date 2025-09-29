@@ -679,6 +679,13 @@ watch(model, (newVal) => {
     color: #37474f;
     border-radius: 2px !important;
     border: 1px solid #e0e0e0 !important;
+    padding: 8px 16px;
+    /* ajuste conforme necessário */
+
+    .q-btn__content {
+      padding: 0;
+      margin: 0;
+    }
 
     .q-icon {
       font-size: 16px;
@@ -692,12 +699,35 @@ watch(model, (newVal) => {
     /* Botão selecionado - quando tem bg-primary */
     &.bg-primary {
       border-color: $primary !important;
-      /* ou a cor que preferir */
     }
 
     /* Alternativa usando aria-pressed */
     &[aria-pressed="true"] {
       border-color: $primary !important;
+    }
+
+    /* Ajusta o q-focus-helper para cobrir 100% */
+    .q-focus-helper {
+      background-color: currentColor;
+      opacity: 0;
+      border-radius: inherit;
+    }
+
+    /* Hover */
+    &:hover .q-focus-helper {
+      opacity: 0.1;
+    }
+
+    /* Ou force o hover diretamente no botão */
+    &:hover {
+      // background-color: rgba(0, 0, 0, 0.04) !important;
+    }
+
+    /* Hover no botão selecionado */
+    &.bg-primary:hover,
+    &[aria-pressed="true"]:hover {
+      // background-color: #1565c0 !important;
+      /* Azul mais escuro */
     }
   }
 }
