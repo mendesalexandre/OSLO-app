@@ -28,7 +28,8 @@
           <div class="col-md-12 col-sm-12 col-xs-12">
             <v-label label="Meio de Solicitação" obrigatorio />
             <q-select v-model="protocolo.meio_solicitacao_id" :options="meiosSolicitacao" option-value="id" dense
-              option-label="nome" outlined input-debounce="500" placeholder="Selecione o meio de solicitação">
+              option-label="nome" outlined input-debounce="500" placeholder="Selecione o meio de solicitação" emit-value
+              map-options>
               <!-- <template v-slot:prepend>
                 <q-icon name="fa-duotone fa-envelope" size="14px" />
               </template> -->
@@ -441,14 +442,14 @@ const getOpcaoSelecionada = ref("NORMAL");
 
 // Dados mockados para o exemplo - substitua pelas suas stores/APIs
 const protocolo = ref({
-  meio_solicitacao_id: null,
+  meio_solicitacao_id: 1,
   estado_id: null,
   natureza_id: null,
   cartorio_id: null
 });
 
 const meiosSolicitacao = ref([
-  { id: 1, nome: 'Presencial' },
+  { id: 1, nome: 'Balcão de Atendimento' },
   { id: 2, nome: 'Online' },
   { id: 3, nome: 'Telefone' },
   { id: 4, nome: 'E-mail' }
