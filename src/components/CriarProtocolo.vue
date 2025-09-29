@@ -680,39 +680,29 @@ watch(model, (newVal) => {
     border-radius: 2px !important;
     border: 1px solid #e0e0e0 !important;
 
-
-    &.q-btn--active {
-      color: white;
-      border-radius: 2px !important;
-      border: 1px solid $primary !important;
-    }
-
-    // &:hover:not(.q-btn--active) {}
-
     .q-icon {
       font-size: 16px;
     }
 
-    // &.q-btn--outline {
-    //   border: 1px solid #e0e0e0;
-    //   background-color: white;
-    // }
+    &.q-btn--outline {
+      border: 1px solid #e0e0e0;
+      background-color: white;
+    }
+
+    /* Botão selecionado - quando tem bg-primary */
+    &.bg-primary {
+      border-color: $primary !important;
+      /* ou a cor que preferir */
+    }
+
+    /* Alternativa usando aria-pressed */
+    &[aria-pressed="true"] {
+      border-color: $primary !important;
+    }
   }
-
 }
-
 
 :deep(.q-btn-group) {
-  border: none !important;
-  border-radius: 2px !important;
-  background-color: #fafafa;
   column-gap: 4px !important;
-}
-
-.titulo {
-  font-size: 1.25rem;
-  font-weight: 500;
-  color: #37474f;
-  text-transform: uppercase;
 }
 </style>

@@ -19,37 +19,24 @@ body {
 
 // AJUSTANDO O INPUT PARA FICAR COMO O FORM-CONTROL DO BOOTSTRAP
 .q-field {
-  // --q-primary: hsl(var(--primary));
-  // --q-secondary: hsl(var(--secondary));
-
   &--outlined {
     .q-field__control {
       border-radius: 2px !important;
-      // border: 1px solid #f5f5f5;
-      // border: 1px solid #ced4da;
-      // background-color: transparent;
       transition: border-color 0.2s, box-shadow 0.2s;
 
       &:hover {
         border-color: none !important;
       }
-
       &:focus-within {
-        // @include focus-ring;
-        // Superescrevendo qualquer estilo de foco padrão do Quasar
         outline: none !important;
-        // box-shadow: 0 0 0 1px hsl(var(--ring)) !important;
       }
-
       &:before {
-        border: 1px solid #ced4da !important; // borda igual do bootstrap
+        border: 1px solid #ced4da !important;
       }
     }
 
-    // Remove qualquer outro indicador visual de foco que o Quasar possa adicionar
     &--focused {
       .q-field__label {
-        // color: hsl(var(--ring));
         color: none !important;
       }
 
@@ -61,8 +48,6 @@ body {
     }
 
     .q-field__native {
-      // color: hsl(var(--foreground));
-      // padding: 0.5rem 0.75rem;
       font-size: 0.875rem;
     }
 
@@ -76,9 +61,7 @@ body {
       padding: 4px 0px 0px 0px !important;
     }
 
-    // ADICIONAR O Q CHIP DENTRO DO Q FIELD
     .q-chip {
-      // margin: 0.25rem 0.25rem 0.25rem 0;
       padding: 0.5rem 0.5rem;
       border-radius: 2px !important;
       background-color: #f1f1f1;
