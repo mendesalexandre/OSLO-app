@@ -1,5 +1,5 @@
 <template>
-  <modal v-model="model" :titulo="titulo" tamanho="lg" cor-titulo-cabecalho="text-grey-9 text-uppercase">
+  <modal v-model="model" :titulo="titulo" tamanho="lg" cor-titulo-cabecalho="modal-titulo">
     <!-- Seção Principal -->
     <q-card bordered>
       <q-card-section class="q-pa-none">
