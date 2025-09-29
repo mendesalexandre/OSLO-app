@@ -69,10 +69,10 @@
             <v-label label="Natureza Formal do Título" obrigatorio />
             <div class="row q-gutter-sm">
               <div class="col">
-                <q-select ref="selectNatureza" v-model="clienteSelecionado" :options="options" option-value="id"
+                <q-select ref="selectNatureza" v-model="naturezaSelecionado" :options="options" option-value="id"
                   option-label="nome" use-input outlined dense input-debounce="300" @filter="getNaturezaByNome"
                   :loading="loading" hide-dropdown-icon
-                  :placeholder="clienteSelecionado ? '' : 'digite a natureza para buscar...'" clearable
+                  :placeholder="naturezaSelecionado ? '' : 'digite a natureza para buscar...'" clearable
                   @update:model-value="removerFoco">
 
                   <!-- <template v-slot:before>
@@ -570,20 +570,13 @@ const onCancelar = () => {
 
 // FILTRO DO CLIENTE
 const clienteSelecionado = ref(null);
+const naturezaSelecionado = ref(null);
 const options = ref([]);
 const loading = ref(false);
 
-// Mock de clientes para demonstração
-const clientesMock = [
-  { id: 1, nome: 'João Silva Santos', cpf_cnpj: '123.456.789-00', tipo: 'Pessoa Física' },
-  { id: 2, nome: 'Maria Oliveira Costa', cpf_cnpj: '987.654.321-00', tipo: 'Pessoa Física' },
-  { id: 3, nome: 'Empresa ABC Ltda', cpf_cnpj: '12.345.678/0001-90', tipo: 'Pessoa Jurídica' },
-  { id: 4, nome: 'José Carlos Pereira', cpf_cnpj: '456.789.123-00', tipo: 'Pessoa Física' }
-];
 
 // Refs
 const selectNatureza = ref(null);
-
 // Método para remover foco
 const removerFoco = () => {
   if (selectNatureza.value) {
