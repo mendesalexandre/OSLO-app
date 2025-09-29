@@ -456,10 +456,9 @@ const meiosSolicitacao = ref([
 ]);
 
 const servicos = ref([
-  { id: 1, nome: 'Certidão de Nascimento' },
-  { id: 2, nome: 'Certidão de Casamento' },
-  { id: 3, nome: 'Certidão de Óbito' },
-  { id: 4, nome: 'Reconhecimento de Firma' }
+  { id: 1, nome: 'Compra e Venda' },
+  { id: 2, nome: 'Cédula de Crédito' },
+  { id: 3, nome: 'Abertura de Matrícula' },
 ]);
 
 const cartorios = ref([
