@@ -1,5 +1,5 @@
 <template>
-  <modal v-model="model" :titulo="titulo" tamanho="lg" cor-titulo-cabecalho="modal-titulo">
+  <modal v-model="model" :titulo="titulo" tamanho="lg" cor-titulo-cabecalho="modal-titulo" @close="onCancelar">
     <!-- Seção Principal -->
     <q-card bordered>
       <q-card-section class="q-pa-none">
@@ -552,6 +552,10 @@ const criarNovo = () => {
   resetarForm();
   model.value = true;
 };
+
+const onCancelar = () => {
+  model.value = !model.value;
+}
 
 // FILTRO DO CLIENTE
 const clienteSelecionado = ref(null);

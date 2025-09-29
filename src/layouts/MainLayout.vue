@@ -20,7 +20,6 @@
           </q-item-section>
         </q-item>
 
-
         <q-item clickable v-ripple exact @click="abrirModalCriarProtocolo">
           <q-item-section>
             <q-item-label>

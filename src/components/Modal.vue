@@ -9,8 +9,8 @@
           </div>
           <q-space />
           <slot name="controles">
-            <q-btn icon="close" size="sm" round dense flat color="grey-7" @click="fechar()"
-              :aria-label="'Fechar ' + titulo" />
+            <q-btn icon="close" size="sm" round dense flat color="grey-7" :aria-label="'Fechar ' + titulo"
+              @click="$emit('close')" />
           </slot>
         </q-card-section>
 
@@ -136,13 +136,7 @@ const cardStyles = computed(() => {
   return styles;
 });
 
-const fechar = (confirmar = false) => {
-  model.value = false;
-  emit("close", confirmar);
-  if (e.keyCode === 27 && this.closeEsc && this.closeable) {
-    emit("close", confirmar);
-  }
-};
+
 </script>
 
 <style lang="scss" scoped>
