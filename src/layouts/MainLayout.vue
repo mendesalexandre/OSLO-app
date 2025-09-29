@@ -20,6 +20,15 @@
           </q-item-section>
         </q-item>
 
+
+        <q-item clickable v-ripple exact @click="abrirModalCriarProtocolo">
+          <q-item-section>
+            <q-item-label>
+              <q-icon name="fa-duotone fa-solid fa-square-plus" size="20px" color="orange" />
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
         <q-item clickable v-ripple exact>
           <q-item-section>
             <q-item-label>
@@ -28,13 +37,6 @@
           </q-item-section>
         </q-item>
 
-        <q-item clickable v-ripple exact @click="abrirModalCriarProtocolo">
-          <q-item-section>
-            <q-item-label>
-              <q-icon name="fa-duotone fa-solid fa-square-plus" size="16px" color="grey-6" />
-            </q-item-label>
-          </q-item-section>
-        </q-item>
 
         <!-- MENU -->
         <q-item clickable v-ripple>
