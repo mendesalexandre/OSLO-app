@@ -395,11 +395,11 @@
       <q-card-section>
         <div class="flex justify-between">
           <div>
-            <q-btn label="Cancelar" color="grey-7" outline @click="cancelar" icon="fa-duotone fa-xmark"
+            <q-btn label="Cancelar" color="red-7" outline @click="cancelar" icon="fa-duotone fa-xmark" size="sm"
               :disable="salvando" />
           </div>
           <div class="q-mr-md">
-            <q-btn label="Salvar" color="blue-10" icon="fa-regular fa-check" @click="salvar" outline
+            <q-btn label="Salvar" color="blue-10" icon="fa-regular fa-check" @click="salvar" outline size="sm"
               :loading="salvando">
               <template v-slot:loading>
                 <q-spinner class="q-mr-sm" />
