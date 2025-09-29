@@ -1,7 +1,9 @@
 <template>
   <q-card bordered>
-    <q-card-section><label for="">ONR - Operador Nacional do Sistema de Registro Eletrônico de
-        Imóveis</label></q-card-section>
+    <q-card-section>
+      <label for=""></label></q-card-section>
+    <v-label label="ONR - Operador Nacional do Sistema de Registro Eletrônico de
+        Imóveis" />
     <q-separator />
     <q-card-section>
       <div class="row q-col-gutter-sm">
@@ -21,7 +23,7 @@
   <q-card bordered class="q-mt-md">
     <q-card-section>
       <v-label label=" CEI - Central Eletrônica de Integração e Informações dos Serviços
-        Notariais e Registrais do Estado de Mato Grosso" obrigatorio />
+        Notariais e Registrais do Estado de Mato Grosso" />
     </q-card-section>
     <q-separator />
     <q-card-section>
