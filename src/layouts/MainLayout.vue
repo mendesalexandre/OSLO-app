@@ -23,7 +23,7 @@
         <q-item clickable v-ripple exact>
           <q-item-section>
             <q-item-label>
-              <q-icon name="fa-regular fa-bars" size="18px" />
+              <q-icon name="fa-regular fa-bars" size="18px" color="grey-7" />
             </q-item-label>
           </q-item-section>
         </q-item>
@@ -31,7 +31,7 @@
         <q-item clickable v-ripple exact @click="abrirModalCriarProtocolo">
           <q-item-section>
             <q-item-label>
-              <q-icon name="fa-duotone fa-solid fa-square-plus" size="16px" />
+              <q-icon name="fa-duotone fa-solid fa-square-plus" size="16px" color="grey-6" />
             </q-item-label>
           </q-item-section>
         </q-item>
@@ -40,7 +40,7 @@
         <q-item clickable v-ripple>
           <q-item-section>
             <q-item-label>
-              <q-icon name="fa-duotone fa-magnifying-glass" size="16px" />
+              <q-icon name="fa-regular fa-magnifying-glass" size="16px" color="grey-6" />
 
             </q-item-label>
           </q-item-section>
@@ -49,7 +49,7 @@
         <q-item clickable v-ripple>
           <q-item-section>
             <q-item-label>
-              <q-icon name="fa-duotone fa-users" size="16px" />
+              <q-icon name="fa-duotone fa-users" size="16px" color="grey-6" />
             </q-item-label>
           </q-item-section>
         </q-item>
@@ -57,7 +57,7 @@
         <q-item clickable v-ripple>
           <q-item-section>
             <q-item-label>
-              <q-icon name="fa-duotone fa-folder" size="16px" />
+              <q-icon name="fa-duotone fa-folder" size="16px" color="grey-6" />
             </q-item-label>
           </q-item-section>
         </q-item>
@@ -65,7 +65,7 @@
         <q-item clickable v-ripple>
           <q-item-section>
             <q-item-label>
-              <q-icon name="fa-duotone fa-calendar-days" size="16px" />
+              <q-icon name="fa-duotone fa-calendar-days" size="16px" color="grey-6" />
             </q-item-label>
           </q-item-section>
         </q-item>
@@ -73,7 +73,7 @@
         <q-item clickable v-ripple>
           <q-item-section>
             <q-item-label>
-              <q-icon name="fa-duotone fa-envelope" size="16px" />
+              <q-icon name="fa-duotone fa-envelope" size="16px" color="grey-6" />
             </q-item-label>
           </q-item-section>
         </q-item>
@@ -81,7 +81,7 @@
         <q-item clickable v-ripple>
           <q-item-section>
             <q-item-label>
-              <q-icon name="fa-duotone fa-cart-shopping" size="16px" />
+              <q-icon name="fa-duotone fa-cart-shopping" size="16px" color="grey-6" />
             </q-item-label>
           </q-item-section>
         </q-item>
@@ -89,7 +89,7 @@
         <q-item clickable v-ripple>
           <q-item-section>
             <q-item-label>
-              <q-icon name="fa-duotone fa-chart-pie" size="16px" />
+              <q-icon name="fa-duotone fa-chart-pie" size="16px" color="grey-6" />
             </q-item-label>
           </q-item-section>
         </q-item>
@@ -105,11 +105,11 @@
           <q-item clickable v-ripple>
             <q-item-section>
               <q-item-label>
-                <q-icon name="fa-duotone fa-user" size="16px" />
+                <q-icon name="fa-duotone fa-user" size="16px" color="grey-6" />
                 <q-menu anchor="top middle" self="bottom middle">
                   <q-list style="min-width: 180px">
                     <q-item-label header class="text-grey-8">
-                      <q-icon name="fa-duotone fa-user" size="16px" class="q-mr-sm" />
+                      <q-icon name="fa-duotone fa-user" size="16px" class="q-mr-sm" color="grey-6" />
                       {{ user?.nome || "Usuário" }}
                     </q-item-label>
                     <q-separator />
@@ -148,7 +148,7 @@
           <q-item clickable v-ripple>
             <q-item-section>
               <q-item-label>
-                <q-icon name="fa-duotone fa-gear" size="16px" />
+                <q-icon name="fa-duotone fa-gear" size="16px" color="grey-6" />
               </q-item-label>
             </q-item-section>
           </q-item>
@@ -156,7 +156,7 @@
           <q-item clickable v-ripple @click="logout">
             <q-item-section>
               <q-item-label>
-                <q-icon name="fa-duotone fa-arrow-right-from-bracket" size="16px" />
+                <q-icon name="fa-duotone fa-arrow-right-from-bracket" size="16px" color="grey-6" />
               </q-item-label>
             </q-item-section>
           </q-item>
