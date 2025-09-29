@@ -47,9 +47,6 @@
 
               <template v-slot:option="scope">
                 <q-item v-bind="scope.itemProps">
-                  <q-item-section avatar>
-                    <q-icon name="fa-duotone fa-envelope" size="14px" />
-                  </q-item-section>
                   <q-item-section>
                     <q-item-label>{{ scope.opt.nome }}</q-item-label>
                   </q-item-section>
@@ -73,7 +70,7 @@
               <div class="col">
                 <q-select v-model="clienteSelecionado" :options="options" option-value="id" option-label="nome"
                   use-input outlined dense input-debounce="300" @filter="filterClients" :loading="loading"
-                  hide-dropdown-icon placeholder="digite o nome ou documento para buscar...">
+                  hide-dropdown-icon placeholder="digite a natureza para buscar...">
                   <!-- <template v-slot:before>
                     <q-icon name="fa-regular fa-search" size="14px" />
                   </template> -->
