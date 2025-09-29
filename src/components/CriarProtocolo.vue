@@ -71,7 +71,8 @@
               <div class="col">
                 <q-select v-model="clienteSelecionado" :options="options" option-value="id" option-label="nome"
                   use-input outlined dense input-debounce="300" @filter="getNaturezaByNome" :loading="loading"
-                  hide-dropdown-icon :placeholder="clienteSelecionado ? '' : 'digite a natureza para buscar...'">
+                  hide-dropdown-icon :placeholder="clienteSelecionado ? '' : 'digite a natureza para buscar...'"
+                  clearable>
 
                   <!-- <template v-slot:before>
                     <q-icon name="fa-regular fa-search" size="14px" />
@@ -103,7 +104,7 @@
                   <template v-slot:option="scope">
                     <q-item v-bind="scope.itemProps">
                       <q-item-section>
-                        <q-item-label class="text-weight-medium text-primary">
+                        <q-item-label>
                           {{ scope.opt.nome }}
                         </q-item-label>
                       </q-item-section>
