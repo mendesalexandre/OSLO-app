@@ -91,9 +91,6 @@
 
                   <template v-slot:option="scope">
                     <q-item v-bind="scope.itemProps">
-                      <q-item-section avatar>
-
-                      </q-item-section>
                       <q-item-section>
                         <q-item-label class="text-weight-medium text-primary">
                           {{ scope.opt.nome }}

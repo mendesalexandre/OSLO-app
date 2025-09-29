@@ -156,6 +156,13 @@ const routes = [
           // },
         ],
       },
+
+      // ADMINISTRAÇÃO
+      {
+        path: "administracao",
+        component: () => import("src/pages/administracao/Index.vue"),
+        name: "matricula.index",
+      },
     ],
   },
 
