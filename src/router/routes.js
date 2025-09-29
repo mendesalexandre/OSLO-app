@@ -18,6 +18,7 @@ const routes = [
           {
             path: "",
             redirect: { name: "configuracao.cartorio" },
+            name: "configuracao.redicionado",
           },
 
           // Configurações do Cartório
