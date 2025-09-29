@@ -8,7 +8,7 @@
         <q-card bordered class="card-menu cursor-pointer" @click="navegarPara('/admin/departamentos')">
           <q-card-section class="secao-card">
             <div class="conteudo-centralizado">
-              <q-icon name="fas fa-users" size="20px" class="icone-card q-mb-sm" color="grey-7" />
+              <q-icon name="fas fa-users" size="24px" class="icone-card q-mb-sm" color="grey-7" />
               <div class="titulo-card text-grey-8">
                 Departamentos
               </div>
@@ -19,7 +19,7 @@
         <q-card flat bordered class="card-menu cursor-pointer" @click="navegarPara('/admin/usuarios')">
           <q-card-section class="secao-card">
             <div class="conteudo-centralizado">
-              <q-icon name="fas fa-user" size="20px" class="icone-card q-mb-sm" color="grey-7" />
+              <q-icon name="fas fa-user" size="24px" class="icone-card q-mb-sm" color="grey-7" />
               <div class="titulo-card text-grey-8">
                 Usuários
               </div>
@@ -30,7 +30,7 @@
         <q-card flat bordered class="card-menu cursor-pointer" @click="navegarPara('/admin/grupos-permissao')">
           <q-card-section class="secao-card">
             <div class="conteudo-centralizado">
-              <q-icon name="fas fa-user-shield" size="20px" class="icone-card q-mb-sm" color="grey-7" />
+              <q-icon name="fas fa-user-shield" size="24px" class="icone-card q-mb-sm" color="grey-7" />
               <div class="titulo-card text-grey-8">
                 Grupos de Permissão
               </div>
@@ -48,7 +48,7 @@
         <q-card flat bordered class="card-menu cursor-pointer" @click="navegarPara('/admin/listas')">
           <q-card-section class="secao-card">
             <div class="conteudo-centralizado">
-              <q-icon name="fas fa-list" size="20px" class="icone-card q-mb-sm" color="grey-7" />
+              <q-icon name="fas fa-list" size="24px" class="icone-card q-mb-sm" color="grey-7" />
               <div class="titulo-card text-grey-8">
                 Listas
               </div>
@@ -59,7 +59,7 @@
         <q-card flat bordered class="card-menu cursor-pointer" @click="navegarPara('/admin/checklists')">
           <q-card-section class="secao-card">
             <div class="conteudo-centralizado">
-              <q-icon name="fas fa-check-square" size="20px" class="icone-card q-mb-sm" color="grey-7" />
+              <q-icon name="fas fa-check-square" size="24px" class="icone-card q-mb-sm" color="grey-7" />
               <div class="titulo-card text-grey-8">
                 Checklists
               </div>
@@ -70,7 +70,7 @@
         <q-card flat bordered class="card-menu cursor-pointer" @click="navegarPara('/admin/fragmentos')">
           <q-card-section class="secao-card">
             <div class="conteudo-centralizado">
-              <q-icon name="fas fa-puzzle-piece" size="20px" class="icone-card q-mb-sm" color="grey-7" />
+              <q-icon name="fas fa-puzzle-piece" size="24px" class="icone-card q-mb-sm" color="grey-7" />
               <div class="titulo-card text-grey-8">
                 Fragmentos
               </div>
@@ -81,7 +81,7 @@
         <q-card flat bordered class="card-menu cursor-pointer" @click="navegarPara('/admin/layouts-impressao')">
           <q-card-section class="secao-card">
             <div class="conteudo-centralizado">
-              <q-icon name="fas fa-print" size="20px" class="icone-card q-mb-sm" color="grey-7" />
+              <q-icon name="fas fa-print" size="24px" class="icone-card q-mb-sm" color="grey-7" />
               <div class="titulo-card text-grey-8">
                 Layouts de Impressão
               </div>
@@ -92,7 +92,7 @@
         <q-card flat bordered class="card-menu cursor-pointer" @click="navegarPara('/admin/modelos-textuais')">
           <q-card-section class="secao-card">
             <div class="conteudo-centralizado">
-              <q-icon name="fas fa-font" size="20px" class="icone-card q-mb-sm" color="grey-7" />
+              <q-icon name="fas fa-font" size="24px" class="icone-card q-mb-sm" color="grey-7" />
               <div class="titulo-card text-grey-8">
                 Modelos Textuais
               </div>
@@ -110,7 +110,7 @@
         <q-card flat bordered class="card-menu cursor-pointer" @click="navegarPara('/admin/tipos-documento')">
           <q-card-section class="secao-card">
             <div class="conteudo-centralizado">
-              <q-icon name="fas fa-file-alt" size="20px" class="icone-card q-mb-sm" color="grey-7" />
+              <q-icon name="fas fa-file-alt" size="24px" class="icone-card q-mb-sm" color="grey-7" />
               <div class="titulo-card text-grey-8">
                 Tipos de Documento
               </div>
@@ -121,7 +121,7 @@
         <q-card flat bordered class="card-menu cursor-pointer" @click="navegarPara('/admin/repasses')">
           <q-card-section class="secao-card">
             <div class="conteudo-centralizado">
-              <q-icon name="fas fa-briefcase" size="20px" class="icone-card q-mb-sm" color="grey-7" />
+              <q-icon name="fas fa-briefcase" size="24px" class="icone-card q-mb-sm" color="grey-7" />
               <div class="titulo-card text-grey-8">
                 Repasses
               </div>
@@ -132,7 +132,7 @@
         <q-card flat bordered class="card-menu cursor-pointer" @click="navegarPara('/admin/feriados')">
           <q-card-section class="secao-card">
             <div class="conteudo-centralizado">
-              <q-icon name="fas fa-calendar-day" size="20px" class="icone-card q-mb-sm" color="grey-7" />
+              <q-icon name="fas fa-calendar-day" size="24px" class="icone-card q-mb-sm" color="grey-7" />
               <div class="titulo-card text-grey-8">
                 Feriados
               </div>
@@ -162,7 +162,7 @@ const navegarPara = (rota) => {
 
 .secao-admin {
   border-radius: 2px !important;
-  padding: 20px;
+  padding: 24px;
   box-shadow: 0 1px 3px 0 #0000001a, 0 1px 2px -1px #0000001a !important;
   color: #e0e0e0 !important;
 }
