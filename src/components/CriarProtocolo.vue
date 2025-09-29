@@ -636,7 +636,7 @@ watch(model, (newVal) => {
     color: #37474f;
     border-radius: 2px !important;
     border: 1px solid #e0e0e0 !important;
-    padding: 8px 16px;
+    // padding: 8px 16px;
     /* ajuste conforme necessário */
 
     .q-btn__content {
