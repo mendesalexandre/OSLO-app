@@ -720,4 +720,9 @@ watch(model, (newVal) => {
 :deep(.q-btn-group) {
   column-gap: 4px !important;
 }
+
+
+:deep(.q-field__focusable-action) {
+  font-size: 20px !important;
+}
 </style>
