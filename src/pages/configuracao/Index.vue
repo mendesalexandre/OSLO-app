@@ -134,7 +134,7 @@
   align-items: center;
   padding: 16px;
   border-radius: 2px;
-  background: linear-gradient(90deg, #f8f9fa 0%, #ffffff 100%);
+  // background: linear-gradient(90deg, #f8f9fa 0%, #ffffff 100%);
 
   .page-header-icon {
     --fa-primary-color: #374151;
