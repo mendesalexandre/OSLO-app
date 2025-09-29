@@ -69,10 +69,11 @@
             <v-label label="Natureza Formal do Título" obrigatorio />
             <div class="row q-gutter-sm">
               <div class="col">
-                <q-select v-model="clienteSelecionado" :options="options" option-value="id" option-label="nome"
-                  use-input outlined dense input-debounce="300" @filter="getNaturezaByNome" :loading="loading"
-                  hide-dropdown-icon :placeholder="clienteSelecionado ? '' : 'digite a natureza para buscar...'"
-                  clearable>
+                <q-select ref="selectNatureza" v-model="clienteSelecionado" :options="options" option-value="id"
+                  option-label="nome" use-input outlined dense input-debounce="300" @filter="getNaturezaByNome"
+                  :loading="loading" hide-dropdown-icon
+                  :placeholder="clienteSelecionado ? '' : 'digite a natureza para buscar...'" clearable
+                  @update:model-value="removerFoco">
 
                   <!-- <template v-slot:before>
                     <q-icon name="fa-regular fa-search" size="14px" />
@@ -579,6 +580,16 @@ const clientesMock = [
   { id: 3, nome: 'Empresa ABC Ltda', cpf_cnpj: '12.345.678/0001-90', tipo: 'Pessoa Jurídica' },
   { id: 4, nome: 'José Carlos Pereira', cpf_cnpj: '456.789.123-00', tipo: 'Pessoa Física' }
 ];
+
+// Refs
+const selectNatureza = ref(null);
+
+// Método para remover foco
+const removerFoco = () => {
+  if (selectNatureza.value) {
+    selectNatureza.value.blur();
+  }
+};
 
 const filterClients = (val, update) => {
   if (val.length < 2) {
