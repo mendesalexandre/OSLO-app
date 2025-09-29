@@ -26,7 +26,7 @@
         <div class="row q-col-gutter-md">
           <!-- Meio de Solicitação -->
           <div class="col-md-12 col-sm-12 col-xs-12">
-            <v-label label="Meio de Solicitação" obrigatorio />
+            <v-label label="Origem da Solicitação" obrigatorio />
             <q-select v-model="protocolo.meio_solicitacao_id" :options="meiosSolicitacao" option-value="id" dense
               option-label="nome" outlined input-debounce="500" placeholder="Selecione o meio de solicitação" emit-value
               map-options>
