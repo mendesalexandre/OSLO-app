@@ -80,11 +80,6 @@
 
                   <template v-slot:selected-item="scope">
                     <q-item v-bind="scope.itemProps">
-                      <q-item-section avatar>
-                        <q-avatar size="24px" color="blue-grey-6" text-color="white">
-                          {{ scope.opt.nome.charAt(0).toUpperCase() }}
-                        </q-avatar>
-                      </q-item-section>
                       <q-item-section>
                         <q-item-label class="text-weight-medium text-primary">
                           {{ scope.opt.nome }}
@@ -99,9 +94,7 @@
                   <template v-slot:option="scope">
                     <q-item v-bind="scope.itemProps">
                       <q-item-section avatar>
-                        <q-avatar size="32px" color="blue-grey-6" text-color="white">
-                          {{ scope.opt.nome.charAt(0).toUpperCase() }}
-                        </q-avatar>
+
                       </q-item-section>
                       <q-item-section>
                         <q-item-label class="text-weight-medium text-primary">
@@ -132,7 +125,7 @@
 
 
               <div class="col-auto">
-                <q-btn icon="fa-regular fa-user-plus" color="grey-5" outline @click="abrirModalCriarCliente" size="sm"
+                <q-btn icon="fa-regular fa-user-plus" color="grey-5" outline @click="abrirModalCriarCliente" size="8px"
                   class="full-height">
                   <q-tooltip>Adicionar novo cliente</q-tooltip>
                 </q-btn>
@@ -146,8 +139,6 @@
 
             <q-select v-model="protocolo.natureza_id" :options="servicos" option-value="id" option-label="nome" outlined
               dense input-debounce="500" placeholder="Selecione o serviço principal">
-
-
               <template v-slot:selected-item="scope">
                 <q-item v-bind="scope.itemProps">
                   <q-item-section>
@@ -162,9 +153,6 @@
 
               <template v-slot:option="scope">
                 <q-item v-bind="scope.itemProps">
-                  <!-- <q-item-section avatar>
-                    <q-icon name="fa-duotone fa-briefcase" />
-                  </q-item-section> -->
                   <q-item-section>
                     <q-item-label>{{ scope.opt.nome }}</q-item-label>
                   </q-item-section>
@@ -187,10 +175,6 @@
 
             <q-select v-model="protocolo.estado_id" :options="estados" option-value="id" option-label="nome" outlined
               dense input-debounce="500" placeholder="Selecione o estado">
-              <!-- <template v-slot:prepend>
-                <q-icon name="fa-duotone fa-map-location" size="14px" />
-              </template> -->
-
               <template v-slot:selected-item="scope">
                 <q-item v-bind="scope.itemProps">
                   <q-item-section>
@@ -205,9 +189,6 @@
 
               <template v-slot:option="scope">
                 <q-item v-bind="scope.itemProps">
-                  <q-item-section avatar>
-                    <q-icon name="fa-duotone fa-map-location" />
-                  </q-item-section>
                   <q-item-section>
                     <q-item-label>{{ scope.opt.nome }}</q-item-label>
                     <q-item-label caption>{{ scope.opt.sigla }}</q-item-label>
@@ -292,7 +273,7 @@
 
               <div class="col-auto">
                 <q-btn icon="fa-regular fa-user-plus" color="grey-5" outline @click="abrirModalCriarCliente"
-                  class="full-height" size="sm">
+                  class="full-height" size="8px">
                   <q-tooltip>Adicionar novo cliente</q-tooltip>
                 </q-btn>
               </div>
@@ -365,9 +346,8 @@
                 </q-select>
               </div>
 
-
               <div class="col-auto">
-                <q-btn icon="fa-regular fa-user-plus" color="grey-5" outline @click="abrirModalCriarCliente" size="sm"
+                <q-btn icon="fa-regular fa-user-plus" color="grey-5" outline @click="abrirModalCriarCliente" size="10px"
                   class="full-height">
                   <q-tooltip>Adicionar novo cliente</q-tooltip>
                 </q-btn>
