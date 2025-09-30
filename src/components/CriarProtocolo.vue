@@ -435,8 +435,6 @@ const $q = useQuasar();
 const model = defineModel({ default: false });
 const showModalProtocolo = ref(false);
 
-
-
 const estadoStore = useEstadoStore();
 const { estado, estados } = storeToRefs(estadoStore);
 

@@ -345,11 +345,42 @@ const mascaraCpfCnpj = computed(() => indicadorPessoalStore.mascaraCpfCnpj);
 const consultarCep = async () => {
   if (!indicadorPessoal.value.endereco.cep) return;
 
+  $q.loading.show();
   try {
     const response = await getCep(indicadorPessoal.value.endereco.cep);
+
+    // Verifica se o response tem erro (mesmo com status 200)
+    if (response.erro === "true" || response.erro === true) {
+      $q.notify({
+        type: "negative",
+        message: "CEP não encontrado. Verifique o número digitado.",
+        position: "top",
+        timeout: 3000,
+      });
+      return;
+    }
+
     indicadorPessoalStore.preencherEnderecoCep(response);
+
+    $q.notify({
+      type: "positive",
+      message: "CEP consultado com sucesso!",
+      position: "top",
+      timeout: 2000,
+    });
   } catch (error) {
     console.error("Erro ao consultar CEP:", error);
+
+    $q.notify({
+      type: "negative",
+      message: "Erro ao consultar CEP. Tente novamente.",
+      position: "top",
+      timeout: 3000,
+    });
+  }
+
+  finally {
+    $q.loading.hide();
   }
 };
 
