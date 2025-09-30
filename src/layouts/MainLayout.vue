@@ -171,6 +171,7 @@
   </q-layout>
 
   <criar-protocolo v-model="modalCriarProtocolo" />
+  <criar-indicador-pessoal v-model="modalCriarIndicador" />
 </template>
 
 <script setup>
@@ -179,6 +180,7 @@ import { useQuasar } from "quasar";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import CriarProtocolo from "src/components/CriarProtocolo.vue";
+import CriarIndicadorPessoal from "src/pages/indicador-pessoal/Create.vue";
 import { useEstadoStore } from "src/stores/estado";
 
 defineOptions({
@@ -191,6 +193,8 @@ const router = useRouter();
 // Adicione suas variáveis reativas aqui
 const leftDrawerOpen = ref(false);
 const modalCriarProtocolo = ref(false);
+const modalCriarIndicador = ref(true);
+
 
 // Adicione seus métodos aqui
 const toggleLeftDrawer = () => {
@@ -198,7 +202,6 @@ const toggleLeftDrawer = () => {
 };
 
 const estadoStore = useEstadoStore();
-const { estado, estados } = storeToRefs(estadoStore);
 
 const abrirModalCriarProtocolo = async () => {
   try {
