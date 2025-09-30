@@ -76,27 +76,29 @@
       <q-card-section>
         <div class="row q-col-gutter-md">
           <div class="col-md-4 col-sm-6 col-xs-12">
-            <q-checkbox label="Pessoa Falecida" color="primary" />
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <v-input-check label="Pessoa Falecida" obrigatorio />
+            </div>
           </div>
 
           <div class="col-md-4 col-sm-6 col-xs-12">
-            <q-checkbox label="Menor de Idade" color="primary" />
+            <v-input-check label="Menor de Idade" obrigatorio />
           </div>
 
           <div class="col-md-4 col-sm-6 col-xs-12">
-            <q-checkbox label="Incapaz" color="primary" />
+            <v-input-check label="Incapaz" obrigatorio />
           </div>
 
           <div class="col-md-4 col-sm-6 col-xs-12">
-            <q-checkbox label="Pessoa Politicamente Exposta" color="primary" />
+            <v-input-check label="Pessoa Politicamente Exposta" obrigatorio />
           </div>
 
           <div class="col-md-4 col-sm-6 col-xs-12">
-            <q-checkbox label="Servidor Público" color="primary" />
+            <v-input-check label="Servidor Público" obrigatorio />
           </div>
 
           <div class="col-md-4 col-sm-6 col-xs-12">
-            <q-checkbox label="Pessoa Obrigada" color="primary" />
+            <v-input-check label="Pessoa Obrigada" obrigatorio />
           </div>
         </div>
       </q-card-section>
