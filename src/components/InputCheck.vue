@@ -77,6 +77,7 @@ watch(localValue, (newValue) => {
     display: flex;
     gap: 1.5rem;
     align-items: center;
+    justify-content: start;
   }
 
   :deep(.custom-radio) {
@@ -85,10 +86,10 @@ watch(localValue, (newValue) => {
 
     // Container interno - customização do círculo
     .q-radio__inner {
-      width: 20px;
-      height: 20px;
-      min-width: 20px;
-      font-size: 20px;
+      width: 14px;
+      height: 14px;
+      min-width: 14px;
+      font-size: 14px;
     }
 
     .q-radio__inner:before {
@@ -97,8 +98,8 @@ watch(localValue, (newValue) => {
 
     // O SVG do Quasar
     .q-radio__bg {
-      width: 18px;
-      height: 18px;
+      width: 14px;
+      height: 14px;
 
       // Círculo externo
       path:first-child {

@@ -220,7 +220,7 @@
             <q-input outlined dense placeholder="Nome completo da mãe" />
           </div>
 
-          <div class="col-md-2 col-sm-12 col-xs-12 d-flex align-items-end">
+          <div class="col-md-12 col-sm-12 col-xs-12 ">
             <v-input-check label="Pai desconhecido" obrigatorio />
           </div>
 
