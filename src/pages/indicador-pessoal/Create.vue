@@ -373,9 +373,9 @@ const consultarCep = async () => {
           codigoIbge: response.ibge
         });
 
-        if (cidadeResponse?.data) {
+        if (cidadeResponse?.data.success) {
           // Preenche o estado e cidade automaticamente
-          indicadorPessoal.value.endereco.estado_id = cidadeResponse.data.estado_id;
+          indicadorPessoal.value.endereco.estado_id = cidadeResponse.data.data.estado_id;
           indicadorPessoal.value.endereco.cidade_id = cidadeResponse.data.id;
 
           // Carrega as cidades do estado selecionado
