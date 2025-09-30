@@ -66,7 +66,7 @@
     </q-card>
 
     <!-- SISCOAF -->
-    <q-card flat bordered class="q-mb-sm" v-if="!desabilitarSiscoaf">
+    <q-card flat bordered class="q-mb-sm" v-if="!verificarTipoPessoa">
       <q-card-section>
         <div class="titulo">Informações SISCOAF</div>
       </q-card-section>
@@ -125,7 +125,7 @@
     </q-card>
 
     <!-- Estado Civil -->
-    <q-card flat bordered class="q-mb-sm">
+    <q-card flat bordered class="q-mb-sm" v-if="!verificarTipoPessoa">
       <q-card-section>
         <div class="titulo">Estado Civil</div>
       </q-card-section>
@@ -201,7 +201,7 @@
     </q-card>
 
     <!-- Filiação -->
-    <q-card flat bordered class="q-mb-sm">
+    <q-card flat bordered class="q-mb-sm" v-if="!verificarTipoPessoa">
       <q-card-section>
         <div class="titulo">Dados sobre Filiação</div>
       </q-card-section>
@@ -311,7 +311,7 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useIndicadorPessoal } from "src/stores/indicador-pessoal";
 import { useEstadoStore } from "src/stores/estado";
@@ -326,8 +326,8 @@ const indicadorPessoalStore = useIndicadorPessoal();
 const { indicadorPessoal } = storeToRefs(indicadorPessoalStore);
 
 // Estados e Cidades (implementar conforme sua lógica)
-const estados = ref([]);
-const cidades = ref([]);
+const estadoStore = useEstadoStore();
+const { estados } = storeToRefs(estadoStore);
 
 // Controles de campos desabilitados
 const campoDataDivorcio = ref(true);
@@ -374,7 +374,7 @@ const tiposPessoa = ref([
 ]);
 
 // Computed para desabilitar campos SISCOAF para Pessoa Jurídica
-const desabilitarSiscoaf = computed(() => {
+const verificarTipoPessoa = computed(() => {
   return indicadorPessoal.value.tipo_pessoa_id === 'PESSOA_JURIDICA';
 });
 
@@ -389,6 +389,10 @@ watch(() => indicadorPessoal.value.tipo_pessoa_id, (novoTipo) => {
     indicadorPessoal.value.pessoa_obrigada = false;
   }
 });
+
+onMounted(async () => {
+  await estadoStore.index()
+})
 
 
 const salvar = async () => {
