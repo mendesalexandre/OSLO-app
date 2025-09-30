@@ -397,12 +397,3 @@ const cancelar = () => {
   model.value = false;
 };
 </script>
-
-<style scoped>
-.titulo {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #1976d2;
-  text-transform: uppercase;
-}
-</style>
