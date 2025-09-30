@@ -71,15 +71,26 @@ watch(localValue, (newValue) => {
 :deep(.q-radio__bg) {
   top: 25%;
   left: 0 !important;
+  right: 0 !important;
   width: 50%;
 
   /* height: 50%; */
   &:hover:not(.q-radio--disabled) .q-radio__bg path:first-child {
     stroke: #1976d2;
   }
-
 }
 
+:deep(.q-radio__inner) {
+  // font-size: 20px !important;
+}
+
+// :deep(.q-radio__inner--truthy) {
+//   color: red;
+// }
+
+// :deep(.q-radio__inner--falsy) {
+//   color: red;
+// }
 
 .yes-no-option-group {
   display: flex;
@@ -88,105 +99,8 @@ watch(localValue, (newValue) => {
 
   .bootstrap-radio-group {
     display: flex;
-    gap: 1rem;
-    align-items: center;
-  }
-
-  :deep(.custom-radio) {
-    padding: 0;
-    margin: 0;
-
-    // Container interno - customização do círculo
-    .q-radio__inner {
-      width: 0 !important;
-      // height: 20px;
-      // min-width: 20px;
-      font-size: 15px;
-
-      // Remove o ::before do Quasar que desalinha
-      &::before {
-        display: none !important;
-      }
-    }
-
-    .q-radio {
-      width: 100%;
-      display: flex;
-      align-items: center;
-    }
-
-    // O SVG do Quasar
-    .q-radio__bg {
-      width: 13px;
-      height: 13px;
-      overflow: visible;
-
-      // Círculo externo
-      path:first-child {
-        fill: white;
-        stroke: #dee2e6;
-        stroke-width: 1.2px;
-      }
-
-      // Círculo interno (check)
-      .q-radio__check {
-        fill: #1976d2;
-      }
-    }
-
-    // Quando selecionado (truthy)
-    .q-radio__inner--truthy .q-radio__bg {
-      path:first-child {
-        stroke: #1976d2;
-        stroke-width: 1.2px;
-      }
-    }
-
-    // Quando não selecionado (falsy) - esconde o círculo interno
-    .q-radio__inner--falsy .q-radio__bg {
-      .q-radio__check {
-        display: none;
-      }
-    }
-
-    // Label - alinhado com o ícone
-    .q-radio__label {
-      font-size: 0.875rem;
-      color: #37474f;
-      // padding-left: 0.5rem;
-      line-height: 1.43;
-      text-align: left;
-    }
-
-    .q-radio__bg {
-      top: 0 !important;
-      left: 0 !important;
-    }
-
-    // Alinhamento vertical correto
-    &.row {
-      align-items: center;
-    }
-
-    // Hover
-    &:hover:not(.q-radio--disabled) .q-radio__bg path:first-child {
-      stroke: #1976d2;
-    }
-
-    // Desabilitado
-    &.q-radio--disabled {
-      opacity: 0.6;
-
-      .q-radio__bg path:first-child {
-        fill: #e9ecef;
-        stroke: #dee2e6;
-      }
-    }
-  }
-
-  .text-caption {
-    font-size: 0.75rem;
-    line-height: 1.25rem;
+    gap: 0.5rem;
+    // align-items: center;
   }
 }
 </style>
