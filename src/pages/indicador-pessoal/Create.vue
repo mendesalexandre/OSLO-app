@@ -227,7 +227,7 @@
     </q-card>
 
     <!-- Profissão -->
-    <q-card flat bordered class="q-mb-sm">
+    <q-card flat bordered class="q-mb-sm" v-if="isPessoaFisica">
       <q-card-section>
         <div class="titulo">Dados sobre Profissão</div>
       </q-card-section>
@@ -375,6 +375,14 @@ const tiposPessoa = ref([
 
 // Computed para desabilitar campos SISCOAF para Pessoa Jurídica
 const verificarTipoPessoa = computed(() => {
+  return indicadorPessoal.value.tipo_pessoa_id === 'PESSOA_JURIDICA';
+});
+
+const isPessoaFisica = computed(() => {
+  return indicadorPessoal.value.tipo_pessoa_id === 'PESSOA_FISICA';
+});
+
+const isPessoaJuridica = computed(() => {
   return indicadorPessoal.value.tipo_pessoa_id === 'PESSOA_JURIDICA';
 });
 
