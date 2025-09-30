@@ -88,12 +88,18 @@ watch(localValue, (newValue) => {
       width: 0 !important;
       // height: 20px;
       // min-width: 20px;
-      font-size: 13px;
+      font-size: 15px;
 
       // Remove o ::before do Quasar que desalinha
       &::before {
         display: none !important;
       }
+    }
+
+    .q-radio {
+      width: 100%;
+      display: flex;
+      align-items: center;
     }
 
     // O SVG do Quasar
