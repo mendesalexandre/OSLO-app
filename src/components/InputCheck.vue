@@ -77,7 +77,6 @@ watch(localValue, (newValue) => {
     display: flex;
     gap: 1.5rem;
     align-items: center;
-    justify-content: start;
   }
 
   :deep(.custom-radio) {
@@ -86,26 +85,26 @@ watch(localValue, (newValue) => {
 
     // Container interno - customização do círculo
     .q-radio__inner {
-      width: 14px;
-      height: 14px;
-      min-width: 14px;
-      font-size: 14px;
-    }
-
-    .q-radio__inner:before {
-      background: none !important;
+      width: 20px;
+      height: 20px;
+      min-width: 20px;
+      font-size: 20px;
+      align-self: flex-start;
+      margin-top: 1px;
     }
 
     // O SVG do Quasar
     .q-radio__bg {
-      width: 14px;
-      height: 14px;
+      width: 20px;
+      height: 20px;
+      overflow: visible;
 
       // Círculo externo
       path:first-child {
         fill: white;
-        stroke: #ced4da;
-        stroke-width: 2px;
+        stroke: #dee2e6;
+        stroke-width: 1.2px;
+        vector-effect: non-scaling-stroke;
       }
 
       // Círculo interno (check)
@@ -118,6 +117,7 @@ watch(localValue, (newValue) => {
     .q-radio__inner--truthy .q-radio__bg {
       path:first-child {
         stroke: #1976d2;
+        stroke-width: 1.2px;
       }
     }
 
@@ -128,12 +128,18 @@ watch(localValue, (newValue) => {
       }
     }
 
-    // Label
+    // Label - alinhado com o ícone
     .q-radio__label {
       font-size: 0.875rem;
       color: #37474f;
       padding-left: 0.5rem;
       line-height: 1.5;
+      align-self: flex-start;
+    }
+
+    // Remove alinhamento padrão do Quasar
+    &.row {
+      align-items: flex-start;
     }
 
     // Hover
