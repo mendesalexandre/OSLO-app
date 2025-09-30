@@ -83,7 +83,7 @@ watch(localValue, (newValue) => {
 
     // Container interno - ajusta o tamanho do círculo
     .q-radio__inner {
-      font-size: 20px;
+      font-size: 14px;
       width: 1em;
       height: 1em;
       min-width: 1em;
@@ -101,47 +101,22 @@ watch(localValue, (newValue) => {
       top: 0;
       left: 0 !important;
       overflow: visible;
-
-      // Círculo externo
-      // path:first-child {
-      //   fill: white;
-      //   stroke: #dee2e6;
-      //   stroke-width: 1.2px;
-      // }
-
-      // Círculo interno (check)
-      // .q-radio__check {
-      //   fill: #1976d2;
-      // }
     }
 
-    // Quando selecionado (truthy)
-    .q-radio__inner--truthy .q-radio__bg {
-      // path:first-child {
-      //   stroke: #1976d2;
-      //   stroke-width: 1px;
-      // }
-    }
-
-    // Quando não selecionado (falsy) - esconde o círculo interno
-    .q-radio__inner--falsy .q-radio__bg {
-      // .q-radio__check {
-      //   display: none;
-      // }
-    }
-
-    // Label
+    // Label - alinhamento vertical corrigido
     .q-radio__label {
       font-size: 0.875rem;
       color: #37474f;
-      padding-left: 0.5rem;
+      padding-left: 4px !important;
       line-height: 1.43;
+      margin-top: 0 !important;
+      align-self: center;
     }
 
-    // Hover
-    // &:hover:not(.q-radio--disabled) .q-radio__bg path:first-child {
-    //   // stroke: #1976d2;
-    // }
+    // Alinhamento vertical do radio
+    &.row {
+      align-items: center;
+    }
 
     // Desabilitado
     &.q-radio--disabled {

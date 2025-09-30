@@ -337,6 +337,7 @@ const campoPaiDesconhecido = ref(true);
 const campoDataCasamento = ref(true);
 const campoNomeDoConjugue = ref(true);
 
+
 const indicadorPessoalStore = useIndicadorPessoal();
 const { indicadorPessoal } = storeToRefs(indicadorPessoalStore);
 
