@@ -139,6 +139,10 @@ watch(localValue, (newValue) => {
       line-height: 1.43;
     }
 
+    .q-radio__bg {
+      left: 0 !important;
+    }
+
     // Alinhamento vertical correto
     &.row {
       align-items: center;
