@@ -68,30 +68,6 @@ watch(localValue, (newValue) => {
 </script>
 
 <style lang="scss" scoped>
-:deep(.q-radio__bg) {
-  top: 25%;
-  left: 0 !important;
-  right: 0 !important;
-  width: 50%;
-
-  /* height: 50%; */
-  &:hover:not(.q-radio--disabled) .q-radio__bg path:first-child {
-    stroke: #1976d2;
-  }
-}
-
-:deep(.q-radio__inner) {
-  // font-size: 20px !important;
-}
-
-// :deep(.q-radio__inner--truthy) {
-//   color: red;
-// }
-
-// :deep(.q-radio__inner--falsy) {
-//   color: red;
-// }
-
 .yes-no-option-group {
   display: flex;
   flex-direction: column;
@@ -99,8 +75,88 @@ watch(localValue, (newValue) => {
 
   .bootstrap-radio-group {
     display: flex;
-    gap: 0.5rem;
-    // align-items: center;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  :deep(.q-radio) {
+
+    // Container interno - ajusta o tamanho do círculo
+    .q-radio__inner {
+      font-size: 20px;
+      width: 1em;
+      height: 1em;
+      min-width: 1em;
+
+      // Remove o ::before do Quasar
+      &::before {
+        display: none !important;
+      }
+    }
+
+    // O SVG do Quasar
+    .q-radio__bg {
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0 !important;
+      overflow: visible;
+
+      // Círculo externo
+      // path:first-child {
+      //   fill: white;
+      //   stroke: #dee2e6;
+      //   stroke-width: 1.2px;
+      // }
+
+      // Círculo interno (check)
+      // .q-radio__check {
+      //   fill: #1976d2;
+      // }
+    }
+
+    // Quando selecionado (truthy)
+    .q-radio__inner--truthy .q-radio__bg {
+      // path:first-child {
+      //   stroke: #1976d2;
+      //   stroke-width: 1px;
+      // }
+    }
+
+    // Quando não selecionado (falsy) - esconde o círculo interno
+    .q-radio__inner--falsy .q-radio__bg {
+      // .q-radio__check {
+      //   display: none;
+      // }
+    }
+
+    // Label
+    .q-radio__label {
+      font-size: 0.875rem;
+      color: #37474f;
+      padding-left: 0.5rem;
+      line-height: 1.43;
+    }
+
+    // Hover
+    // &:hover:not(.q-radio--disabled) .q-radio__bg path:first-child {
+    //   // stroke: #1976d2;
+    // }
+
+    // Desabilitado
+    &.q-radio--disabled {
+      opacity: 0.6;
+
+      .q-radio__bg path:first-child {
+        fill: #e9ecef;
+        stroke: #dee2e6;
+      }
+    }
+  }
+
+  .text-caption {
+    font-size: 0.75rem;
+    line-height: 1.25rem;
   }
 }
 </style>
