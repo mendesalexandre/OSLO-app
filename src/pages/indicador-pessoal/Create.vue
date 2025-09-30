@@ -6,7 +6,7 @@
         <div class="row q-col-gutter-sm">
           <div class="col-md-1 col-sm-12 col-xs-12">
             <v-label label="ID" />
-            <q-input v-model="indicadorPessoal.id" outlined dense disabled />
+            <q-input v-model="indicadorPessoal.id" outlined dense disabled readonly />
           </div>
 
           <div class="col-md-8 col-sm-12 col-xs-12">
@@ -15,19 +15,19 @@
           </div>
 
           <div class="col-md-3 col-sm-12 col-xs-12">
-            <v-input-check v-model="indicadorPessoal.ativo" label="Ativo?" />
+            <v-input-check v-model="indicadorPessoal.is_ativo" label="Ativo?" />
           </div>
 
-          <div class="col-md-4 col-sm-12 col-xs-12">
+          <div class="col-md-3 col-sm-12 col-xs-12">
             <v-label label="Tipo Pessoa" obrigatorio />
             <q-select v-model="indicadorPessoal.tipo_pessoa_id" outlined dense :options="tiposPessoa" option-value="id"
               :option-label="(tipo) => `${tipo.nome}`" emit-value map-options placeholder="Selecione o tipo" />
           </div>
 
-          <div class="col-md-5 col-sm-12 col-xs-12">
+          <div class="col-md-6 col-sm-12 col-xs-12">
             <v-label label="CPF/CNPJ" obrigatorio />
             <q-input v-model="indicadorPessoal.cpf_cnpj" :mask="mascaraCpfCnpj" unmasked-value outlined dense
-              @blur="validarCpfCnpj" :error="erroCpfCnpj" :error-message="mensagemErroCpfCnpj"
+              @blur="validarCpfCnpj" :error="erroCpfCnpj" :error-message="mensagemErroCpfCnpj" hide-bottom-space
               placeholder="Digite o CPF ou CNPJ" />
           </div>
 

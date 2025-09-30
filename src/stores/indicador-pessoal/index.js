@@ -6,7 +6,7 @@ export const useIndicadorPessoal = defineStore("indicador-pessoal", {
       // Dados Pessoais
       id: null,
       nome: "",
-      ativo: true,
+      is_ativo: true,
       tipo_pessoa_id: null,
       cpf_cnpj: "",
       data_nascimento: null,
