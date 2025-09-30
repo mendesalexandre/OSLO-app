@@ -13,6 +13,12 @@ export const useCidadeStore = defineStore("cidades", {
       const resposta = await api.get(`${path}/codigo-ibge/${dto.codigoIbge}`);
       return resposta;
     },
+
+    async getCidadesEstadoId(dto) {
+      const resposta = await api.get(`${path}/estado/${dto}`);
+      this.cidades = resposta.data.data;
+      return resposta;
+    },
   },
 });
 

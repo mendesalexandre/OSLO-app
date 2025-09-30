@@ -280,13 +280,13 @@
             <v-label label="Estado" />
             <q-select v-model="indicadorPessoal.endereco.estado_id" outlined dense :options="estados" option-value="id"
               :option-label="(estado) => `${estado.ibge_codigo} - ${estado.nome}`" emit-value map-options
-              @update:model-value="getCidadesPorEstado" placeholder="Selecione o estado" />
+              @update:model-value="getCidadesPorEstado($event)" placeholder="Selecione o estado" />
           </div>
 
           <div class="col-md-4 col-sm-12 col-xs-12">
             <v-label label="Cidade" />
             <q-select v-model="indicadorPessoal.endereco.cidade_id" outlined dense emit-value map-options
-              :options="cidades" option-value="id" :option-label="(cidade) => `${cidade.ibge_codigo} - ${cidade.nome}`"
+              :options="cidades" option-value="id" :option-label="(cidade) => `${cidade.nome}`"
               placeholder="Selecione a cidade" />
           </div>
 
@@ -376,10 +376,10 @@ const consultarCep = async () => {
         if (cidadeResponse?.data.success) {
           // Preenche o estado e cidade automaticamente
           indicadorPessoal.value.endereco.estado_id = cidadeResponse.data.data.estado_id;
-          indicadorPessoal.value.endereco.cidade_id = cidadeResponse.data.id;
-
           // Carrega as cidades do estado selecionado
-          await getCidadesPorEstado();
+          indicadorPessoal.value.endereco.cidade_id = cidadeResponse.data.id;
+          await cidadeStore.getCidadesEstadoId(indicadorPessoal.value.endereco.estado_id);
+
         }
       } catch (error) {
         console.error("Erro ao buscar cidade pelo IBGE:", error);
@@ -404,9 +404,9 @@ const consultarCep = async () => {
   }
 }
 
-const getCidadesPorEstado = async () => {
-  indicadorPessoal.value.endereco.cidade_id = null;
-  // Implementar lógica de busca de cidades
+const getCidadesPorEstado = async (estadoId) => {
+  // indicadorPessoal.value.endereco.cidade_id = null;
+  await cidadeStore.getCidadesEstadoId(estadoId);
 };
 
 const validarCpfCnpj = () => {
