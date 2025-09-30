@@ -75,7 +75,7 @@ watch(localValue, (newValue) => {
 
   .bootstrap-radio-group {
     display: flex;
-    gap: 1.5rem;
+    gap: 1rem;
     align-items: center;
   }
 
@@ -88,7 +88,7 @@ watch(localValue, (newValue) => {
       width: 0 !important;
       // height: 20px;
       // min-width: 20px;
-      // font-size: 20px;
+      font-size: 13px;
 
       // Remove o ::before do Quasar que desalinha
       &::before {
@@ -134,8 +134,9 @@ watch(localValue, (newValue) => {
     .q-radio__label {
       font-size: 0.875rem;
       color: #37474f;
-      padding-left: 0.5rem;
+      // padding-left: 0.5rem;
       line-height: 1.43;
+      text-align: left;
     }
 
     .q-radio__bg {
