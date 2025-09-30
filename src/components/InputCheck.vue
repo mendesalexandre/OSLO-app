@@ -1,43 +1,32 @@
 <template>
-  <div class="form-group yes-no-option-group">
-    <label v-if="label">{{ label }}</label>
-    <q-option-group v-model="localValue" :options="options" :inline="inline" :disable="disable" :type="typeInput"
-      class="text-capitalize bootstrap-style-radio" :color="localValue ? 'positive' : 'negative'">
-      <!-- <template v-slot:label="opt">
-        <div class="row items-center">
-          <span class="text-teal">{{ opt.label }}</span>
-          <q-icon name="fa-solid fa-circle" size="1.5em" class="q-ml-sm" />
-        </div>
-      </template> -->
-    </q-option-group>
-    <div v-if="error" class="invalid-feedback d-block">{{ error }}</div>
-    <div v-if="hint && !error" class="form-text text-muted">{{ hint }}</div>
+  <div class="yes-no-option-group">
+    <v-label v-if="label" :titulo="label" :obrigatorio="required" />
+
+    <div class="bootstrap-radio-group">
+      <q-radio v-model="localValue" :val="true" :label="yesLabel" :disable="disable" class="custom-radio" />
+      <q-radio v-model="localValue" :val="false" :label="noLabel" :disable="disable" class="custom-radio" />
+    </div>
+
+    <div v-if="error" class="text-negative text-caption q-mt-xs">{{ error }}</div>
+    <div v-if="hint && !error" class="text-grey-7 text-caption q-mt-xs">{{ hint }}</div>
   </div>
 </template>
 
 <script setup>
-import { computed, ref, watch } from "vue";
+import { ref, watch } from "vue";
 
 const props = defineProps({
   modelValue: {
-    type: Boolean,
+    type: [Boolean, null],
     default: null,
   },
   label: {
     type: String,
     default: "",
   },
-  inline: {
-    type: Boolean,
-    default: true,
-  },
   disable: {
     type: Boolean,
     default: false,
-  },
-  typeInput: {
-    type: String,
-    default: "radio",
   },
   error: {
     type: String,
@@ -55,22 +44,15 @@ const props = defineProps({
     type: String,
     default: "Não",
   },
+  required: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const emit = defineEmits(["update:modelValue", "change"]);
 
 const localValue = ref(props.modelValue);
-
-const options = computed(() => [
-  {
-    label: props.yesLabel,
-    value: true,
-  },
-  {
-    label: props.noLabel,
-    value: false,
-  },
-]);
 
 watch(
   () => props.modelValue,
@@ -89,88 +71,89 @@ watch(localValue, (newValue) => {
 .yes-no-option-group {
   display: flex;
   flex-direction: column;
+  gap: 0.375rem;
 
-  label {
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-  }
-
-  // Estilos para simular o radio do Bootstrap 4.6
-  :deep(.bootstrap-style-radio) {
+  .bootstrap-radio-group {
     display: flex;
+    gap: 1.5rem;
     align-items: center;
-    min-height: 40px; // Altura para alinhar com o q-input
+  }
 
-    .q-option-group {
-      margin: 0;
+  :deep(.custom-radio) {
+    padding: 0;
+    margin: 0;
+
+    // Container interno - customização do círculo
+    .q-radio__inner {
+      width: 20px;
+      height: 20px;
+      min-width: 20px;
+      font-size: 20px;
     }
 
-    .q-radio {
-      margin: 0;
-      padding: 0;
-      vertical-align: middle;
+    .q-radio__inner:before {
+      background: none !important;
+    }
 
-      &__inner {
-        width: 2rem;
-        height: 2rem;
+    // O SVG do Quasar
+    .q-radio__bg {
+      width: 18px;
+      height: 18px;
 
-        &:before {
-          border-radius: 50%;
-          background: white;
-          border: 1px solid #ced4da;
-        }
+      // Círculo externo
+      path:first-child {
+        fill: white;
+        stroke: #ced4da;
+        stroke-width: 2px;
       }
 
-      &__bg {
-        border-radius: 50%;
-      }
-
-      &__label {
-        // font-size: 1rem;
-        color: #212529;
-        padding-left: 0.25rem;
-        margin-left: -15px; // Aproxima o texto do input radio
+      // Círculo interno (check)
+      .q-radio__check {
+        fill: #1976d2;
       }
     }
 
-    // Ajustes para quando as opções são inline
-    &.q-option-group--inline {
-      display: flex;
-      align-items: center;
+    // Quando selecionado (truthy)
+    .q-radio__inner--truthy .q-radio__bg {
+      path:first-child {
+        stroke: #1976d2;
+      }
+    }
 
-      >div {
-        margin-right: 0.3rem;
-        display: flex;
-        align-items: center;
+    // Quando não selecionado (falsy) - esconde o círculo interno
+    .q-radio__inner--falsy .q-radio__bg {
+      .q-radio__check {
+        display: none;
+      }
+    }
+
+    // Label
+    .q-radio__label {
+      font-size: 0.875rem;
+      color: #37474f;
+      padding-left: 0.5rem;
+      line-height: 1.5;
+    }
+
+    // Hover
+    &:hover:not(.q-radio--disabled) .q-radio__bg path:first-child {
+      stroke: #1976d2;
+    }
+
+    // Desabilitado
+    &.q-radio--disabled {
+      opacity: 0.6;
+
+      .q-radio__bg path:first-child {
+        fill: #e9ecef;
+        stroke: #dee2e6;
       }
     }
   }
 
-  // Ajustes para o feedback de erro e hint
-  .invalid-feedback {
-    color: #dc3545;
-    font-size: 0.875rem;
-    margin-top: 0.25rem;
-  }
-
-  .form-text {
-    font-size: 0.875rem;
-    margin-top: 0.25rem;
-  }
-}
-
-// Ajustes específicos para alinhar com q-input
-:deep(.q-field__control) {
-  height: 40px;
-}
-
-// Ajuste vertical quando ao lado de um q-input
-.full-height {
-  min-height: 56px; // Altura padrão do q-input com label
-
-  .bootstrap-style-radio {
-    position: relative;
-    top: 6px; // Pequeno ajuste vertical
+  .text-caption {
+    font-size: 0.75rem;
+    line-height: 1.25rem;
   }
 }
 </style>
