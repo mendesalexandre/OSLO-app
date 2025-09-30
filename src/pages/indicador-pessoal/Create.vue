@@ -21,8 +21,7 @@
           <div class="col-md-4 col-sm-12 col-xs-12">
             <v-label label="Tipo Pessoa" obrigatorio />
             <q-select v-model="indicadorPessoal.tipo_pessoa_id" outlined dense :options="tiposPessoa" option-value="id"
-              :option-label="(tipo) => `${tipo.id} - ${tipo.nome}`" emit-value map-options
-              placeholder="Selecione o tipo" />
+              :option-label="(tipo) => `${tipo.nome}`" emit-value map-options placeholder="Selecione o tipo" />
           </div>
 
           <div class="col-md-5 col-sm-12 col-xs-12">
@@ -329,7 +328,6 @@ const { indicadorPessoal } = storeToRefs(indicadorPessoalStore);
 // Estados e Cidades (implementar conforme sua lógica)
 const estados = ref([]);
 const cidades = ref([]);
-const tiposPessoa = ref([]);
 
 // Controles de campos desabilitados
 const campoDataDivorcio = ref(true);
@@ -369,6 +367,12 @@ const validarCpfCnpj = () => {
 const abrirModalRegistro = () => {
   // Implementar abertura de modal
 };
+
+const tiposPessoa = ref([
+  { id: 'PESSOA_FISICA', nome: 'Pessoa física' },
+  { id: 'PESSOA_JURIDICA', nome: 'Pessoa jurídica' }
+]);
+
 
 const salvar = async () => {
   try {
