@@ -349,6 +349,7 @@ const mascaraCpfCnpj = computed(() => indicadorPessoalStore.mascaraCpfCnpj);
 const consultarCep = async () => {
   if (!indicadorPessoal.value.endereco.cep) return;
 
+  $q.loading.show();
   try {
     const response = await getCep(indicadorPessoal.value.endereco.cep);
 
@@ -401,6 +402,9 @@ const consultarCep = async () => {
       position: "top",
       timeout: 3000,
     });
+  }
+  finally {
+    $q.loading.hide();
   }
 }
 
