@@ -98,8 +98,8 @@ watch(localValue, (newValue) => {
 
     // O SVG do Quasar
     .q-radio__bg {
-      width: 20px;
-      height: 20px;
+      width: 13px;
+      height: 13px;
       overflow: visible;
 
       // Círculo externo
@@ -107,7 +107,6 @@ watch(localValue, (newValue) => {
         fill: white;
         stroke: #dee2e6;
         stroke-width: 1.2px;
-        vector-effect: non-scaling-stroke;
       }
 
       // Círculo interno (check)
