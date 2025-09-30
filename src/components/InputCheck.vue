@@ -72,6 +72,9 @@ watch(localValue, (newValue) => {
   display: flex;
   flex-direction: column;
   gap: 0.375rem;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
 
   .bootstrap-radio-group {
     display: flex;
