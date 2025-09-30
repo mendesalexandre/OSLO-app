@@ -128,10 +128,12 @@
     <!-- Estado Civil -->
     <q-card flat bordered class="q-mb-sm">
       <q-card-section>
-        <h6 class="text-primary fw-semibold text-uppercase mb-3 border-bottom pb-2">
+        <div class="titulo">
           Estado Civil
-        </h6>
-
+        </div>
+      </q-card-section>
+      <q-separator />
+      <q-card-section>
         <div class="row q-col-gutter-sm">
           <div class="col-md-6 col-sm-12 col-xs-12">
             <v-label label="Estado Civil" />
@@ -205,12 +207,14 @@
     <!-- Filiação -->
     <q-card flat bordered class="q-mb-sm">
       <q-card-section>
-        <h6 class="text-primary fw-semibold text-uppercase mb-3 border-bottom pb-2">
+        <div class="titulo">
           Dados sobre Filiação
-        </h6>
-
+        </div>
+      </q-card-section>
+      <q-separator />
+      <q-card-section>
         <div class="row q-col-gutter-sm">
-          <div class="col-md-5 col-sm-12 col-xs-12">
+          <div class="col-md-12 col-sm-12 col-xs-12">
             <v-label label="Nome da Mãe" />
             <q-input outlined dense placeholder="Nome completo da mãe" />
           </div>
@@ -219,7 +223,7 @@
             <q-checkbox label="Pai desconhecido" color="primary" />
           </div>
 
-          <div class="col-md-5 col-sm-12 col-xs-12">
+          <div class="col-md-12 col-sm-12 col-xs-12">
             <v-label label="Nome do Pai" />
             <q-input :disable="campoPaiDesconhecido" outlined dense placeholder="Nome completo do pai" />
           </div>
@@ -230,9 +234,12 @@
     <!-- Profissão -->
     <q-card flat bordered class="q-mb-sm">
       <q-card-section>
-        <h6 class="text-primary fw-semibold text-uppercase mb-3 border-bottom pb-2">
+        <div class="titulo">
           Dados sobre Profissão
-        </h6>
+        </div>
+      </q-card-section>
+      <q-separator />
+      <q-card-section>
 
         <div class="row q-col-gutter-sm">
           <div class="col-md-12 col-sm-12 col-xs-12">
@@ -244,12 +251,15 @@
     </q-card>
 
     <!-- Endereço -->
-    <q-card flat bordered class="mb-3">
-      <q-card-section>
-        <h6 class="text-primary fw-semibold text-uppercase mb-3 border-bottom pb-2">
-          Endereço
-        </h6>
+    <q-card flat bordered class="q-mb-sm">
 
+      <q-card-section>
+        <div class="titulo">
+          Endereço
+        </div>
+      </q-card-section>
+      <q-separator />
+      <q-card-section>
         <div class="row q-col-gutter-sm">
           <div class="col-md-2 col-sm-12 col-xs-12">
             <v-label label="CEP" />
@@ -299,7 +309,7 @@
     </q-card>
 
     <template v-slot:rodape>
-      <q-card-section class="d-flex justify-content-end gap-3">
+      <q-card-section class="flex justify-end">
         <q-btn label="Cancelar" color="secondary" @click="model = false" outline icon="close" />
         <q-btn label="Salvar" color="primary" icon="check" @click="salvar" />
       </q-card-section>
