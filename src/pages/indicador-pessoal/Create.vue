@@ -314,6 +314,7 @@
 import { computed, onMounted, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useIndicadorPessoal } from "src/stores/indicador-pessoal";
+import { useCidadeStore } from "src/stores/cidade";
 import { useEstadoStore } from "src/stores/estado";
 import getCep from "src/Utils";
 import { useQuasar } from "quasar";
@@ -328,6 +329,9 @@ const { indicadorPessoal } = storeToRefs(indicadorPessoalStore);
 // Estados e Cidades (implementar conforme sua lógica)
 const estadoStore = useEstadoStore();
 const { estados } = storeToRefs(estadoStore);
+
+const cidadeStore = useCidadeStore();
+const { cidades, cidade } = storeToRefs(cidadeStore);
 
 // Controles de campos desabilitados
 const campoDataDivorcio = ref(true);
@@ -345,7 +349,6 @@ const mascaraCpfCnpj = computed(() => indicadorPessoalStore.mascaraCpfCnpj);
 const consultarCep = async () => {
   if (!indicadorPessoal.value.endereco.cep) return;
 
-  $q.loading.show();
   try {
     const response = await getCep(indicadorPessoal.value.endereco.cep);
 
@@ -360,7 +363,28 @@ const consultarCep = async () => {
       return;
     }
 
+    // Preenche os dados do endereço
     indicadorPessoalStore.preencherEnderecoCep(response);
+
+    // Busca a cidade pelo código IBGE retornado no CEP
+    if (response.ibge) {
+      try {
+        const cidadeResponse = await cidadeStore.getCidadeCodigoIbge({
+          codigoIbge: response.ibge
+        });
+
+        if (cidadeResponse?.data) {
+          // Preenche o estado e cidade automaticamente
+          indicadorPessoal.value.endereco.estado_id = cidadeResponse.data.estado_id;
+          indicadorPessoal.value.endereco.cidade_id = cidadeResponse.data.id;
+
+          // Carrega as cidades do estado selecionado
+          await getCidadesPorEstado();
+        }
+      } catch (error) {
+        console.error("Erro ao buscar cidade pelo IBGE:", error);
+      }
+    }
 
     $q.notify({
       type: "positive",
@@ -378,11 +402,7 @@ const consultarCep = async () => {
       timeout: 3000,
     });
   }
-
-  finally {
-    $q.loading.hide();
-  }
-};
+}
 
 const getCidadesPorEstado = async () => {
   indicadorPessoal.value.endereco.cidade_id = null;
