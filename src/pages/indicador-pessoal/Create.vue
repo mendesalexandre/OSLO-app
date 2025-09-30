@@ -222,7 +222,7 @@
           </div>
 
           <div class="col-md-2 col-sm-12 col-xs-12 d-flex align-items-end">
-            <q-checkbox label="Pai desconhecido" color="primary" />
+            <v-input-check label="Pai desconhecido" obrigatorio />
           </div>
 
           <div class="col-md-12 col-sm-12 col-xs-12">
