@@ -223,19 +223,6 @@ const abrirModalCriarProtocolo = async () => {
 }
 
 
-/* Ícone de logout com cor especial */
-.logout-icon {
-  --fa-primary-color: #dc2626;
-  --fa-secondary-color: #f87171;
-  --fa-secondary-opacity: 0.5;
-}
-
-.logout-main:hover .logout-icon {
-  transform: scale(1.1);
-  --fa-primary-color: #b91c1c;
-}
-
-
 /* Responsividade para telas pequenas */
 @media (max-width: 500px) {
   .menu-item {
