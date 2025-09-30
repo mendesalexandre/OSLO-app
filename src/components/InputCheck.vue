@@ -140,6 +140,7 @@ watch(localValue, (newValue) => {
     }
 
     .q-radio__bg {
+      top: 0 !important;
       left: 0 !important;
     }
 
