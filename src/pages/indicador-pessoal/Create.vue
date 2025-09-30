@@ -36,27 +36,46 @@
             <q-input v-model="indicadorPessoal.data_nascimento" type="date" outlined dense />
           </div>
 
-          <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="col-md-8 col-sm-12 col-xs-12">
             <v-label label="E-mail" />
             <q-input v-model="indicadorPessoal.email" outlined dense type="email" placeholder="exemplo@email.com" />
           </div>
 
-          <div class="col-md-3 col-sm-12 col-xs-12">
+          <div class="col-md-4 col-sm-12 col-xs-12">
             <v-label label="Passaporte" />
             <q-input v-model="indicadorPessoal.passaporte" outlined dense placeholder="Número do passaporte" />
           </div>
 
-          <div class="col-md-3 col-sm-12 col-xs-12">
+          <div class="col-md-4 col-sm-12 col-xs-12">
             <v-label label="RG" />
             <q-input v-model="indicadorPessoal.rg" outlined dense placeholder="Registro Geral" />
           </div>
+          <div class="col-md-4 col-sm-12 col-xs-12">
+            <v-label label="Emissor RG" />
+            <q-input v-model="indicadorPessoal.rg" outlined dense placeholder="Registro Geral" />
+          </div>
 
-          <div class="col-md-3 col-sm-12 col-xs-12">
+          <div class="col-md-4 col-sm-12 col-xs-12">
+            <v-label label="Data Emissão RG" />
+            <q-input type="date" v-model="indicadorPessoal.rg" outlined dense placeholder="Registro Geral" />
+          </div>
+
+          <div class="col-md-4 col-sm-12 col-xs-12">
             <v-label label="CNH" />
             <q-input v-model="indicadorPessoal.cnh" outlined dense placeholder="Carteira de Habilitação" />
           </div>
 
-          <div class="col-md-3 col-sm-12 col-xs-12">
+          <div class="col-md-4 col-sm-12 col-xs-12">
+            <v-label label="Emissor CNH" />
+            <q-input v-model="indicadorPessoal.cnh" outlined dense placeholder="Carteira de Habilitação" />
+          </div>
+
+          <div class="col-md-4 col-sm-12 col-xs-12">
+            <v-label label="Data Emissão CNH" />
+            <q-input type="date" v-model="indicadorPessoal.cnh" outlined dense placeholder="Carteira de Habilitação" />
+          </div>
+
+          <div class="col-md-12 col-sm-12 col-xs-12">
             <v-label label="Identidade Profissional" />
             <q-input v-model="indicadorPessoal.identidade_profissional" outlined dense
               placeholder="Registro profissional" />
