@@ -310,8 +310,10 @@
 
     <template v-slot:rodape>
       <q-card-section class="flex justify-end">
-        <q-btn label="Cancelar" color="secondary" @click="model = false" outline icon="close" />
-        <q-btn label="Salvar" color="primary" icon="check" @click="salvar" />
+        <div class="q-gutter-sm q-mr-md">
+          <q-btn label="Cancelar" color="secondary" @click="model = false" outline icon="close" />
+          <q-btn label="Salvar" color="primary" icon="check" @click="salvar" />
+        </div>
       </q-card-section>
     </template>
   </modal>
