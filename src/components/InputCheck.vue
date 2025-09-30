@@ -3,8 +3,8 @@
     <v-label v-if="label" :label="label" :obrigatorio="required" />
 
     <div class="bootstrap-radio-group">
-      <q-radio v-model="localValue" :val="true" :label="yesLabel" :disable="disable" class="custom-radio" />
-      <q-radio v-model="localValue" :val="false" :label="noLabel" :disable="disable" class="custom-radio" />
+      <q-radio v-model="localValue" :val="true" :label="yesLabel" :disable="disable" />
+      <q-radio v-model="localValue" :val="false" :label="noLabel" :disable="disable" />
     </div>
 
     <div v-if="error" class="text-negative text-caption q-mt-xs">{{ error }}</div>
@@ -68,6 +68,15 @@ watch(localValue, (newValue) => {
 </script>
 
 <style lang="scss" scoped>
+:deep(.q-radio__bg) {
+  top: 25%;
+  /* left: 25%; */
+  width: 50%;
+  /* height: 50%; */
+  -webkit-print-color-adjust: exact;
+}
+
+
 .yes-no-option-group {
   display: flex;
   flex-direction: column;
