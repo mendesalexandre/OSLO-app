@@ -66,7 +66,7 @@
     </q-card>
 
     <!-- SISCOAF -->
-    <q-card flat bordered class="q-mb-sm">
+    <q-card flat bordered class="q-mb-sm" v-if="!desabilitarSiscoaf">
       <q-card-section>
         <div class="titulo">Informações SISCOAF</div>
       </q-card-section>
@@ -311,7 +311,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useIndicadorPessoal } from "src/stores/indicador-pessoal";
 import { useEstadoStore } from "src/stores/estado";
@@ -372,6 +372,23 @@ const tiposPessoa = ref([
   { id: 'PESSOA_FISICA', nome: 'Pessoa física' },
   { id: 'PESSOA_JURIDICA', nome: 'Pessoa jurídica' }
 ]);
+
+// Computed para desabilitar campos SISCOAF para Pessoa Jurídica
+const desabilitarSiscoaf = computed(() => {
+  return indicadorPessoal.value.tipo_pessoa_id === 'PESSOA_JURIDICA';
+});
+
+// Watch para limpar campos SISCOAF quando mudar para Pessoa Jurídica
+watch(() => indicadorPessoal.value.tipo_pessoa_id, (novoTipo) => {
+  if (novoTipo === 'PESSOA_JURIDICA') {
+    indicadorPessoal.value.pessoa_falecida = false;
+    indicadorPessoal.value.menor_idade = false;
+    indicadorPessoal.value.incapaz = false;
+    indicadorPessoal.value.pessoa_politicamente_exposta = false;
+    indicadorPessoal.value.servidor_publico = false;
+    indicadorPessoal.value.pessoa_obrigada = false;
+  }
+});
 
 
 const salvar = async () => {
