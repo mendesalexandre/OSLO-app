@@ -377,7 +377,7 @@ const consultarCep = async () => {
           // Preenche o estado e cidade automaticamente
           indicadorPessoal.value.endereco.estado_id = cidadeResponse.data.data.estado_id;
           // Carrega as cidades do estado selecionado
-          indicadorPessoal.value.endereco.cidade_id = cidadeResponse.data.id;
+          indicadorPessoal.value.endereco.cidade_id = cidadeResponse.data.data.id;
           await cidadeStore.getCidadesEstadoId(indicadorPessoal.value.endereco.estado_id);
 
         }
