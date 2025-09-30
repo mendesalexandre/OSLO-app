@@ -1,7 +1,7 @@
 <template>
   <modal titulo="Cadastrar novo Indicador" v-model="model" tamanho="lg">
     <!-- Dados Pessoais -->
-    <q-card flat bordered class="mb-3">
+    <q-card flat bordered class="q-mb-sm">
       <q-card-section>
         <div class="row q-col-gutter-sm">
           <div class="col-md-1 col-sm-12 col-xs-12">
@@ -15,8 +15,7 @@
           </div>
 
           <div class="col-md-3 col-sm-12 col-xs-12">
-            <v-label label="Ativo?" />
-            <q-checkbox label="Cliente ativo" color="primary" />
+            <v-input-check label="Ativo?" obrigatorio />
           </div>
 
           <div class="col-md-4 col-sm-12 col-xs-12">

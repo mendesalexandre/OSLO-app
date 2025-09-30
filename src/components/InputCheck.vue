@@ -1,6 +1,6 @@
 <template>
   <div class="yes-no-option-group">
-    <v-label v-if="label" :titulo="label" :obrigatorio="required" />
+    <v-label v-if="label" :label="label" :obrigatorio="required" />
 
     <div class="bootstrap-radio-group">
       <q-radio v-model="localValue" :val="true" :label="yesLabel" :disable="disable" class="custom-radio" />
