@@ -3,8 +3,8 @@
     <v-label v-if="label" :label="label" :obrigatorio="required" />
 
     <div class="bootstrap-radio-group">
-      <q-radio v-model="localValue" :val="true" :label="yesLabel" :disable="disable" />
-      <q-radio v-model="localValue" :val="false" :label="noLabel" :disable="disable" />
+      <q-radio v-model="localValue" :val="true" :label="yesLabel" :disable="disable" color="blue-8" />
+      <q-radio v-model="localValue" :val="false" :label="noLabel" :disable="disable" color="red-8" />
     </div>
 
     <div v-if="error" class="text-negative text-caption q-mt-xs">{{ error }}</div>
