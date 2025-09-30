@@ -85,12 +85,15 @@ watch(localValue, (newValue) => {
 
     // Container interno - customização do círculo
     .q-radio__inner {
-      width: 20px;
-      height: 20px;
-      min-width: 20px;
-      font-size: 20px;
-      align-self: flex-start;
-      margin-top: 1px;
+      width: 0 !important;
+      // height: 20px;
+      // min-width: 20px;
+      // font-size: 20px;
+
+      // Remove o ::before do Quasar que desalinha
+      &::before {
+        display: none !important;
+      }
     }
 
     // O SVG do Quasar
@@ -133,13 +136,12 @@ watch(localValue, (newValue) => {
       font-size: 0.875rem;
       color: #37474f;
       padding-left: 0.5rem;
-      line-height: 1.5;
-      align-self: flex-start;
+      line-height: 1.43;
     }
 
-    // Remove alinhamento padrão do Quasar
+    // Alinhamento vertical correto
     &.row {
-      align-items: flex-start;
+      align-items: center;
     }
 
     // Hover
