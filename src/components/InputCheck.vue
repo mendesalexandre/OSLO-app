@@ -70,10 +70,14 @@ watch(localValue, (newValue) => {
 <style lang="scss" scoped>
 :deep(.q-radio__bg) {
   top: 25%;
-  /* left: 25%; */
+  left: 0 !important;
   width: 50%;
+
   /* height: 50%; */
-  -webkit-print-color-adjust: exact;
+  &:hover:not(.q-radio--disabled) .q-radio__bg path:first-child {
+    stroke: #1976d2;
+  }
+
 }
 
 
