@@ -36,7 +36,7 @@
             <q-input v-model="indicadorPessoal.data_nascimento" type="date" outlined dense />
           </div>
 
-          <div class="col-md-8 col-sm-12 col-xs-12">
+          <div class="col-md-12 col-sm-12 col-xs-12">
             <v-label label="E-mail" />
             <q-input v-model="indicadorPessoal.email" outlined dense type="email" placeholder="exemplo@email.com" />
           </div>
@@ -47,7 +47,7 @@
             <q-input v-model="indicadorPessoal.rg_ie" outlined dense placeholder="Número do RG" />
           </div>
 
-          <div class="col-md-4 col-sm-12 col-xs-12">
+          <div class="col-md-3 col-sm-12 col-xs-12">
             <v-label label="Órgão Expedidor RG" />
             <q-input v-model="indicadorPessoal.rg_orgao_expedidor" outlined dense placeholder="Ex: SSP" />
           </div>
@@ -57,7 +57,7 @@
             <q-input v-model="indicadorPessoal.rg_uf_emissao" outlined dense maxlength="2" placeholder="SP" />
           </div>
 
-          <div class="col-md-2 col-sm-12 col-xs-12">
+          <div class="col-md-3 col-sm-12 col-xs-12">
             <v-label label="Data Emissão RG" />
             <q-input type="date" v-model="indicadorPessoal.rg_data_emissao" outlined dense />
           </div>
@@ -812,11 +812,3 @@ onMounted(async () => {
   }
 });
 </script>
-
-<style scoped>
-.titulo {
-  font-size: 16px;
-  font-weight: 600;
-  color: #1976d2;
-}
-</style>
