@@ -1,4 +1,5 @@
 import { defineStore, acceptHMRUpdate } from "pinia";
+import { api } from "src/boot/axios";
 
 export const useIndicadorPessoal = defineStore("indicador-pessoal", {
   state: () => ({
@@ -136,18 +137,6 @@ export const useIndicadorPessoal = defineStore("indicador-pessoal", {
       this.indicadorPessoal.endereco.complemento = dadosCep.complemento || "";
     },
 
-    // Salvar indicador (placeholder - implementar lógica de API)
-    async salvar() {
-      try {
-        // Implementar chamada à API
-        console.log("Salvando indicador:", this.indicadorPessoal);
-        return { success: true };
-      } catch (error) {
-        console.error("Erro ao salvar indicador:", error);
-        throw error;
-      }
-    },
-
     // Carregar indicador por ID (placeholder)
     async carregar(id) {
       try {
@@ -157,6 +146,12 @@ export const useIndicadorPessoal = defineStore("indicador-pessoal", {
         console.error("Erro ao carregar indicador:", error);
         throw error;
       }
+    },
+
+    // Método SIMPLES: apenas faz a chamada, quem chama trata o erro
+    async salvar(dados) {
+      const response = await api.post("/indicador-pessoal", dados);
+      return response;
     },
   },
 });
