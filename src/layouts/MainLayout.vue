@@ -193,7 +193,7 @@ const router = useRouter();
 // Adicione suas variáveis reativas aqui
 const leftDrawerOpen = ref(false);
 const modalCriarProtocolo = ref(false);
-const modalCriarIndicador = ref(true);
+const modalCriarIndicador = ref(false);
 
 
 // Adicione seus métodos aqui
