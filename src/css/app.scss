@@ -213,3 +213,7 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
+
+.q-drawer--left.q-drawer--bordered {
+  border-right: 1px solid rgba(0, 0, 0, 0.05) !important;
+}

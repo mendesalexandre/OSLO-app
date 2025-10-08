@@ -1,21 +1,21 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <!-- <q-header bordered elevated class="bg-white">
+    <q-header bordered elevated class="bg-white">
       <q-toolbar>
         <q-btn flat dense round aria-label="Menu" @click="toggleLeftDrawer" color="dark" icon="fa-solid fa-bars"
           size="sm">
         </q-btn>
       </q-toolbar>
-    </q-header> -->
+    </q-header>
 
-    <q-drawer bordered v-model="leftDrawerOpen" show-if-above side="left" :width="60" :breakpoint="500">
+    <q-drawer bordered v-model="leftDrawerOpen" show-if-above side="left" :width="60" :breakpoint="500" elevated>
       <q-list class="text-center text-caption w-full">
 
         <!-- Menu Principal -->
         <q-item clickable v-ripple exact>
           <q-item-section>
             <q-item-label>
-              <q-icon name="fa-duotone fa-location-arrow" size="18px" />
+              <q-icon name="fa-duotone fa-location-arrow" size="16px" />
             </q-item-label>
           </q-item-section>
         </q-item>
@@ -23,7 +23,7 @@
         <q-item clickable v-ripple exact @click="abrirModalCriarProtocolo">
           <q-item-section>
             <q-item-label>
-              <q-icon name="fa-duotone fa-solid fa-square-plus" size="20px" color="orange" />
+              <q-icon name="fa-duotone fa-solid fa-square-plus" size="16px" class="no-padding shadow-2" />
             </q-item-label>
           </q-item-section>
         </q-item>
@@ -31,7 +31,7 @@
         <q-item clickable v-ripple exact>
           <q-item-section>
             <q-item-label>
-              <q-icon name="fa-regular fa-bars" size="18px" color="grey-6" />
+              <q-icon name="fa-regular fa-bars" size="16px" color="grey-6" />
             </q-item-label>
           </q-item-section>
         </q-item>
