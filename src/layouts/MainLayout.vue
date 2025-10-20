@@ -12,7 +12,7 @@
       <q-list class="text-center text-caption w-full">
 
         <!-- Menu Principal -->
-        <q-item clickable v-ripple exact>
+        <q-item clickable v-ripple exact class="menu-item-hover">
           <q-item-section>
             <q-item-label>
               <q-icon name="fa-duotone fa-location-arrow" size="14px" />
@@ -20,15 +20,16 @@
           </q-item-section>
         </q-item>
 
-        <q-item clickable v-ripple exact @click="abrirModalCriarProtocolo">
+        <!-- Ícone de MAIS com shadow -->
+        <q-item clickable v-ripple exact @click="abrirModalCriarProtocolo" class="menu-item-hover">
           <q-item-section>
             <q-item-label>
-              <q-icon name="fa-duotone fa-solid fa-square-plus" size="14px" />
+              <q-icon name="fa-duotone fa-solid fa-square-plus" size="14px" class="icon-with-shadow" />
             </q-item-label>
           </q-item-section>
         </q-item>
 
-        <q-item clickable v-ripple exact>
+        <q-item clickable v-ripple exact class="menu-item-hover">
           <q-item-section>
             <q-item-label>
               <q-icon name="fa-regular fa-bars" size="14px" color="grey-6" />
@@ -38,7 +39,7 @@
 
 
         <!-- MENU -->
-        <q-item clickable v-ripple>
+        <q-item clickable v-ripple class="menu-item-hover">
           <q-item-section>
             <q-item-label>
               <q-icon name="fa-regular fa-magnifying-glass" size="14px" color="grey-6" />
@@ -47,7 +48,7 @@
           </q-item-section>
         </q-item>
 
-        <q-item clickable v-ripple>
+        <q-item clickable v-ripple class="menu-item-hover">
           <q-item-section>
             <q-item-label>
               <q-icon name="fa-duotone fa-users" size="14px" color="grey-6" />
@@ -55,7 +56,7 @@
           </q-item-section>
         </q-item>
 
-        <q-item clickable v-ripple>
+        <q-item clickable v-ripple class="menu-item-hover">
           <q-item-section>
             <q-item-label>
               <q-icon name="fa-duotone fa-folder" size="14px" color="grey-6" />
@@ -63,7 +64,7 @@
           </q-item-section>
         </q-item>
 
-        <q-item clickable v-ripple>
+        <q-item clickable v-ripple class="menu-item-hover">
           <q-item-section>
             <q-item-label>
               <q-icon name="fa-duotone fa-calendar-days" size="14px" color="grey-6" />
@@ -71,7 +72,7 @@
           </q-item-section>
         </q-item>
 
-        <q-item clickable v-ripple>
+        <q-item clickable v-ripple class="menu-item-hover">
           <q-item-section>
             <q-item-label>
               <q-icon name="fa-duotone fa-envelope" size="14px" color="grey-6" />
@@ -79,7 +80,7 @@
           </q-item-section>
         </q-item>
 
-        <q-item clickable v-ripple>
+        <q-item clickable v-ripple class="menu-item-hover">
           <q-item-section>
             <q-item-label>
               <q-icon name="fa-duotone fa-cart-shopping" size="14px" color="grey-6" />
@@ -87,7 +88,7 @@
           </q-item-section>
         </q-item>
 
-        <q-item clickable v-ripple>
+        <q-item clickable v-ripple class="menu-item-hover">
           <q-item-section>
             <q-item-label>
               <q-icon name="fa-duotone fa-chart-pie" size="14px" color="grey-6" />
@@ -103,7 +104,7 @@
       <div class="absolute-bottom">
         <q-list class="text-center text-caption text-slate-900">
           <!-- Botão de perfil do usuário -->
-          <q-item clickable v-ripple>
+          <q-item clickable v-ripple class="menu-item-hover">
             <q-item-section>
               <q-item-label>
                 <q-icon name="fa-duotone fa-user" size="14px" color="grey-6" />
@@ -146,7 +147,7 @@
           </q-item>
 
           <!-- Botão de configurações gerais -->
-          <q-item clickable v-ripple>
+          <q-item clickable v-ripple class="menu-item-hover">
             <q-item-section>
               <q-item-label>
                 <q-icon name="fa-duotone fa-gear" size="14px" color="grey-6" />
@@ -154,7 +155,7 @@
             </q-item-section>
           </q-item>
 
-          <q-item clickable v-ripple @click="logout">
+          <q-item clickable v-ripple @click="logout" class="menu-item-hover">
             <q-item-section>
               <q-item-label>
                 <q-icon name="fa-duotone fa-arrow-right-from-bracket" size="14px" color="grey-6" />
@@ -220,6 +221,24 @@ const abrirModalCriarProtocolo = async () => {
 </script>
 
 <style scoped>
+/* Shadow no ícone de MAIS */
+.icon-with-shadow {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* Efeito hover laranja nos itens do menu */
+.menu-item-hover:hover .q-icon {
+  color: #f2711c !important;
+  /* Quasar orange */
+  transition: color 0.3s ease;
+}
+
+/* Alternativa usando a paleta do Quasar (orange-6) */
+.menu-item-hover:hover .q-icon {
+  color: var(--q-orange-6) !important;
+  transition: color 0.3s ease;
+}
+
 .menu-separator {
   margin: 8px 12px;
   background-color: rgba(0, 0, 0, 0.08);

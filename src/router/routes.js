@@ -10,6 +10,12 @@ const routes = [
       },
 
       {
+        path: "caixa",
+        component: () => import("pages/caixa/Index.vue"),
+        name: "caixa",
+      },
+
+      {
         path: "configuracao",
         component: () => import("src/pages/configuracao/Index.vue"),
         name: "configuracao.index",
