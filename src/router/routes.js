@@ -14,6 +14,11 @@ const routes = [
         component: () => import("pages/caixa/Index.vue"),
         name: "caixa",
       },
+      {
+        path: "transacao",
+        component: () => import("pages/transacao/Index.vue"),
+        name: "transacao",
+      },
 
       {
         path: "configuracao",
