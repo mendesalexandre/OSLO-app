@@ -3,11 +3,11 @@
     <!-- Header -->
     <div class="row items-center q-mb-md">
       <div class="col">
-        <div class="text-h4">Transações</div>
-        <div class="text-subtitle2 text-grey-7">Gerenciamento de entradas e saídas</div>
+        <div class="text-h4">Caixas</div>
+        <div class="text-subtitle2 text-grey-7">Gerenciamento de caixas e fluxo financeiro</div>
       </div>
       <div class="col-auto">
-        <q-btn color="primary" icon="add" label="Nova Transação" @click="openDialog()" />
+        <q-btn color="primary" icon="add" label="Novo Caixa" @click="openDialog()" />
       </div>
     </div>
 
@@ -15,140 +15,204 @@
     <q-card flat bordered class="q-mb-md">
       <q-card-section>
         <div class="row q-col-gutter-md">
-          <div class="col-12 col-md-3">
-            <v-label label="Buscar"></v-label>
-            <q-input v-model="filters.search" outlined dense placeholder="Buscar..." @keyup.enter="loadTransactions">
+          <div class="col-12 col-md-4">
+            <q-input v-model="filters.search" outlined dense placeholder="Buscar por nome..." @keyup.enter="loadCaixas">
               <template v-slot:prepend>
                 <q-icon name="search" />
               </template>
             </q-input>
           </div>
 
-          <div class="col-12 col-md-2">
-            <v-label label="Tipo"></v-label>
-            <q-select v-model="filters.type" outlined dense :options="typeOptions" emit-value map-options clearable />
+          <div class="col-12 col-md-3">
+            <q-select v-model="filters.status" outlined dense :options="statusOptions" label="Status" emit-value
+              map-options clearable />
           </div>
 
           <div class="col-12 col-md-2">
-            <v-label label="Data Inicial"></v-label>
-            <q-input v-model="filters.date_from" outlined dense type="date" />
-          </div>
-
-          <div class="col-12 col-md-2">
-            <v-label label="Data Final"></v-label>
-            <q-input v-model="filters.date_to" outlined dense type="date" />
+            <q-input v-model="filters.date_from" outlined dense type="date" label="Data Inicial" />
           </div>
 
           <div class="col-12 col-md-3">
-            <q-btn color="primary" label="Filtrar" icon="filter_list" @click="loadTransactions" class="q-mr-sm" />
+            <q-btn color="primary" label="Filtrar" icon="filter_list" @click="loadCaixas" class="q-mr-sm" />
             <q-btn flat label="Limpar" @click="clearFilters" />
           </div>
         </div>
       </q-card-section>
     </q-card>
 
-    <!-- Resumo -->
-    <div class="row q-col-gutter-md q-mb-md">
-      <div class="col-12 col-md-4">
+    <!-- Cards de Caixas -->
+    <div class="row q-col-gutter-md">
+      <div class="col-12 col-md-6 col-lg-4" v-for="caixa in caixas" :key="caixa.id">
         <q-card flat bordered>
           <q-card-section>
-            <div class="text-subtitle2 text-grey-7">Total Entradas</div>
-            <div class="text-h5 text-positive">{{ formatCurrency(summary.total_entradas) }}</div>
-          </q-card-section>
-        </q-card>
-      </div>
-      <div class="col-12 col-md-4">
-        <q-card flat bordered>
-          <q-card-section>
-            <div class="text-subtitle2 text-grey-7">Total Saídas</div>
-            <div class="text-h5 text-negative">{{ formatCurrency(summary.total_saidas) }}</div>
-          </q-card-section>
-        </q-card>
-      </div>
-      <div class="col-12 col-md-4">
-        <q-card flat bordered>
-          <q-card-section>
-            <div class="text-subtitle2 text-grey-7">Saldo</div>
-            <div class="text-h5" :class="summary.saldo >= 0 ? 'text-positive' : 'text-negative'">
-              {{ formatCurrency(summary.saldo) }}
+            <div class="row items-center q-mb-sm">
+              <div class="col">
+                <div class="text-h6">{{ caixa.name }}</div>
+                <div class="text-caption text-grey-7">
+                  Aberto em {{ formatDateTime(caixa.opening_date) }}
+                </div>
+              </div>
+              <div class="col-auto">
+                <q-chip :color="getStatusColor(caixa.status)" text-color="white" size="sm">
+                  {{ getStatusLabel(caixa.status) }}
+                </q-chip>
+              </div>
             </div>
+
+            <q-separator class="q-my-md" />
+
+            <!-- Valores -->
+            <div class="q-gutter-sm">
+              <div class="row justify-between">
+                <span class="text-grey-7">Saldo Inicial:</span>
+                <span class="text-weight-medium">{{ formatCurrency(caixa.initial_balance) }}</span>
+              </div>
+              <div class="row justify-between">
+                <span class="text-grey-7">Entradas:</span>
+                <span class="text-positive text-weight-medium">{{ formatCurrency(caixa.total_entradas) }}</span>
+              </div>
+              <div class="row justify-between">
+                <span class="text-grey-7">Saídas:</span>
+                <span class="text-negative text-weight-medium">{{ formatCurrency(caixa.total_saidas) }}</span>
+              </div>
+              <q-separator />
+              <div class="row justify-between">
+                <span class="text-weight-bold">Saldo Atual:</span>
+                <span class="text-h6" :class="caixa.current_balance >= 0 ? 'text-positive' : 'text-negative'">
+                  {{ formatCurrency(caixa.current_balance) }}
+                </span>
+              </div>
+            </div>
+
+            <q-separator class="q-my-md" />
+
+            <!-- Usuário -->
+            <div class="text-caption text-grey-7">
+              <q-icon name="person" size="xs" />
+              Responsável: {{ caixa.user_name || 'N/A' }}
+            </div>
+
+            <div v-if="caixa.closing_date" class="text-caption text-grey-7 q-mt-xs">
+              <q-icon name="event" size="xs" />
+              Fechado em {{ formatDateTime(caixa.closing_date) }}
+            </div>
+          </q-card-section>
+
+          <q-separator />
+
+          <q-card-actions align="right">
+            <q-btn v-if="caixa.status === 'aberto'" flat dense color="primary" icon="attach_money" label="Transações"
+              @click="viewTransactions(caixa)" />
+            <q-btn flat dense color="primary" icon="edit" @click="openDialog(caixa)" />
+            <q-btn v-if="caixa.status === 'aberto'" flat dense color="negative" icon="lock" label="Fechar"
+              @click="confirmCloseCaixa(caixa)" />
+            <q-btn v-if="caixa.status === 'fechado'" flat dense color="grey" icon="description" label="Relatório"
+              @click="generateReport(caixa)" />
+          </q-card-actions>
+        </q-card>
+      </div>
+
+      <!-- Card vazio -->
+      <div v-if="!loading && caixas.length === 0" class="col-12">
+        <q-card flat bordered>
+          <q-card-section class="text-center q-pa-xl">
+            <q-icon name="inventory_2" size="64px" color="grey-5" />
+            <div class="text-h6 text-grey-7 q-mt-md">Nenhum caixa encontrado</div>
+            <div class="text-caption text-grey-6">Clique em "Novo Caixa" para começar</div>
           </q-card-section>
         </q-card>
       </div>
     </div>
 
-    <!-- Tabela -->
-    <q-card flat bordered>
-      <q-table :rows="transactions" :columns="columns" row-key="id" :loading="loading" :pagination="pagination"
-        @request="onRequest" flat>
-        <template v-slot:body-cell-type="props">
-          <q-td :props="props">
-            <q-chip :color="props.row.type === 'entrada' ? 'positive' : 'negative'" text-color="white" size="sm">
-              {{ props.row.type === 'entrada' ? 'Entrada' : 'Saída' }}
-            </q-chip>
-          </q-td>
-        </template>
+    <!-- Loading -->
+    <div v-if="loading" class="row justify-center q-my-xl">
+      <q-spinner color="primary" size="50px" />
+    </div>
 
-        <template v-slot:body-cell-amount="props">
-          <q-td :props="props">
-            <span :class="props.row.type === 'entrada' ? 'text-positive' : 'text-negative'">
-              {{ formatCurrency(props.row.amount) }}
-            </span>
-          </q-td>
-        </template>
-
-        <template v-slot:body-cell-date="props">
-          <q-td :props="props">
-            {{ formatDate(props.row.date) }}
-          </q-td>
-        </template>
-
-        <template v-slot:body-cell-actions="props">
-          <q-td :props="props">
-            <q-btn flat dense round icon="edit" size="sm" color="primary" @click="openDialog(props.row)">
-              <q-tooltip>Editar</q-tooltip>
-            </q-btn>
-            <q-btn flat dense round icon="delete" size="sm" color="negative" @click="confirmDelete(props.row)">
-              <q-tooltip>Excluir</q-tooltip>
-            </q-btn>
-          </q-td>
-        </template>
-      </q-table>
-    </q-card>
+    <!-- Paginação -->
+    <div v-if="pagination.rowsNumber > pagination.rowsPerPage" class="row justify-center q-mt-md">
+      <q-pagination v-model="pagination.page" :max="Math.ceil(pagination.rowsNumber / pagination.rowsPerPage)"
+        :max-pages="6" boundary-numbers @update:model-value="loadCaixas" />
+    </div>
 
     <!-- Dialog de Cadastro/Edição -->
     <q-dialog v-model="dialog" persistent>
       <q-card style="min-width: 500px">
         <q-card-section>
-          <div class="text-h6">{{ form.id ? 'Editar' : 'Nova' }} Transação</div>
+          <div class="text-h6">{{ form.id ? 'Editar' : 'Novo' }} Caixa</div>
         </q-card-section>
 
         <q-card-section class="q-pt-none">
           <div class="q-gutter-md">
-            <q-select v-model="form.type" outlined :options="typeOptions" label="Tipo *" emit-value map-options
+            <q-input v-model="form.name" outlined label="Nome do Caixa *"
               :rules="[val => !!val || 'Campo obrigatório']" />
 
-            <q-input v-model.number="form.amount" outlined type="number" step="0.01" label="Valor *" prefix="R$" :rules="[
-              val => !!val || 'Campo obrigatório',
-              val => val > 0 || 'Valor deve ser maior que zero'
-            ]" />
+            <q-input v-model.number="form.initial_balance" outlined type="number" step="0.01" label="Saldo Inicial *"
+              prefix="R$" :rules="[
+                val => val !== null && val !== '' || 'Campo obrigatório',
+                val => val >= 0 || 'Valor deve ser maior ou igual a zero'
+              ]" />
 
-            <q-input v-model="form.description" outlined type="textarea" label="Descrição *" rows="3"
+            <q-input v-model="form.opening_date" outlined type="datetime-local" label="Data/Hora de Abertura *"
               :rules="[val => !!val || 'Campo obrigatório']" />
 
-            <q-input v-model="form.category" outlined label="Categoria" />
+            <q-input v-model="form.description" outlined type="textarea" label="Descrição" rows="3" />
 
-            <q-input v-model="form.date" outlined type="date" label="Data *"
-              :rules="[val => !!val || 'Campo obrigatório']" />
-
-            <q-select v-model="form.cashier_id" outlined :options="cashiers" option-value="id" option-label="name"
-              emit-value map-options label="Caixa *" :rules="[val => !!val || 'Campo obrigatório']" />
+            <q-select v-model="form.status" outlined :options="statusOptions" label="Status *" emit-value map-options
+              :rules="[val => !!val || 'Campo obrigatório']" :disable="!!form.id" />
           </div>
         </q-card-section>
 
         <q-card-actions align="right">
           <q-btn flat label="Cancelar" v-close-popup />
-          <q-btn color="primary" label="Salvar" @click="saveTransaction" :loading="saving" />
+          <q-btn color="primary" label="Salvar" @click="saveCaixa" :loading="saving" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
+    <!-- Dialog de Fechamento de Caixa -->
+    <q-dialog v-model="closeDialog" persistent>
+      <q-card style="min-width: 450px">
+        <q-card-section>
+          <div class="text-h6">Fechar Caixa</div>
+          <div class="text-subtitle2 text-grey-7">{{ selectedCaixa?.name }}</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <div class="q-gutter-md">
+            <div class="row justify-between q-pa-sm bg-grey-2 rounded-borders">
+              <span class="text-weight-medium">Saldo Atual:</span>
+              <span class="text-h6 text-primary">{{ formatCurrency(selectedCaixa?.current_balance) }}</span>
+            </div>
+
+            <q-input v-model.number="closeForm.final_balance" outlined type="number" step="0.01"
+              label="Saldo Final (Conferência) *" prefix="R$" hint="Informe o valor real contado no caixa" :rules="[
+                val => val !== null && val !== '' || 'Campo obrigatório',
+                val => val >= 0 || 'Valor deve ser maior ou igual a zero'
+              ]" />
+
+            <div v-if="closeForm.final_balance !== null && closeForm.final_balance !== ''"
+              class="q-pa-sm rounded-borders" :class="getDifferenceClass()">
+              <div class="text-weight-medium">
+                Diferença: {{ formatCurrency(getDifference()) }}
+              </div>
+              <div class="text-caption">
+                {{ getDifference() === 0 ? 'Caixa conferido corretamente!' :
+                  getDifference() > 0 ? 'Sobra no caixa' : 'Falta no caixa' }}
+              </div>
+            </div>
+
+            <q-input v-model="closeForm.closing_date" outlined type="datetime-local" label="Data/Hora de Fechamento *"
+              :rules="[val => !!val || 'Campo obrigatório']" />
+
+            <q-input v-model="closeForm.notes" outlined type="textarea" label="Observações" rows="3"
+              hint="Adicione observações sobre o fechamento (opcional)" />
+          </div>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Cancelar" v-close-popup />
+          <q-btn color="negative" label="Fechar Caixa" icon="lock" @click="closeCaixa" :loading="closing" />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -158,108 +222,56 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
+import { useRouter } from 'vue-router'
 import { api } from 'src/boot/axios' // Ajuste conforme sua configuração
 
 const $q = useQuasar()
+const router = useRouter()
 
 // Estado
 const loading = ref(false)
 const saving = ref(false)
+const closing = ref(false)
 const dialog = ref(false)
-const transactions = ref([])
-const cashiers = ref([])
+const closeDialog = ref(false)
+const caixas = ref([])
+const selectedCaixa = ref(null)
 
 const filters = reactive({
   search: '',
-  type: null,
-  date_from: '',
-  date_to: ''
-})
-
-const summary = reactive({
-  total_entradas: 0,
-  total_saidas: 0,
-  saldo: 0
+  status: null,
+  date_from: ''
 })
 
 const pagination = ref({
   page: 1,
-  rowsPerPage: 10,
+  rowsPerPage: 12,
   rowsNumber: 0
 })
 
 const form = reactive({
   id: null,
-  type: 'entrada',
-  amount: null,
+  name: '',
+  initial_balance: 0,
+  opening_date: '',
   description: '',
-  category: '',
-  date: new Date().toISOString().split('T')[0],
-  cashier_id: null
+  status: 'aberto'
+})
+
+const closeForm = reactive({
+  final_balance: null,
+  closing_date: '',
+  notes: ''
 })
 
 // Opções
-const typeOptions = [
-  { label: 'Entrada', value: 'entrada' },
-  { label: 'Saída', value: 'saida' }
-]
-
-const columns = [
-  {
-    name: 'id',
-    label: 'ID',
-    field: 'id',
-    align: 'left',
-    sortable: true
-  },
-  {
-    name: 'date',
-    label: 'Data',
-    field: 'date',
-    align: 'left',
-    sortable: true
-  },
-  {
-    name: 'type',
-    label: 'Tipo',
-    field: 'type',
-    align: 'center',
-    sortable: true
-  },
-  {
-    name: 'description',
-    label: 'Descrição',
-    field: 'description',
-    align: 'left'
-  },
-  {
-    name: 'category',
-    label: 'Categoria',
-    field: 'category',
-    align: 'left'
-  },
-  {
-    name: 'amount',
-    label: 'Valor',
-    field: 'amount',
-    align: 'right',
-    sortable: true
-  },
-  {
-    name: 'user_name',
-    label: 'Usuário',
-    field: 'user_name',
-    align: 'left'
-  },
-  {
-    name: 'actions',
-    label: 'Ações',
-    align: 'center'
-  }
+const statusOptions = [
+  { label: 'Aberto', value: 'aberto' },
+  { label: 'Fechado', value: 'fechado' }
 ]
 
 // Métodos
-const loadTransactions = async () => {
+const loadCaixas = async () => {
   loading.value = true
   try {
     const params = {
@@ -268,19 +280,14 @@ const loadTransactions = async () => {
       ...filters
     }
 
-    const response = await api.get('/transacao', { params })
+    const response = await api.get('/caixa', { params })
 
-    transactions.value = response.data
+    caixas.value = response.data
     pagination.value.rowsNumber = response.data.meta.total
-
-    // Atualizar resumo
-    summary.total_entradas = response.data.summary?.total_entradas || 0
-    summary.total_saidas = response.data.summary?.total_saidas || 0
-    summary.saldo = response.data.summary?.saldo || 0
   } catch (error) {
     $q.notify({
       type: 'negative',
-      message: 'Erro ao carregar transações',
+      message: 'Erro ao carregar caixas',
       caption: error.response?.data?.message || error.message
     })
   } finally {
@@ -288,51 +295,40 @@ const loadTransactions = async () => {
   }
 }
 
-const loadCashiers = async () => {
-  try {
-    const response = await api.get('/caixa')
-    cashiers.value = response.data.data
-  } catch (error) {
-    console.error('Erro ao carregar caixas:', error)
-  }
-}
-
-const onRequest = (props) => {
-  pagination.value = props.pagination
-  loadTransactions()
-}
-
-const openDialog = (transaction = null) => {
-  if (transaction) {
-    Object.assign(form, transaction)
+const openDialog = (caixa = null) => {
+  if (caixa) {
+    Object.assign(form, {
+      ...caixa,
+      opening_date: caixa.opening_date ? caixa.opening_date.slice(0, 16) : ''
+    })
   } else {
     resetForm()
   }
   dialog.value = true
 }
 
-const saveTransaction = async () => {
+const saveCaixa = async () => {
   saving.value = true
   try {
     if (form.id) {
-      await api.put(`/transactions/${form.id}`, form)
+      await api.put(`/caixa/${form.id}`, form)
       $q.notify({
         type: 'positive',
-        message: 'Transação atualizada com sucesso!'
+        message: 'Caixa atualizado com sucesso!'
       })
     } else {
-      await api.post('/transactions', form)
+      await api.post('/caixa', form)
       $q.notify({
         type: 'positive',
-        message: 'Transação criada com sucesso!'
+        message: 'Caixa criado com sucesso!'
       })
     }
     dialog.value = false
-    loadTransactions()
+    loadCaixas()
   } catch (error) {
     $q.notify({
       type: 'negative',
-      message: 'Erro ao salvar transação',
+      message: 'Erro ao salvar caixa',
       caption: error.response?.data?.message || error.message
     })
   } finally {
@@ -340,46 +336,108 @@ const saveTransaction = async () => {
   }
 }
 
-const confirmDelete = (transaction) => {
-  $q.dialog({
-    title: 'Confirmar exclusão',
-    message: `Deseja realmente excluir a transação "${transaction.description}"?`,
-    cancel: true,
-    persistent: true
-  }).onOk(async () => {
-    try {
-      await api.delete(`/transactions/${transaction.id}`)
-      $q.notify({
-        type: 'positive',
-        message: 'Transação excluída com sucesso!'
-      })
-      loadTransactions()
-    } catch (error) {
-      $q.notify({
-        type: 'negative',
-        message: 'Erro ao excluir transação',
-        caption: error.response?.data?.message || error.message
-      })
-    }
+const confirmCloseCaixa = (caixa) => {
+  selectedCaixa.value = caixa
+  closeForm.final_balance = caixa.current_balance
+  closeForm.closing_date = new Date().toISOString().slice(0, 16)
+  closeForm.notes = ''
+  closeDialog.value = true
+}
+
+const closeCaixa = async () => {
+  closing.value = true
+  try {
+    await api.post(`/caixa/${selectedCaixa.value.id}/fechar`, closeForm)
+    $q.notify({
+      type: 'positive',
+      message: 'Caixa fechado com sucesso!'
+    })
+    closeDialog.value = false
+    loadCaixas()
+  } catch (error) {
+    $q.notify({
+      type: 'negative',
+      message: 'Erro ao fechar caixa',
+      caption: error.response?.data?.message || error.message
+    })
+  } finally {
+    closing.value = false
+  }
+}
+
+const viewTransactions = (caixa) => {
+  router.push({
+    name: 'transactions',
+    query: { cashier_id: caixa.id }
   })
+}
+
+const generateReport = async (caixa) => {
+  try {
+    $q.notify({
+      type: 'info',
+      message: 'Gerando relatório...'
+    })
+
+    const response = await api.get(`/caixa/${caixa.id}/relatorio`, {
+      responseType: 'blob'
+    })
+
+    const url = window.URL.createObjectURL(new Blob([response.data]))
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', `relatorio-caixa-${caixa.id}.pdf`)
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+
+    $q.notify({
+      type: 'positive',
+      message: 'Relatório gerado com sucesso!'
+    })
+  } catch (error) {
+    $q.notify({
+      type: 'negative',
+      message: 'Erro ao gerar relatório',
+      caption: error.response?.data?.message || error.message
+    })
+  }
 }
 
 const clearFilters = () => {
   filters.search = ''
-  filters.type = null
+  filters.status = null
   filters.date_from = ''
-  filters.date_to = ''
-  loadTransactions()
+  loadCaixas()
 }
 
 const resetForm = () => {
   form.id = null
-  form.type = 'entrada'
-  form.amount = null
+  form.name = ''
+  form.initial_balance = 0
+  form.opening_date = new Date().toISOString().slice(0, 16)
   form.description = ''
-  form.category = ''
-  form.date = new Date().toISOString().split('T')[0]
-  form.cashier_id = null
+  form.status = 'aberto'
+}
+
+const getDifference = () => {
+  if (!selectedCaixa.value || closeForm.final_balance === null) return 0
+  return closeForm.final_balance - selectedCaixa.value.current_balance
+}
+
+const getDifferenceClass = () => {
+  const diff = getDifference()
+  if (diff === 0) return 'bg-positive-2 text-positive'
+  if (diff > 0) return 'bg-warning-2 text-warning'
+  return 'bg-negative-2 text-negative'
+}
+
+const getStatusColor = (status) => {
+  return status === 'aberto' ? 'positive' : 'grey-7'
+}
+
+const getStatusLabel = (status) => {
+  return status === 'aberto' ? 'Aberto' : 'Fechado'
 }
 
 const formatCurrency = (value) => {
@@ -389,15 +447,14 @@ const formatCurrency = (value) => {
   }).format(value || 0)
 }
 
-const formatDate = (date) => {
+const formatDateTime = (date) => {
   if (!date) return '-'
-  return new Date(date + 'T00:00:00').toLocaleDateString('pt-BR')
+  return new Date(date).toLocaleString('pt-BR')
 }
 
 // Lifecycle
 onMounted(() => {
-  loadTransactions()
-  loadCashiers()
+  loadCaixas()
 })
 </script>
 
@@ -408,5 +465,17 @@ onMounted(() => {
 
 .text-negative {
   color: #C10015;
+}
+
+.bg-positive-2 {
+  background-color: #C6F6D5;
+}
+
+.bg-negative-2 {
+  background-color: #FED7D7;
+}
+
+.bg-warning-2 {
+  background-color: #FEEBC8;
 }
 </style>
