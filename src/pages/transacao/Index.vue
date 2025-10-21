@@ -126,13 +126,20 @@
       <q-card bordered>
         <q-card-section>
           <div class="q-gutter-md">
+            <q-card-section>
+              <!-- Tipo de Protocolo -->
+              <div class="col-12 grupo-tipo-protocolo">
+                <v-label label="Tipo de Protocolo" obrigatorio />
+                <q-btn-toggle v-model="getOpcaoSelecionada" :options="[
+                  { label: 'Entrada', value: 'ENTRADA', icon: 'fa-regular fa-file' },
+                  { label: 'Saída', value: 'SAIDA', icon: 'fa-regular fa-calculator' },
+                ]" spread unelevated class="tipo-protocolo" />
+              </div>
+            </q-card-section>
             <q-select v-model="form.type" outlined :options="typeOptions" label="Tipo *" emit-value map-options
               :rules="[val => !!val || 'Campo obrigatório']" />
 
-            <q-input v-model.number="form.amount" outlined type="number" step="0.01" label="Valor *" prefix="R$" :rules="[
-              val => !!val || 'Campo obrigatório',
-              val => val > 0 || 'Valor deve ser maior que zero'
-            ]" />
+            <v-money v-model.number="form.amount" outlined type="number" step="0.01" />
 
             <q-input v-model="form.description" outlined type="textarea" label="Descrição *" rows="3"
               :rules="[val => !!val || 'Campo obrigatório']" />
@@ -405,12 +412,88 @@ onMounted(() => {
 })
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .text-positive {
   color: #21BA45;
 }
 
 .text-negative {
   color: #C10015;
+}
+
+
+.corpo-secao {
+  align-items: center;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  // border-radius: 2px;
+
+  .titulo-secao {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #37474f;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .q-icon {
+    color: #607d8b;
+    font-size: 1rem;
+  }
+}
+
+.grupo-tipo-protocolo {
+  :deep(.q-btn) {
+    color: #37474f;
+    border-radius: 2px !important;
+    border: 1px solid #e0e0e0 !important;
+    // padding: 8px 16px;
+    /* ajuste conforme necessário */
+
+    .q-btn__content {
+      padding: 0;
+      margin: 0;
+    }
+
+    .q-icon {
+      font-size: 16px;
+    }
+
+    &.q-btn--outline {
+      border: 1px solid #e0e0e0;
+      background-color: white;
+    }
+
+    /* Botão selecionado - quando tem bg-primary */
+    &.bg-primary {
+      border-color: $primary !important;
+    }
+
+    /* Alternativa usando aria-pressed */
+    &[aria-pressed="true"] {
+      border-color: $primary !important;
+    }
+
+    /* Ajusta o q-focus-helper para cobrir 100% */
+    .q-focus-helper {
+      background-color: currentColor;
+      opacity: 0;
+      border-radius: inherit;
+    }
+
+    /* Hover */
+    &:hover .q-focus-helper {
+      opacity: 0.1;
+    }
+  }
+}
+
+:deep(.q-btn-group) {
+  column-gap: 4px !important;
+}
+
+
+:deep(.q-field__focusable-action) {
+  font-size: 20px !important;
 }
 </style>
