@@ -141,7 +141,7 @@
           <div class="row q-col-gutter-sm">
             <div class="col-md-12">
               <v-label label="Valor" obrigatorio />
-              <q-input v-model.number="form.amount" outlined type="number" />
+              <v-money v-model.number="form.amount" outlined type="number" dense />
             </div>
 
             <div class="col-md-12">
@@ -215,7 +215,7 @@ const pagination = ref({
 
 const form = reactive({
   id: null,
-  type: 'entrada',
+  type: 'ENTRADA',
   amount: null,
   description: '',
   category: '',
