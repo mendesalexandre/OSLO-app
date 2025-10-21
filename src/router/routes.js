@@ -14,6 +14,13 @@ const routes = [
         component: () => import("pages/caixa/Index.vue"),
         name: "caixa",
       },
+
+      {
+        path: "movimento-caixa",
+        component: () => import("pages/movimento-caixa/Index.vue"),
+        name: "movimento-caixa",
+      },
+
       {
         path: "transacao",
         component: () => import("pages/transacao/Index.vue"),

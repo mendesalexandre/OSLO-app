@@ -72,6 +72,7 @@ const loadCaixas = async () => {
 }
 
 const abrirCaixa = (caixa) => {
+  // Navegar para tela de abertura de caixa
   router.push({
     name: 'caixa-movimentos',
     params: { caixaId: caixa.id }

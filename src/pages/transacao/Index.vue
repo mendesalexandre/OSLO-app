@@ -145,7 +145,7 @@
             </div>
             <div class="col-md-12">
               <v-label label="Categoria" obrigatorio />
-              <q-input v-model="form.categoria" outlined />
+              <v-select v-model="form.categoria" outlined dense />
             </div>
             <div class="col-md-12">
               <v-label label="Data" obrigatorio />

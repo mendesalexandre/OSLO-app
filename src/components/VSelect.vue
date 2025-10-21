@@ -3,7 +3,7 @@
     :label="label" :clearable="clearable" :input-debounce="inputDebounce" :emit-value="emitValue"
     :option-label="optionLabel" :option-value="optionValue" :map-options="mapOptions" :disable="disable"
     :readonly="readonly" :outlined="outlined" :filled="filled" :dense="dense" :rules="rules" :hint="hint" :error="error"
-    :error-message="errorMessage" hide-bottom-space>
+    :error-message="errorMessage" :hide-bottom-space="hideBottomSpace">
     <!-- Slot para customizar mensagem quando não há opções -->
     <template v-slot:no-option>
       <slot name="no-option">
@@ -157,6 +157,11 @@ const props = defineProps({
     default: undefined
   },
   showIcon: {
+    type: Boolean,
+    default: false
+  },
+
+  hideBottomSpace: {
     type: Boolean,
     default: false
   }

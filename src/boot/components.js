@@ -5,6 +5,7 @@ import InputCheck from "src/components/InputCheck.vue";
 import VDate from "src/components/VDate.vue";
 import EditorBasico from "src/components/VEditor.vue";
 import Money from "src/components/VMoney.vue";
+import VSelect from "src/components/VSelect.vue";
 
 // "async" is optional;
 // more info on params: https://v2.quasar.dev/quasar-cli-webpack/boot-files
@@ -15,4 +16,5 @@ export default defineBoot(async ({ app, router }) => {
   app.component("v-date", VDate);
   app.component("editor-basico", EditorBasico);
   app.component("v-money", Money);
+  app.component("v-select", VSelect);
 });
