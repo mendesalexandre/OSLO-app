@@ -508,11 +508,17 @@ onMounted(() => {
         background-color: var(--q-positive) !important;
         color: white !important;
       }
+
+      &[aria-pressed="true"] {
+        background-color: var(--q-positive) !important;
+        color: white !important;
+      }
     }
 
     :deep(.btn-saida) {
       // color: var(--q-negative) !important;
       border: 1px solid var(--q-negative) !important;
+      color: var(--q-negative) !important;
 
       &.q-btn--active {
         background-color: var(--q-negative) !important;
