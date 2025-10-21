@@ -31,13 +31,13 @@
 
           <div class="col-12 col-md-2">
             <v-label label="Data Inicial"></v-label>
-            <q-input v-model="filters.date_from" outlined dense type="date" />
+            <v-date v-model="filters.date_from" outlined dense />
           </div>
 
-          <div class="col-12 col-md-2">
+          <!-- <div class="col-12 col-md-2">
             <v-label label="Data Final"></v-label>
             <q-input v-model="filters.date_to" outlined dense type="date" />
-          </div>
+          </div> -->
 
           <div class="col-12 col-md-3">
             <q-btn color="primary" label="Filtrar" icon="filter_list" @click="loadTransactions" class="q-mr-sm" />
@@ -155,8 +155,7 @@
             </div>
             <div class="col-md-12">
               <v-label label="Data" obrigatorio />
-              <v-date v-model="form.data" outlined type="date" :rules="[val => !!val || 'Campo obrigatório']"
-                hide-bottom-space />
+              <v-date v-model="form.data" outlined :rules="[val => !!val || 'Campo obrigatório']" hide-bottom-space />
             </div>
             <div class="col-md-12">
               <v-label label="Caixa" obrigatorio />
@@ -431,26 +430,6 @@ onMounted(() => {
   color: #C10015;
 }
 
-
-.corpo-secao {
-  align-items: center;
-  padding: 12px 16px;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  // border-radius: 2px;
-
-  .titulo-secao {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #37474f;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .q-icon {
-    color: #607d8b;
-    font-size: 1rem;
-  }
-}
 
 .grupo-tipo-protocolo {
   :deep(.q-btn) {
