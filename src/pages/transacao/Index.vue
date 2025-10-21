@@ -155,7 +155,7 @@
             </div>
             <div class="col-md-12">
               <v-label label="Data" obrigatorio />
-              <q-input v-model="form.data" outlined type="date" :rules="[val => !!val || 'Campo obrigatório']"
+              <v-date v-model="form.data" outlined type="date" :rules="[val => !!val || 'Campo obrigatório']"
                 hide-bottom-space />
             </div>
             <div class="col-md-12">
