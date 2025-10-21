@@ -128,7 +128,7 @@
           <!-- Tipo de Lançamento -->
           <div class="col-12 grupo-tipo-protocolo">
             <v-label label="Tipo de Lançamento" obrigatorio />
-            <q-btn-toggle v-model="getOpcaoSelecionada" :options="[
+            <q-btn-toggle v-model="form.type" :options="[
               { label: 'Entrada', value: 'ENTRADA', icon: 'fa-regular fa-file' },
               { label: 'Saída', value: 'SAIDA', icon: 'fa-regular fa-calculator' },
             ]" spread unelevated class="tipo-protocolo" />
@@ -136,10 +136,7 @@
         </q-card-section>
         <q-card-section>
 
-          <q-select v-model="form.type" outlined :options="typeOptions" label="Tipo *" emit-value map-options
-            :rules="[val => !!val || 'Campo obrigatório']" />
-
-          <v-money v-model.number="form.amount" outlined type="number" step="0.01" />
+          <money v-model.number="form.amount" outlined type="number" step="0.01" />
 
           <q-input v-model="form.description" outlined type="textarea" label="Descrição *" rows="3"
             :rules="[val => !!val || 'Campo obrigatório']" />
