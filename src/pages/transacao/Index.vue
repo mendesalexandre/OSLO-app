@@ -129,12 +129,12 @@
           <div class="col-12 grupo-tipo-protocolo">
             <v-label label="Tipo de Lançamento" obrigatorio />
             <q-btn-toggle v-model="form.type" :options="[
-              { label: 'Entrada', value: 'ENTRADA', icon: 'fa-regular fa-file' },
-              { label: 'Saída', value: 'SAIDA', icon: 'fa-regular fa-calculator' },
-              { label: 'Ajuste', value: 'AJUSTE', icon: 'fa-regular fa-calculator' },
-              { label: 'Sangria', value: 'SANGRIA', icon: 'fa-regular fa-calculator' },
-              { label: 'Transferência', value: 'TRANSFERENCIA', icon: 'fa-regular fa-calculator' },
-            ]" spread unelevated class="tipo-protocolo" />
+              { label: 'Entrada', value: 'ENTRADA', icon: 'fa-regular fa-circle-down', color: 'positive', slot: 'entrada' },
+              { label: 'Saída', value: 'SAIDA', icon: 'fa-regular fa-circle-up', color: 'negative', slot: 'saida' },
+              { label: 'Ajuste', value: 'AJUSTE', icon: 'fa-regular fa-pen-to-square', color: 'warning', slot: 'ajuste' },
+              { label: 'Sangria', value: 'SANGRIA', icon: 'fa-regular fa-money-bill-wave', color: 'orange', slot: 'sangria' },
+              { label: 'Transferência', value: 'TRANSFERENCIA', icon: 'fa-regular fa-right-left', color: 'info', slot: 'transferencia' },
+            ]" spread unelevated class="tipo-protocolo-colorido" />
           </div>
         </q-card-section>
         <q-card-section>
