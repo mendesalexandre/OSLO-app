@@ -122,7 +122,7 @@
     </q-card>
 
     <!-- Dialog de Cadastro/Edição -->
-    <modal v-model="dialog" tamanho="md" titulo="Transação" @close="fecharModal">
+    <modal v-model="dialog" tamanho="lg" titulo="Transação" @close="fecharModal">
       <q-card bordered>
         <q-card-section>
           <!-- Tipo de Lançamento -->
@@ -131,27 +131,40 @@
             <q-btn-toggle v-model="form.type" :options="[
               { label: 'Entrada', value: 'ENTRADA', icon: 'fa-regular fa-file' },
               { label: 'Saída', value: 'SAIDA', icon: 'fa-regular fa-calculator' },
+              { label: 'Ajuste', value: 'AJUSTE', icon: 'fa-regular fa-calculator' },
+              { label: 'Sangria', value: 'SANGRIA', icon: 'fa-regular fa-calculator' },
+              { label: 'Transferência', value: 'TRANSFERENCIA', icon: 'fa-regular fa-calculator' },
             ]" spread unelevated class="tipo-protocolo" />
           </div>
         </q-card-section>
         <q-card-section>
+          <div class="row q-col-gutter-sm">
+            <div class="col-md-12">
+              <v-label label="Valor" obrigatorio />
+              <q-input v-model.number="form.amount" outlined type="number" />
+            </div>
 
-          <money v-model.number="form.amount" outlined type="number" step="0.01" />
-
-          <q-input v-model="form.description" outlined type="textarea" label="Descrição *" rows="3"
-            :rules="[val => !!val || 'Campo obrigatório']" />
-
-          <q-input v-model="form.category" outlined label="Categoria" />
-
-          <q-input v-model="form.date" outlined type="date" label="Data *"
-            :rules="[val => !!val || 'Campo obrigatório']" />
-
-          <q-select v-model="form.cashier_id" outlined :options="cashiers" option-value="id" option-label="name"
-            emit-value map-options label="Caixa *" :rules="[val => !!val || 'Campo obrigatório']" />
-
+            <div class="col-md-12">
+              <v-label label="Descrição" obrigatorio />
+              <q-input v-model="form.descricao" outlined type="textarea" rows="3"
+                :rules="[val => !!val || 'Campo obrigatório']" hide-bottom-space />
+            </div>
+            <div class="col-md-12">
+              <v-label label="Categoria" obrigatorio />
+              <q-input v-model="form.categoria" outlined />
+            </div>
+            <div class="col-md-12">
+              <v-label label="Data" obrigatorio />
+              <q-input v-model="form.data" outlined type="date" :rules="[val => !!val || 'Campo obrigatório']"
+                hide-bottom-space />
+            </div>
+            <div class="col-md-12">
+              <v-label label="Caixa" obrigatorio />
+              <q-select v-model="form.cashier_id" outlined :options="cashiers" option-value="id" option-label="nome"
+                emit-value map-options :rules="[val => !!val || 'Campo obrigatório']" hide-bottom-space />
+            </div>
+          </div>
         </q-card-section>
-
-
       </q-card>
 
       <template #rodape>
@@ -444,8 +457,6 @@ onMounted(() => {
     color: #37474f;
     border-radius: 2px !important;
     border: 1px solid #e0e0e0 !important;
-    // padding: 8px 16px;
-    /* ajuste conforme necessário */
 
     .q-btn__content {
       padding: 0;
@@ -453,7 +464,7 @@ onMounted(() => {
     }
 
     .q-icon {
-      font-size: 16px;
+      font-size: 14px;
     }
 
     &.q-btn--outline {
