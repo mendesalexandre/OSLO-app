@@ -81,6 +81,11 @@
     <q-card flat bordered>
       <q-table :rows="transactions" :columns="columns" row-key="id" :loading="loading" :pagination="pagination"
         @request="onRequest" flat>
+        <template #header-cell="props">
+          <q-th :props="props" class="text-uppercase text-weight-medium tabela-cabecalho text-blue-grey-8">
+            {{ props.col.label }}
+          </q-th>
+        </template>
         <template v-slot:body-cell-type="props">
           <q-td :props="props">
             <q-chip :color="props.row.type === 'entrada' ? 'positive' : 'negative'" text-color="white" size="sm">
@@ -117,13 +122,9 @@
     </q-card>
 
     <!-- Dialog de Cadastro/Edição -->
-    <q-dialog v-model="dialog" persistent>
-      <q-card style="min-width: 500px">
+    <modal v-model="dialog" tamanho="md" titulo="Transação">
+      <q-card bordered>
         <q-card-section>
-          <div class="text-h6">{{ form.id ? 'Editar' : 'Nova' }} Transação</div>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
           <div class="q-gutter-md">
             <q-select v-model="form.type" outlined :options="typeOptions" label="Tipo *" emit-value map-options
               :rules="[val => !!val || 'Campo obrigatório']" />
@@ -146,19 +147,23 @@
           </div>
         </q-card-section>
 
-        <q-card-actions align="right">
+
+      </q-card>
+
+      <template #rodape>
+        <q-card-section align="right">
           <q-btn flat label="Cancelar" v-close-popup />
           <q-btn color="primary" label="Salvar" @click="saveTransaction" :loading="saving" />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
+        </q-card-section>
+      </template>
+    </modal>
   </q-page>
 </template>
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
-import { api } from 'src/boot/axios' // Ajuste conforme sua configuração
+import { api } from 'src/boot/axios'
 
 const $q = useQuasar()
 
@@ -210,32 +215,29 @@ const columns = [
     label: 'ID',
     field: 'id',
     align: 'left',
-    sortable: true
   },
   {
-    name: 'date',
+    name: 'data_cadastro',
     label: 'Data',
-    field: 'date',
+    field: 'data_cadastro',
     align: 'left',
-    sortable: true
   },
   {
     name: 'type',
     label: 'Tipo',
     field: 'type',
     align: 'center',
-    sortable: true
   },
   {
-    name: 'description',
+    name: 'descricao',
     label: 'Descrição',
-    field: 'description',
+    field: 'descricao',
     align: 'left'
   },
   {
-    name: 'category',
+    name: 'categoria',
     label: 'Categoria',
-    field: 'category',
+    field: 'categoria',
     align: 'left'
   },
   {
@@ -243,12 +245,11 @@ const columns = [
     label: 'Valor',
     field: 'amount',
     align: 'right',
-    sortable: true
   },
   {
-    name: 'user_name',
+    name: 'usuario',
     label: 'Usuário',
-    field: 'user_name',
+    field: 'usuario',
     align: 'left'
   },
   {
