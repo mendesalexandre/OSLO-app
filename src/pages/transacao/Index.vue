@@ -125,16 +125,17 @@
     <modal v-model="dialog" tamanho="md" titulo="Transação" @close="fecharModal">
       <q-card bordered>
         <q-card-section>
-          <q-card-section>
-            <!-- Tipo de Protocolo -->
-            <div class="col-12 grupo-tipo-protocolo">
-              <v-label label="Tipo de Protocolo" obrigatorio />
-              <q-btn-toggle v-model="getOpcaoSelecionada" :options="[
-                { label: 'Entrada', value: 'ENTRADA', icon: 'fa-regular fa-file' },
-                { label: 'Saída', value: 'SAIDA', icon: 'fa-regular fa-calculator' },
-              ]" spread unelevated class="tipo-protocolo" />
-            </div>
-          </q-card-section>
+          <!-- Tipo de Lançamento -->
+          <div class="col-12 grupo-tipo-protocolo">
+            <v-label label="Tipo de Lançamento" obrigatorio />
+            <q-btn-toggle v-model="getOpcaoSelecionada" :options="[
+              { label: 'Entrada', value: 'ENTRADA', icon: 'fa-regular fa-file' },
+              { label: 'Saída', value: 'SAIDA', icon: 'fa-regular fa-calculator' },
+            ]" spread unelevated class="tipo-protocolo" />
+          </div>
+        </q-card-section>
+        <q-card-section>
+
           <q-select v-model="form.type" outlined :options="typeOptions" label="Tipo *" emit-value map-options
             :rules="[val => !!val || 'Campo obrigatório']" />
 
