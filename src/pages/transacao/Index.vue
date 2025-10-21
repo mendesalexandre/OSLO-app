@@ -122,7 +122,7 @@
     </q-card>
 
     <!-- Dialog de Cadastro/Edição -->
-    <modal v-model="dialog" tamanho="md" titulo="Transação">
+    <modal v-model="dialog" tamanho="md" titulo="Transação" @close="fecharModal">
       <q-card bordered>
         <q-card-section>
           <div class="q-gutter-md">
@@ -173,6 +173,9 @@ const saving = ref(false)
 const dialog = ref(false)
 const transactions = ref([])
 const cashiers = ref([])
+const fecharModal = () => {
+  dialog.value = !dialog.value
+}
 
 const filters = reactive({
   search: '',
