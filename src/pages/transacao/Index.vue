@@ -128,13 +128,7 @@
           <!-- Tipo de Lançamento -->
           <div class="col-12 grupo-tipo-protocolo">
             <v-label label="Tipo de Lançamento" obrigatorio />
-            <q-btn-toggle v-model="form.type" :options="[
-              { label: 'Entrada', value: 'ENTRADA', icon: 'fa-regular fa-circle-down', color: 'positive', slot: 'entrada' },
-              { label: 'Saída', value: 'SAIDA', icon: 'fa-regular fa-circle-up', color: 'negative', slot: 'saida' },
-              { label: 'Ajuste', value: 'AJUSTE', icon: 'fa-regular fa-pen-to-square', color: 'warning', slot: 'ajuste' },
-              { label: 'Sangria', value: 'SANGRIA', icon: 'fa-regular fa-money-bill-wave', color: 'orange', slot: 'sangria' },
-              { label: 'Transferência', value: 'TRANSFERENCIA', icon: 'fa-regular fa-right-left', color: 'info', slot: 'transferencia' },
-            ]" spread unelevated class="tipo-protocolo-colorido" />
+            <q-btn-toggle v-model="form.type" :options="tiposLancamento" spread unelevated class="tipo-protocolo" />
           </div>
         </q-card-section>
         <q-card-section>
@@ -177,7 +171,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'src/boot/axios'
 
@@ -414,13 +408,50 @@ const formatDate = (date) => {
   return new Date(date + 'T00:00:00').toLocaleDateString('pt-BR')
 }
 
+const tiposLancamento = computed(() => [
+  {
+    label: 'Entrada',
+    value: 'ENTRADA',
+    icon: 'fa-regular fa-circle-down',
+    color: 'positive',
+    class: 'btn-entrada'
+  },
+  {
+    label: 'Saída',
+    value: 'SAIDA',
+    icon: 'fa-regular fa-circle-up',
+    // color: 'negative',
+    class: 'btn-saida'
+  },
+  {
+    label: 'Ajuste',
+    value: 'AJUSTE',
+    icon: 'fa-regular fa-pen-to-square',
+    // color: 'warning',
+    class: 'btn-ajuste'
+  },
+  {
+    label: 'Sangria',
+    value: 'SANGRIA',
+    icon: 'fa-regular fa-money-bill-wave',
+    // color: 'orange',
+    class: 'btn-sangria'
+  },
+  {
+    label: 'Transferência',
+    value: 'TRANSFERENCIA',
+    icon: 'fa-regular fa-right-left',
+    // color: 'info',
+    class: 'btn-transferencia'
+  },
+])
+
 // Lifecycle
 onMounted(() => {
   loadTransactions()
   loadCashiers()
 })
 </script>
-
 <style scoped lang="scss">
 .text-positive {
   color: #21BA45;
@@ -430,10 +461,9 @@ onMounted(() => {
   color: #C10015;
 }
 
-
 .grupo-tipo-protocolo {
   :deep(.q-btn) {
-    color: #37474f;
+    // color: #37474f;
     border-radius: 2px !important;
     border: 1px solid #e0e0e0 !important;
 
@@ -447,30 +477,77 @@ onMounted(() => {
     }
 
     &.q-btn--outline {
-      border: 1px solid #e0e0e0;
-      background-color: white;
+      // border: 1px solid #e0e0e0;
+      // background-color: white;
     }
 
-    /* Botão selecionado - quando tem bg-primary */
-    &.bg-primary {
-      border-color: $primary !important;
-    }
+    // &[aria-pressed="true"] {
+    //   // border-color: $primary !important;
+    // }
 
-    /* Alternativa usando aria-pressed */
-    &[aria-pressed="true"] {
-      border-color: $primary !important;
-    }
-
-    /* Ajusta o q-focus-helper para cobrir 100% */
     .q-focus-helper {
-      background-color: currentColor;
+      // background-color: currentColor;
       opacity: 0;
       border-radius: inherit;
     }
 
-    /* Hover */
     &:hover .q-focus-helper {
       opacity: 0.1;
+    }
+  }
+
+  // Mover os estilos customizados para dentro do .grupo-tipo-protocolo
+  .tipo-protocolo {
+    :deep(.btn-entrada) {
+      color: var(--q-positive) !important;
+      border: 1px solid var(--q-positive) !important;
+      background-color: white !important;
+      border: 1px solid var(--q-positive) !important;
+
+      &.q-btn--active {
+        background-color: var(--q-positive) !important;
+        color: white !important;
+      }
+    }
+
+    :deep(.btn-saida) {
+      // color: var(--q-negative) !important;
+      border: 1px solid var(--q-negative) !important;
+
+      &.q-btn--active {
+        background-color: var(--q-negative) !important;
+        color: white !important;
+      }
+    }
+
+    :deep(.btn-ajuste) {
+      color: var(--q-warning) !important;
+      border: 1px solid var(--q-warning) !important;
+
+      &.q-btn--active {
+        background-color: var(--q-warning) !important;
+        color: white !important;
+      }
+    }
+
+    :deep(.btn-sangria) {
+      color: orange !important;
+      border: 1px solid orange !important;
+
+      &.q-btn--active {
+        background-color: orange !important;
+        color: white !important;
+      }
+    }
+
+    :deep(.btn-transferencia) {
+      color: var(--q-info) !important;
+      border: 1px solid var(--q-info) !important;
+
+      &.q-btn--active {
+        background-color: var(--q-info) !important;
+        color: white !important;
+      }
     }
   }
 }
@@ -478,7 +555,6 @@ onMounted(() => {
 :deep(.q-btn-group) {
   column-gap: 4px !important;
 }
-
 
 :deep(.q-field__focusable-action) {
   font-size: 20px !important;
