@@ -524,6 +524,11 @@ onMounted(() => {
         background-color: var(--q-negative) !important;
         color: white !important;
       }
+
+      &[aria-pressed="true"] {
+        background-color: var(--q-negative) !important;
+        color: white !important;
+      }
     }
 
     :deep(.btn-ajuste) {
@@ -531,6 +536,11 @@ onMounted(() => {
       border: 1px solid var(--q-warning) !important;
 
       &.q-btn--active {
+        background-color: var(--q-warning) !important;
+        color: white !important;
+      }
+
+      &[aria-pressed="true"] {
         background-color: var(--q-warning) !important;
         color: white !important;
       }
@@ -544,6 +554,11 @@ onMounted(() => {
         background-color: orange !important;
         color: white !important;
       }
+
+      &[aria-pressed="true"] {
+        background-color: orange !important;
+        color: white !important;
+      }
     }
 
     :deep(.btn-transferencia) {
@@ -551,6 +566,11 @@ onMounted(() => {
       border: 1px solid var(--q-info) !important;
 
       &.q-btn--active {
+        background-color: var(--q-info) !important;
+        color: white !important;
+      }
+
+      &[aria-pressed="true"] {
         background-color: var(--q-info) !important;
         color: white !important;
       }
