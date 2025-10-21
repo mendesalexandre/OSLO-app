@@ -125,33 +125,32 @@
     <modal v-model="dialog" tamanho="md" titulo="Transação" @close="fecharModal">
       <q-card bordered>
         <q-card-section>
-          <div class="q-gutter-md">
-            <q-card-section>
-              <!-- Tipo de Protocolo -->
-              <div class="col-12 grupo-tipo-protocolo">
-                <v-label label="Tipo de Protocolo" obrigatorio />
-                <q-btn-toggle v-model="getOpcaoSelecionada" :options="[
-                  { label: 'Entrada', value: 'ENTRADA', icon: 'fa-regular fa-file' },
-                  { label: 'Saída', value: 'SAIDA', icon: 'fa-regular fa-calculator' },
-                ]" spread unelevated class="tipo-protocolo" />
-              </div>
-            </q-card-section>
-            <q-select v-model="form.type" outlined :options="typeOptions" label="Tipo *" emit-value map-options
-              :rules="[val => !!val || 'Campo obrigatório']" />
+          <q-card-section>
+            <!-- Tipo de Protocolo -->
+            <div class="col-12 grupo-tipo-protocolo">
+              <v-label label="Tipo de Protocolo" obrigatorio />
+              <q-btn-toggle v-model="getOpcaoSelecionada" :options="[
+                { label: 'Entrada', value: 'ENTRADA', icon: 'fa-regular fa-file' },
+                { label: 'Saída', value: 'SAIDA', icon: 'fa-regular fa-calculator' },
+              ]" spread unelevated class="tipo-protocolo" />
+            </div>
+          </q-card-section>
+          <q-select v-model="form.type" outlined :options="typeOptions" label="Tipo *" emit-value map-options
+            :rules="[val => !!val || 'Campo obrigatório']" />
 
-            <v-money v-model.number="form.amount" outlined type="number" step="0.01" />
+          <v-money v-model.number="form.amount" outlined type="number" step="0.01" />
 
-            <q-input v-model="form.description" outlined type="textarea" label="Descrição *" rows="3"
-              :rules="[val => !!val || 'Campo obrigatório']" />
+          <q-input v-model="form.description" outlined type="textarea" label="Descrição *" rows="3"
+            :rules="[val => !!val || 'Campo obrigatório']" />
 
-            <q-input v-model="form.category" outlined label="Categoria" />
+          <q-input v-model="form.category" outlined label="Categoria" />
 
-            <q-input v-model="form.date" outlined type="date" label="Data *"
-              :rules="[val => !!val || 'Campo obrigatório']" />
+          <q-input v-model="form.date" outlined type="date" label="Data *"
+            :rules="[val => !!val || 'Campo obrigatório']" />
 
-            <q-select v-model="form.cashier_id" outlined :options="cashiers" option-value="id" option-label="name"
-              emit-value map-options label="Caixa *" :rules="[val => !!val || 'Campo obrigatório']" />
-          </div>
+          <q-select v-model="form.cashier_id" outlined :options="cashiers" option-value="id" option-label="name"
+            emit-value map-options label="Caixa *" :rules="[val => !!val || 'Campo obrigatório']" />
+
         </q-card-section>
 
 
