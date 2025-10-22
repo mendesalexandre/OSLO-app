@@ -13,7 +13,7 @@
     <!-- Cards -->
     <div class="row q-col-gutter-md">
       <div class="col-12 col-md-6 col-lg-4" v-for="movimento in movimentos" :key="movimento.id">
-        <q-card flat bordered>
+        <q-card bordered>
           <q-card-section>
             <div class="row items-center q-mb-sm">
               <div class="col">
@@ -68,14 +68,14 @@
 
           <q-separator />
 
-          <q-card-actions align="right">
+          <q-card-section align="right">
             <q-btn v-if="movimento.status === 'ABERTO'" flat dense color="primary" icon="attach_money"
               label="Transações" @click="viewTransactions(movimento)" />
             <q-btn v-if="movimento.status === 'ABERTO'" flat dense color="negative" icon="lock" label="Fechar"
               @click="confirmClose(movimento)" />
             <q-btn v-if="movimento.status === 'FECHADO'" flat dense color="positive" icon="check" label="Conferir"
               @click="conferirMovimento(movimento)" />
-          </q-card-actions>
+          </q-card-section>
         </q-card>
       </div>
     </div>

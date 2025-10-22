@@ -16,7 +16,7 @@ const routes = [
       },
 
       {
-        path: "movimento-caixa",
+        path: "caixa/movimento",
         component: () => import("pages/movimento-caixa/Index.vue"),
         name: "movimento-caixa",
       },

@@ -229,3 +229,12 @@ body {
 .q-header .q-layout__shadow:after {
   bottom: 0 !important;
 }
+
+.v-money3 {
+  font-size: 0.875rem !important;
+}
+
+.q-field--auto-height.q-field--dense.q-field--labeled
+  .q-field__control-container {
+  padding-top: 0 !important;
+}

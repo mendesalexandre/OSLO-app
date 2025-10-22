@@ -1,179 +1,186 @@
-<template>
-  <q-page padding>
-    <!-- Header -->
-    <div class="row items-center q-mb-md">
-      <div class="col">
-        <div class="text-h4">Transações</div>
-        <div class="text-subtitle2 text-grey-7">Gerenciamento de entradas e saídas</div>
-      </div>
-      <div class="col-auto">
-        <q-btn color="primary" icon="add" label="Nova Transação" @click="openDialog()" />
-      </div>
-    </div>
-
-    <!-- Filtros -->
-    <q-card flat bordered class="q-mb-md">
-      <q-card-section>
-        <div class="row q-col-gutter-md">
-          <div class="col-12 col-md-3">
-            <v-label label="Buscar"></v-label>
-            <q-input v-model="filters.search" outlined dense placeholder="Buscar..." @keyup.enter="loadTransactions">
-              <template v-slot:prepend>
-                <q-icon name="search" />
-              </template>
-            </q-input>
-          </div>
-
-          <div class="col-12 col-md-2">
-            <v-label label="Tipo"></v-label>
-            <q-select v-model="filters.type" outlined dense :options="typeOptions" emit-value map-options clearable />
-          </div>
-
-          <div class="col-12 col-md-2">
-            <v-label label="Data Inicial"></v-label>
-            <v-date v-model="filters.date_from" outlined dense />
-          </div>
-
-          <!-- <div class="col-12 col-md-2">
-            <v-label label="Data Final"></v-label>
-            <q-input v-model="filters.date_to" outlined dense type="date" />
-          </div> -->
-
-          <div class="col-12 col-md-3">
-            <q-btn color="primary" label="Filtrar" icon="filter_list" @click="loadTransactions" class="q-mr-sm" />
-            <q-btn flat label="Limpar" @click="clearFilters" />
-          </div>
+  <template>
+    <q-page padding>
+      <!-- Header -->
+      <div class="row items-center q-mb-md">
+        <div class="col">
+          <div class="text-h4">Transações</div>
+          <div class="text-subtitle2 text-grey-7">Gerenciamento de entradas e saídas</div>
         </div>
-      </q-card-section>
-    </q-card>
-
-    <!-- Resumo -->
-    <div class="row q-col-gutter-md q-mb-md">
-      <div class="col-12 col-md-4">
-        <q-card flat bordered>
-          <q-card-section>
-            <div class="text-subtitle2 text-grey-7">Total Entradas</div>
-            <div class="text-h5 text-positive">{{ formatCurrency(summary.total_entradas) }}</div>
-          </q-card-section>
-        </q-card>
+        <div class="col-auto">
+          <q-btn color="primary" icon="add" label="Nova Transação" @click="openDialog()" />
+        </div>
       </div>
-      <div class="col-12 col-md-4">
-        <q-card flat bordered>
-          <q-card-section>
-            <div class="text-subtitle2 text-grey-7">Total Saídas</div>
-            <div class="text-h5 text-negative">{{ formatCurrency(summary.total_saidas) }}</div>
-          </q-card-section>
-        </q-card>
-      </div>
-      <div class="col-12 col-md-4">
-        <q-card flat bordered>
-          <q-card-section>
-            <div class="text-subtitle2 text-grey-7">Saldo</div>
-            <div class="text-h5" :class="summary.saldo >= 0 ? 'text-positive' : 'text-negative'">
-              {{ formatCurrency(summary.saldo) }}
-            </div>
-          </q-card-section>
-        </q-card>
-      </div>
-    </div>
 
-    <!-- Tabela -->
-    <q-card flat bordered>
-      <q-table :rows="transactions" :columns="columns" row-key="id" :loading="loading" :pagination="pagination"
-        @request="onRequest" flat>
-        <template #header-cell="props">
-          <q-th :props="props" class="text-uppercase text-weight-medium tabela-cabecalho text-blue-grey-8">
-            {{ props.col.label }}
-          </q-th>
-        </template>
-        <template v-slot:body-cell-type="props">
-          <q-td :props="props">
-            <q-chip :color="props.row.type === 'entrada' ? 'positive' : 'negative'" text-color="white" size="sm">
-              {{ props.row.type === 'entrada' ? 'Entrada' : 'Saída' }}
-            </q-chip>
-          </q-td>
-        </template>
-
-        <template v-slot:body-cell-amount="props">
-          <q-td :props="props">
-            <span :class="props.row.type === 'entrada' ? 'text-positive' : 'text-negative'">
-              {{ formatCurrency(props.row.amount) }}
-            </span>
-          </q-td>
-        </template>
-
-        <template v-slot:body-cell-date="props">
-          <q-td :props="props">
-            {{ formatDate(props.row.date) }}
-          </q-td>
-        </template>
-
-        <template v-slot:body-cell-actions="props">
-          <q-td :props="props">
-            <q-btn flat dense round icon="edit" size="sm" color="primary" @click="openDialog(props.row)">
-              <q-tooltip>Editar</q-tooltip>
-            </q-btn>
-            <q-btn flat dense round icon="delete" size="sm" color="negative" @click="confirmDelete(props.row)">
-              <q-tooltip>Excluir</q-tooltip>
-            </q-btn>
-          </q-td>
-        </template>
-      </q-table>
-    </q-card>
-
-    <!-- Dialog de Cadastro/Edição -->
-    <modal v-model="dialog" tamanho="lg" titulo="Transação" @close="fecharModal">
-      <q-card bordered>
+      <!-- Filtros -->
+      <q-card flat bordered class="q-mb-md">
         <q-card-section>
-          <!-- Tipo de Lançamento -->
-          <div class="col-12 grupo-tipo-protocolo">
-            <v-label label="Tipo de Lançamento" obrigatorio />
-            <q-btn-toggle v-model="form.type" :options="tiposLancamento" spread unelevated class="tipo-protocolo" />
-          </div>
-        </q-card-section>
-        <q-card-section>
-          <div class="row q-col-gutter-sm">
-            <div class="col-md-12">
-              <v-label label="Valor" obrigatorio />
-              <v-money v-model.number="form.amount" outlined type="number" dense />
+          <div class="row q-col-gutter-md">
+            <div class="col-12 col-md-3">
+              <v-label label="Buscar"></v-label>
+              <q-input v-model="filters.search" outlined dense placeholder="Buscar..." @keyup.enter="loadTransactions">
+                <template v-slot:prepend>
+                  <q-icon name="search" />
+                </template>
+              </q-input>
             </div>
 
-            <div class="col-md-12">
-              <v-label label="Descrição" obrigatorio />
-              <q-input v-model="form.descricao" outlined type="textarea" rows="3"
-                :rules="[val => !!val || 'Campo obrigatório']" hide-bottom-space />
+            <div class="col-12 col-md-2">
+              <v-label label="Tipo"></v-label>
+              <q-select v-model="filters.type" outlined dense :options="typeOptions" emit-value map-options clearable />
             </div>
-            <div class="col-md-12">
-              <v-label label="Categoria" obrigatorio />
-              <v-select v-model="form.categoria" outlined dense />
+
+            <div class="col-12 col-md-2">
+              <v-label label="Data Inicial"></v-label>
+              <v-date v-model="filters.date_from" outlined dense />
             </div>
-            <div class="col-md-12">
-              <v-label label="Data" obrigatorio />
-              <v-date v-model="form.data" outlined :rules="[val => !!val || 'Campo obrigatório']" hide-bottom-space />
-            </div>
-            <div class="col-md-12">
-              <v-label label="Caixa" obrigatorio />
-              <q-select v-model="form.cashier_id" outlined :options="cashiers" option-value="id" option-label="nome"
-                emit-value map-options :rules="[val => !!val || 'Campo obrigatório']" hide-bottom-space />
+
+            <!-- <div class="col-12 col-md-2">
+              <v-label label="Data Final"></v-label>
+              <q-input v-model="filters.date_to" outlined dense type="date" />
+            </div> -->
+
+            <div class="col-12 col-md-3">
+              <q-btn color="primary" label="Filtrar" icon="filter_list" @click="loadTransactions" class="q-mr-sm" />
+              <q-btn flat label="Limpar" @click="clearFilters" />
             </div>
           </div>
         </q-card-section>
       </q-card>
 
-      <template #rodape>
-        <q-card-section align="right">
-          <q-btn flat label="Cancelar" v-close-popup />
-          <q-btn color="primary" label="Salvar" @click="saveTransaction" :loading="saving" />
-        </q-card-section>
-      </template>
-    </modal>
-  </q-page>
-</template>
+      <!-- Resumo -->
+      <div class="row q-col-gutter-md q-mb-md">
+        <div class="col-12 col-md-4">
+          <q-card flat bordered>
+            <q-card-section>
+              <div class="text-subtitle2 text-grey-7">Total Entradas</div>
+              <div class="text-h5 text-positive">{{ formatCurrency(summary.total_entradas) }}</div>
+            </q-card-section>
+          </q-card>
+        </div>
+        <div class="col-12 col-md-4">
+          <q-card flat bordered>
+            <q-card-section>
+              <div class="text-subtitle2 text-grey-7">Total Saídas</div>
+              <div class="text-h5 text-negative">{{ formatCurrency(summary.total_saidas) }}</div>
+            </q-card-section>
+          </q-card>
+        </div>
+        <div class="col-12 col-md-4">
+          <q-card flat bordered>
+            <q-card-section>
+              <div class="text-subtitle2 text-grey-7">Saldo</div>
+              <div class="text-h5" :class="summary.saldo >= 0 ? 'text-positive' : 'text-negative'">
+                {{ formatCurrency(summary.saldo) }}
+              </div>
+            </q-card-section>
+          </q-card>
+        </div>
+      </div>
+
+      <!-- Tabela -->
+      <q-card flat bordered>
+        <q-table :rows="transactions" :columns="columns" row-key="id" :loading="loading" :pagination="pagination"
+          @request="onRequest" flat>
+          <template #header-cell="props">
+            <q-th :props="props" class="text-uppercase text-weight-medium tabela-cabecalho text-blue-grey-8">
+              {{ props.col.label }}
+            </q-th>
+          </template>
+          <template v-slot:body-cell-type="props">
+            <q-td :props="props">
+              <q-chip :color="props.row.type === 'entrada' ? 'positive' : 'negative'" text-color="white" size="sm">
+                {{ props.row.type === 'entrada' ? 'Entrada' : 'Saída' }}
+              </q-chip>
+            </q-td>
+          </template>
+
+          <template v-slot:body-cell-amount="props">
+            <q-td :props="props">
+              <span :class="props.row.type === 'entrada' ? 'text-positive' : 'text-negative'">
+                {{ formatCurrency(props.row.amount) }}
+              </span>
+            </q-td>
+          </template>
+
+          <template v-slot:body-cell-date="props">
+            <q-td :props="props">
+              {{ formatDate(props.row.date) }}
+            </q-td>
+          </template>
+
+          <template v-slot:body-cell-actions="props">
+            <q-td :props="props">
+              <q-btn flat dense round icon="edit" size="sm" color="primary" @click="openDialog(props.row)">
+                <q-tooltip>Editar</q-tooltip>
+              </q-btn>
+              <q-btn flat dense round icon="delete" size="sm" color="negative" @click="confirmDelete(props.row)">
+                <q-tooltip>Excluir</q-tooltip>
+              </q-btn>
+            </q-td>
+          </template>
+        </q-table>
+      </q-card>
+
+      <!-- Dialog de Cadastro/Edição -->
+      <modal v-model="dialog" tamanho="lg" titulo="Transação" @close="fecharModal">
+        <q-card bordered>
+          <q-card-section>
+            <!-- Tipo de Lançamento -->
+            <div class="col-12 grupo-tipo-protocolo">
+              <v-label label="Tipo de Lançamento" obrigatorio />
+              <q-btn-toggle dense v-model="form.type" :options="tiposLancamento" spread unelevated
+                class="tipo-protocolo" />
+            </div>
+          </q-card-section>
+          <q-card-section>
+            <div class="row q-col-gutter-sm">
+              <div class="col-md-12">
+                <v-label label="Valor" obrigatorio />
+                <v-money v-model.number="form.amount" outlined type="number" dense />
+              </div>
+
+              <div class="col-md-12">
+                <v-label label="Descrição" obrigatorio />
+                <q-input v-model="form.descricao" outlined type="textarea" rows="3"
+                  :rules="[val => !!val || 'Campo obrigatório']" hide-bottom-space />
+              </div>
+              <div class="col-md-12">
+                <v-label label="Categoria" obrigatorio />
+                <v-select v-model="form.categoria_id" outlined dense :options="categorias" option-value="nome"
+                  option-label="nome" />
+              </div>
+              <div class="col-md-12">
+                <v-label label="Data" obrigatorio />
+                <v-date v-model="form.data" outlined :rules="[val => !!val || 'Campo obrigatório']" hide-bottom-space />
+              </div>
+              <div class="col-md-12">
+                <v-label label="Caixa" obrigatorio />
+                <v-select v-model="form.cashier_id" outlined :options="caixas" dense option-value="id"
+                  option-label="nome" emit-value map-options :rules="[val => !!val || 'Campo obrigatório']"
+                  hide-bottom-space />
+              </div>
+            </div>
+          </q-card-section>
+        </q-card>
+
+        <template #rodape>
+          <q-card-section class="flex justify-end q-col-gutter-sm">
+            <q-btn outline label="Cancelar" />
+            <q-btn color="primary" label="Salvar" @click="saveTransaction" :loading="saving" />
+          </q-card-section>
+        </template>
+      </modal>
+    </q-page>
+  </template>
 
 <script setup>
 import { ref, reactive, onMounted, computed } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'src/boot/axios'
+import { useNaturezaStore } from 'src/stores/natureza'
+import { useCategoriaStore } from 'src/stores/categoria'
+import { useCaixaStore } from 'src/stores/caixa'
+import { storeToRefs } from 'pinia'
 
 const $q = useQuasar()
 
@@ -408,6 +415,12 @@ const formatDate = (date) => {
   return new Date(date + 'T00:00:00').toLocaleDateString('pt-BR')
 }
 
+const categoriaStore = useCategoriaStore();
+const { categorias } = storeToRefs(categoriaStore);
+const caixaStore = useCaixaStore();
+const { caixas } = storeToRefs(caixaStore);
+const naturezaStore = useNaturezaStore();
+
 const tiposLancamento = computed(() => [
   {
     label: 'Entrada',
@@ -447,9 +460,11 @@ const tiposLancamento = computed(() => [
 ])
 
 // Lifecycle
-onMounted(() => {
+onMounted(async () => {
   loadTransactions()
   loadCashiers()
+  await categoriaStore.index()
+  await caixaStore.index()
 })
 </script>
 <style scoped lang="scss">
