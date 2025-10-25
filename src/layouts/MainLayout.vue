@@ -2,8 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-header bordered elevated class="bg-white">
       <q-toolbar>
-        <q-btn flat dense round aria-label="Menu" @click="toggleLeftDrawer" color="dark" icon="fa-solid fa-bars"
-          size="sm">
+        <q-btn flat round aria-label="Menu" @click="toggleLeftDrawer" color="dark" icon="menu">
         </q-btn>
       </q-toolbar>
     </q-header>
