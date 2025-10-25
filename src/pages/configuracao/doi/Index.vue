@@ -21,14 +21,14 @@
 </template>
 
 <script setup>
-// import { useConfiguracaoStore } from 'src/stores/configuracao';
+import { useConfiguracaoStore } from 'src/stores/configuracao';
 import { onMounted, ref } from 'vue';
 
 defineOptions({
   name: "ConfiguracaoEstatisticaIndex",
 });
 
-// const configuracaoStore = useConfiguracaoStore();
+const configuracaoStore = useConfiguracaoStore();
 const valor = ref("");
 const chave = ref("CONFIG_DOI_WEB_COOKIE");
 async function salvar() {
