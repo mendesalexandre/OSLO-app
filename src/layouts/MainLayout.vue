@@ -28,7 +28,7 @@
           </q-item-section>
         </q-item>
 
-        <q-item clickable v-ripple exact class="menu-item-hover">
+        <q-item clickable v-ripple exact class="menu-item-hover" @click="mostrarModalMenuDeNavegacao">
           <q-item-section>
             <q-item-label>
               <q-icon name="fa-regular fa-bars" size="14px" color="grey-6" />
@@ -172,6 +172,7 @@
 
   <criar-protocolo v-model="modalCriarProtocolo" />
   <criar-indicador-pessoal v-model="modalCriarIndicador" />
+  <menu-navegacao v-model="mostrarMenuNavegacao" />
 </template>
 
 <script setup>
@@ -180,6 +181,7 @@ import { useQuasar } from "quasar";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import CriarProtocolo from "src/components/CriarProtocolo.vue";
+import MenuNavegacao from "src/components/Menu.vue";
 import CriarIndicadorPessoal from "src/pages/indicador-pessoal/Create.vue";
 import { useEstadoStore } from "src/stores/estado";
 
@@ -200,6 +202,11 @@ const modalCriarIndicador = ref(false);
 const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 };
+
+const mostrarMenuNavegacao = ref(false);
+function mostrarModalMenuDeNavegacao() {
+  mostrarMenuNavegacao.value = !mostrarMenuNavegacao.value;
+}
 
 const estadoStore = useEstadoStore();
 

@@ -238,3 +238,18 @@ body {
   .q-field__control-container {
   padding-top: 0 !important;
 }
+
+// AJUSTA A SCROLL
+.q-scrollarea__bar--v,
+.q-scrollarea__thumb--v {
+  right: 0;
+  width: 5px !important;
+  border-radius: 0 !important;
+}
+
+.q-scrollarea__bar--h,
+.q-scrollarea__thumb--h {
+  bottom: 0;
+  width: 5px !important;
+  border-radius: 0 !important;
+}

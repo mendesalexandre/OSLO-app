@@ -126,10 +126,6 @@
       </q-layout>
     </q-dialog>
 
-    <!-- Modal de Selo Digital -->
-    <ModalSeloDigital v-model="showSeloDigitalModal" />
-    <!-- Modal de Buscar Matrícula -->
-    <BuscarMatricula v-model="showBuscarMatriculaModal" />
   </div>
 </template>
 
@@ -137,8 +133,6 @@
 import { ref } from "vue";
 import { useQuasar } from "quasar";
 import { useRouter } from "vue-router";
-import ModalSeloDigital from "src/pages/selo-digital/Show.vue";
-import BuscarMatricula from "src/components/BuscarMatricula.vue";
 
 defineOptions({
   name: "MenuNavegacao",
