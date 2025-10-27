@@ -228,6 +228,12 @@ const riItems = [
     nome: "Transferência de Matrícula",
     rota: "imoveis.tranferencia-imoveis.index",
   },
+
+  {
+    id: "DECLARACAO_IMOBILIARIA",
+    nome: "DOI - Declaração de Operações Imobiliárias",
+    rota: "doi.index",
+  },
 ];
 
 const rtdItems = [
@@ -254,6 +260,7 @@ const getRiIcon = (id) => {
     ONR_COMUNICACAO_PREFEITURA: "fa-regular fa-layer-group",
     ONR_VISUALIZACAO_MATRICULA: "fa-regular fa-eye",
     SELO_DIGITAL: "fa-regular fa-stamp",
+    DECLARACAO_IMOBILIARIA: "fa-regular fa-file-contract",
   };
   return icons[id] || "fa-regular fa-file-lines";
 };
