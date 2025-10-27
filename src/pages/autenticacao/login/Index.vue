@@ -198,7 +198,7 @@ const onSubmit = async () => {
     // Login na API
     const response = await $api.post("/auth/login", {
       email: form.email,
-      senha: form.senha,
+      password: form.senha,
     });
 
     // Salvar token
