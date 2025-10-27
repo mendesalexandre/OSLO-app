@@ -1,5 +1,6 @@
 <template>
-  <modal v-model="showModalImportacaoDoi" tamanho="lg" titulo="Sincronização de DOIs da Receita Federal">
+  <modal v-model="showModalImportacaoDoi" tamanho="lg" titulo="Sincronização de DOIs da Receita Federal"
+    @close="fecharModal">
     <q-card bordered>
       <!-- Status do Token -->
       <q-card-section class="no-padding">
@@ -195,7 +196,7 @@
     <template #rodape>
       <q-card-section class="flex justify-between q-gutter-sm">
         <div>
-          <q-btn label="Cancelar" color="red-8" outline />
+          <q-btn label="Cancelar" color="red-8" outline @click="fecharModal" />
         </div>
 
         <div>
@@ -512,6 +513,10 @@ onUnmounted(() => {
 // Funções existentes mantidas para compatibilidade
 const onPreviewLoteClick = async () => {
   await onPreviewLote(loteForm.value.dataInicio, loteForm.value.dataFim);
+};
+
+const fecharModal = () => {
+  showModalImportacaoDoi.value = !showModalImportacaoDoi.value;
 };
 
 const onPreviewLote = async (dataInicio, dataFim) => {
