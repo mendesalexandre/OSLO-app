@@ -2,7 +2,9 @@
 // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-file
 
 import { defineConfig } from "#q-app/wrappers";
-
+import dotenv from "dotenv";
+// Carrega as variáveis do .env
+dotenv.config();
 export default defineConfig((ctx) => {
   return {
     // https://v2.quasar.dev/quasar-cli-webpack/prefetch-feature
@@ -37,6 +39,11 @@ export default defineConfig((ctx) => {
     build: {
       // publicPath: '/',
       vueRouterMode: "hash", // available values: 'hash', 'history'
+
+      env: {
+        API_URL: process.env.API_URL,
+        APP_NAME: process.env.APP_NAME,
+      },
 
       // webpackTranspile: false,
 
