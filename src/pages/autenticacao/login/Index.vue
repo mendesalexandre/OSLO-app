@@ -182,7 +182,7 @@ const form = reactive({
 // Função de submit
 const onSubmit = async () => {
   // Validar campos
-  usuarioRef.value?.validate();
+  emailRef.value?.validate();
   senhaRef.value?.validate();
 
   if (!form.email || !form.senha) {
