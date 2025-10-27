@@ -195,7 +195,7 @@ const onSubmit = async () => {
     // Fazer requisição para a API Laravel
     const response = await $api.post("/auth/login", {
       email: form.email,
-      senha: form.senha,
+      password: form.senha,
       remember: form.lembrarMe,
     });
 
