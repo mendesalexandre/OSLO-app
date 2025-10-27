@@ -58,7 +58,7 @@
           </div>
 
           <!-- Formulário de login -->
-          <q-form @submit.prevent="onSubmit" class="login-form">
+          <q-form class="login-form">
             <!-- Campo de usuário (email ou telefone) -->
             <div class="form-group">
               <label class="form-label">E-mail ou Telefone</label>
@@ -97,7 +97,7 @@
 
             <!-- Botão de login -->
             <q-btn label="Entrar" class="login-btn" :loading="loading" unelevated :disable="!form.email || !form.senha"
-              icon-right="fa-duotone fa-arrow-right-to-bracket">
+              icon-right="fa-duotone fa-arrow-right-to-bracket" @click="onSubmit">
               <template v-slot:loading>
                 <q-spinner class="on-left" />
                 Entrando...
