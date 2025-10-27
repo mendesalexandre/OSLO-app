@@ -1,7 +1,7 @@
 // stores/doi.js
 import { defineStore } from "pinia";
 import { api } from "src/boot/axios"; // ou sua instância do axios
-const path = "/doi"; // Defina o caminho base para as DOIs
+const path = "/declaracao-imobiliaria"; // Defina o caminho base para as DOIs
 export const useDoiStore = defineStore("doi", {
   state: () => ({
     declaracoes: [],
