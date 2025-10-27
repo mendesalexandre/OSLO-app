@@ -11,7 +11,7 @@ export default defineConfig((ctx) => {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-webpack/boot-files
-    boot: ["fontawesome", "i18n", "axios", "setDefaults", "components"],
+    boot: ["fontawesome", "i18n", "axios", "auth", "setDefaults", "components"],
 
     // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-file#css
     css: [
