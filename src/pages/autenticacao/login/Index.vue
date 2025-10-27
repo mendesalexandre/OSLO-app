@@ -214,7 +214,7 @@ const onSubmit = async () => {
 
     // Redirecionar para tarefas
     setTimeout(() => {
-      router.push("/tarefas");
+      router.push({ name: "tarefas" });
     }, 500);
 
   } catch (error) {
