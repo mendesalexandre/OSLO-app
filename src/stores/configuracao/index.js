@@ -15,7 +15,7 @@ export const useConfiguracaoStore = defineStore("configuracao", {
     },
 
     async show(chave) {
-      const response = await api.get(`${path}/${chave}`);
+      const response = await api.get(`${path}/filtro?chave=${chave}`);
       this.configuracao = response.data;
       return response;
     },

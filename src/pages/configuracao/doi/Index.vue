@@ -41,7 +41,9 @@ async function salvar() {
 }
 
 onMounted(async () => {
-  const resposta = await configuracaoStore.show(chave.value);
+  const resposta = await configuracaoStore.show({
+    chave: chave.value
+  });
   console.log(resposta);
 });
 </script>
