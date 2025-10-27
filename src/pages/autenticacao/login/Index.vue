@@ -96,8 +96,8 @@
             </div>
 
             <!-- Botão de login -->
-            <q-btn label="Entrar" type="submit" class="login-btn" :loading="loading" unelevated
-              :disable="!form.email || !form.senha" icon-right="fa-duotone fa-arrow-right-to-bracket">
+            <q-btn label="Entrar" class="login-btn" :loading="loading" unelevated :disable="!form.email || !form.senha"
+              icon-right="fa-duotone fa-arrow-right-to-bracket">
               <template v-slot:loading>
                 <q-spinner class="on-left" />
                 Entrando...
