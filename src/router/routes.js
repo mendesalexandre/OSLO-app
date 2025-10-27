@@ -7,6 +7,10 @@ const routes = [
         path: "",
         component: () => import("pages/IndexPage.vue"),
         name: "tarefas",
+        meta: {
+          title: "Tarefas",
+          requiresAuth: true,
+        },
       },
 
       {
