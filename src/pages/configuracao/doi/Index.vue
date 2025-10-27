@@ -7,7 +7,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
           <v-label label="Informar o cookie do navegador pra iniciar a importação dos arquivos" :obrigatorio="true"
             :ajuda="'Informar o cookie do navegador pra iniciar a importação dos arquivos'"></v-label>
-          <q-input outlined dense v-model="valor" />
+          <q-input outlined dense v-model="configuracao.valor" />
         </div>
       </div>
     </q-card-section>
@@ -21,6 +21,7 @@
 </template>
 
 <script setup>
+import { storeToRefs } from 'pinia';
 import { useConfiguracaoStore } from 'src/stores/configuracao';
 import { onMounted, ref } from 'vue';
 
@@ -29,6 +30,7 @@ defineOptions({
 });
 
 const configuracaoStore = useConfiguracaoStore();
+const { configuracao } = storeToRefs(configuracaoStore);
 const valor = ref("");
 const chave = ref("CONFIG_DOI_WEB_COOKIE");
 async function salvar() {
