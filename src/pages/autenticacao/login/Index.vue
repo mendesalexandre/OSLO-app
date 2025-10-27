@@ -88,12 +88,12 @@
             </div>
 
             <!-- Lembrar de mim e esqueci senha -->
-            <div class="form-options">
+            <!-- <div class="form-options">
               <q-checkbox v-model="form.lembrarMe" label="Lembrar de mim" class="remember-checkbox" />
               <q-btn flat no-caps class="forgot-password-btn" @click="onEsqueciSenha">
                 Esqueci minha senha
               </q-btn>
-            </div>
+            </div> -->
 
             <!-- Botão de login -->
             <q-btn label="Entrar" class="login-btn" :loading="loading" unelevated :disable="!form.email || !form.senha"
@@ -182,7 +182,7 @@ const form = reactive({
 // Função de submit
 const onSubmit = async () => {
   // Validar campos
-  if (!form.usuario || !form.senha) {
+  if (!form.email || !form.senha) {
     $q.notify({
       color: "negative",
       message: "Preencha todos os campos",
@@ -197,12 +197,12 @@ const onSubmit = async () => {
   try {
     // Login na API
     const response = await $api.post("/auth/login", {
-      usuario: form.usuario,
+      email: form.email,
       senha: form.senha,
     });
 
     // Salvar token
-    localStorage.setItem("doi_auth_token", response.data.token);
+    localStorage.setItem("doi_auth_token", response.data.access_token);
     localStorage.setItem("doi_user", JSON.stringify(response.data.user));
 
     // Notificação de sucesso
@@ -247,7 +247,7 @@ const onEsqueciSenha = () => {
 const checkRememberedUser = () => {
   const rememberedUser = localStorage.getItem("doi_remember_user");
   if (rememberedUser) {
-    form.usuario = rememberedUser;
+    form.email = rememberedUser;
     form.lembrarMe = true;
   }
 };
