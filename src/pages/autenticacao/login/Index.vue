@@ -1,5 +1,5 @@
 <template>
-  <div class="login-container">
+  <div class="login-page">
     <!-- Layout de duas colunas -->
     <div class="row no-wrap full-height">
       <!-- Coluna da esquerda - 8/12 -->
@@ -42,9 +42,9 @@
           </div>
 
           <!-- Footer info -->
-          <!-- <div class="footer-info">
+          <div class="footer-info">
             <p>© 2025 Sistema Oslo. Todos os direitos reservados.</p>
-          </div> -->
+          </div>
         </div>
       </div>
 
@@ -58,14 +58,15 @@
           </div>
 
           <!-- Formulário de login -->
-          <q-form @submit="handleLogin" class="login-form">
-            <!-- Campo de email -->
+          <q-form @submit="onSubmit" class="login-form">
+            <!-- Campo de usuário (email ou telefone) -->
             <div class="form-group">
-              <label class="form-label">E-mail</label>
-              <q-input v-model="form.email" type="email" outlined placeholder="Digite seu e-mail" class="login-input"
-                :rules="[val => !!val || 'E-mail é obrigatório']" dense>
+              <label class="form-label">E-mail ou Telefone</label>
+              <q-input v-model="form.usuario" type="text" outlined placeholder="Digite seu e-mail ou telefone"
+                class="login-input" :rules="[val => !!val || 'Campo obrigatório']" ref="usuarioRef" dense autofocus
+                hide-bottom-space>
                 <template v-slot:prepend>
-                  <q-icon name="fa-duotone fa-envelope" class="input-icon" />
+                  <q-icon name="fa-duotone fa-user" class="input-icon" />
                 </template>
               </q-input>
             </div>
@@ -73,159 +74,234 @@
             <!-- Campo de senha -->
             <div class="form-group">
               <label class="form-label">Senha</label>
-              <q-input v-model="form.password" :type="showPassword ? 'text' : 'password'" outlined
-                placeholder="Digite sua senha" class="login-input" :rules="[val => !!val || 'Senha é obrigatória']"
-                dense>
+              <q-input v-model="form.senha" :type="isPwd ? 'password' : 'text'" outlined placeholder="Digite sua senha"
+                class="login-input" :rules="[val => !!val || 'Senha é obrigatória']" ref="senhaRef" dense
+                hide-bottom-space @keyup.enter="onSubmit">
                 <template v-slot:prepend>
                   <q-icon name="fa-duotone fa-lock" class="input-icon" />
                 </template>
                 <template v-slot:append>
-                  <q-btn flat round dense :icon="showPassword ? 'fa-duotone fa-eye-slash' : 'fa-duotone fa-eye'"
-                    @click="showPassword = !showPassword" class="password-toggle" />
+                  <q-btn flat round dense :icon="isPwd ? 'fa-duotone fa-eye' : 'fa-duotone fa-eye-slash'"
+                    @click="isPwd = !isPwd" class="password-toggle" />
                 </template>
               </q-input>
             </div>
 
             <!-- Lembrar de mim e esqueci senha -->
             <div class="form-options">
-              <q-checkbox v-model="form.remember" label="Lembrar de mim" class="remember-checkbox" />
-              <q-btn flat no-caps class="forgot-password-btn" @click="navigateToForgotPassword">
+              <q-checkbox v-model="form.lembrarMe" label="Lembrar de mim" class="remember-checkbox" />
+              <q-btn flat no-caps class="forgot-password-btn" @click="onEsqueciSenha">
                 Esqueci minha senha
               </q-btn>
             </div>
 
             <!-- Botão de login -->
-            <q-btn label="Entrar" type="submit" class="login-btn" :loading="isLoading" unelevated
-              icon-right="fa-duotone fa-arrow-right-to-bracket">
+            <q-btn label="Entrar" type="submit" class="login-btn" :loading="loading" unelevated
+              :disable="!form.usuario || !form.senha" icon-right="fa-duotone fa-arrow-right-to-bracket">
+              <template v-slot:loading>
+                <q-spinner class="on-left" />
+                Entrando...
+              </template>
             </q-btn>
           </q-form>
 
           <!-- Divider -->
-          <div class="divider">
+          <!-- <div class="divider">
             <span>ou</span>
-          </div>
+          </div> -->
 
           <!-- Login social (opcional) -->
-          <div class="social-login">
-            <!-- <q-btn outline no-caps class="social-btn google-btn" @click="loginWithGoogle">
+          <!-- <div class="social-login">
+            <q-btn outline no-caps class="social-btn google-btn" @click="loginWithGoogle">
               <q-icon name="fa-brands fa-google" class="q-mr-sm" />
               Continuar com Google
-            </q-btn> -->
+            </q-btn>
 
-            <!-- <q-btn outline no-caps class="social-btn microsoft-btn" @click="loginWithMicrosoft">
+            <q-btn outline no-caps class="social-btn microsoft-btn" @click="loginWithMicrosoft">
               <q-icon name="fa-brands fa-microsoft" class="q-mr-sm" />
               Continuar com Microsoft
-            </q-btn> -->
-          </div>
+            </q-btn>
+          </div> -->
 
           <!-- Link para registro -->
-          <div class="register-link">
+          <!-- <div class="register-link">
             <span>Não tem uma conta?</span>
-            <q-btn flat no-caps unelevated class="register-btn no-hover-effect" @click="navigateToRegister">
+            <q-btn flat no-caps unelevated class="register-btn" @click="navigateToRegister">
               Criar conta
             </q-btn>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Toast de erro moderno -->
+  <q-dialog v-model="showError" position="top">
+    <q-card class="error-toast">
+      <q-card-section class="row items-center no-wrap">
+        <q-icon name="fa-duotone fa-triangle-exclamation" class="error-icon" />
+        <div class="error-message">{{ errorMessage }}</div>
+        <q-space />
+        <q-btn flat round dense icon="fa-duotone fa-xmark" @click="showError = false" class="close-button" />
+      </q-card-section>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useQuasar } from 'quasar';
-import { useRouter } from 'vue-router';
+import { ref, reactive } from "vue";
+import { useQuasar } from "quasar";
+import { useRouter } from "vue-router";
+import { api } from "src/boot/axios";
 
 defineOptions({
-  name: 'LoginPage'
+  name: "LoginPage",
 });
 
 const $q = useQuasar();
 const router = useRouter();
+const $api = api;
 
-// Estado do formulário
-const form = ref({
-  email: '',
-  password: '',
-  remember: false
+// Estado reativo
+const loading = ref(false);
+const isPwd = ref(true);
+const showError = ref(false);
+const errorMessage = ref("");
+
+// Referências dos campos
+const usuarioRef = ref(null);
+const senhaRef = ref(null);
+
+// Formulário
+const form = reactive({
+  usuario: "",
+  senha: "",
+  lembrarMe: false,
 });
 
-const showPassword = ref(false);
-const isLoading = ref(false);
+// Função de submit
+const onSubmit = async () => {
+  // Validar campos
+  usuarioRef.value?.validate();
+  senhaRef.value?.validate();
 
-// Métodos
-const handleLogin = async () => {
-  isLoading.value = true;
+  if (!form.usuario || !form.senha) {
+    return;
+  }
+
+  loading.value = true;
 
   try {
-    // Simular chamada de API
-    await new Promise(resolve => setTimeout(resolve, 1500));
-
-    // Validação simples para demo
-    if (form.value.email === 'admin@oslo.com' && form.value.password === '123456') {
-      $q.notify({
-        type: 'positive',
-        message: 'Login realizado com sucesso!',
-        position: 'top-right',
-        timeout: 2000,
-        icon: 'fa-duotone fa-check-circle'
-      });
-
-      // Simular salvamento do token
-      localStorage.setItem('auth_token', 'demo_token_123');
-
-      // Redirecionar para dashboard
-      router.push({ name: 'home' });
-    } else {
-      $q.notify({
-        type: 'negative',
-        message: 'E-mail ou senha incorretos',
-        position: 'top-right',
-        timeout: 3000,
-        icon: 'fa-duotone fa-circle-exclamation'
-      });
-    }
-  } catch (error) {
-    $q.notify({
-      type: 'negative',
-      message: 'Erro ao fazer login. Tente novamente.',
-      position: 'top-right',
-      timeout: 3000,
-      icon: 'fa-duotone fa-triangle-exclamation'
+    // Fazer requisição para a API Laravel
+    const response = await $api.post("/auth/login", {
+      usuario: form.usuario,
+      senha: form.senha,
+      remember: form.lembrarMe,
     });
+
+    // Login bem-sucedido
+    $q.notify({
+      color: "positive",
+      message: response.data.message || "Login realizado com sucesso!",
+      icon: "fa-duotone fa-circle-check",
+      position: "top",
+      classes: 'modern-notification'
+    });
+
+    // Salvar dados no localStorage
+    if (form.lembrarMe) {
+      localStorage.setItem("doi_remember_user", form.usuario);
+    } else {
+      localStorage.removeItem("doi_remember_user");
+    }
+
+    // Salvar token e dados do usuário
+    localStorage.setItem("doi_auth_token", response.data.token);
+    localStorage.setItem("doi_user", JSON.stringify(response.data.user));
+
+    // Salvar permissões se existirem
+    if (response.data.permissions) {
+      localStorage.setItem(
+        "doi_permissions",
+        JSON.stringify(response.data.permissions)
+      );
+    }
+
+    // Salvar informações da sessão
+    if (response.data.session) {
+      localStorage.setItem(
+        "doi_session_config",
+        JSON.stringify(response.data.session)
+      );
+    }
+
+    // Redirecionar para dashboard ou página solicitada
+    const redirectTo = router.currentRoute.value.query.redirect || "/";
+    setTimeout(() => {
+      router.push(redirectTo);
+    }, 500);
+  } catch (error) {
+    // Tratar diferentes tipos de erro
+    if (error.response) {
+      const status = error.response.status;
+      const data = error.response.data;
+
+      if (status === 401) {
+        errorMessage.value = data.error || "Credenciais inválidas";
+      } else if (status === 422) {
+        const errors = data.errors;
+        if (errors) {
+          const firstError = Object.values(errors)[0];
+          errorMessage.value = Array.isArray(firstError)
+            ? firstError[0]
+            : firstError;
+        } else {
+          errorMessage.value = data.error || "Dados inválidos";
+        }
+      } else if (status >= 500) {
+        errorMessage.value =
+          "Erro interno do servidor. Tente novamente mais tarde.";
+      } else {
+        errorMessage.value = data.error || "Erro na autenticação";
+      }
+    } else if (error.request) {
+      errorMessage.value =
+        "Erro de conexão. Verifique sua internet e tente novamente.";
+    } else {
+      errorMessage.value = "Erro inesperado. Tente novamente.";
+    }
+
+    showError.value = true;
   } finally {
-    isLoading.value = false;
+    loading.value = false;
   }
 };
 
-const navigateToForgotPassword = () => {
-  router.push({ name: 'auth.forgot' });
-};
-
-const navigateToRegister = () => {
-  router.push({ name: 'auth.register' });
-};
-
-const loginWithGoogle = () => {
+// Função esqueci senha
+const onEsqueciSenha = () => {
   $q.notify({
-    type: 'info',
-    message: 'Login com Google em desenvolvimento',
-    position: 'top-right',
-    timeout: 2000
+    color: "info",
+    message: "Entre em contato com o administrador",
+    icon: "fa-duotone fa-circle-info",
+    position: "top",
+    classes: 'modern-notification'
   });
 };
 
-const loginWithMicrosoft = () => {
-  $q.notify({
-    type: 'info',
-    message: 'Login com Microsoft em desenvolvimento',
-    position: 'top-right',
-    timeout: 2000
-  });
+// Verificar se há usuário salvo
+const checkRememberedUser = () => {
+  const rememberedUser = localStorage.getItem("doi_remember_user");
+  if (rememberedUser) {
+    form.usuario = rememberedUser;
+    form.lembrarMe = true;
+  }
 };
+
+// Executar ao montar o componente
+checkRememberedUser();
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 /* ===== LAYOUT PRINCIPAL ===== */
 .login-page {
   min-height: 100vh;
@@ -233,32 +309,45 @@ const loginWithMicrosoft = () => {
 }
 
 .full-height {
-  min-height: 100%;
+  min-height: 100vh;
 }
 
 /* ===== SEÇÃO ESQUERDA ===== */
 .login-left-section {
-  height: 100%;
+  min-height: 100vh;
   background: linear-gradient(135deg, #6b7280 0%, #374151 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  /* overflow: hidden; */
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+      radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+  }
 }
 
 .left-content {
   position: relative;
   z-index: 1;
-  max-width: 500px;
+  max-width: 600px;
+  padding: 3rem;
   color: white;
   text-align: center;
-  height: 100% !important;
 }
 
 /* ===== BRANDING ===== */
 .brand-section {
-  margin-bottom: 3rem;
+  margin-bottom: 4rem;
 }
 
 .brand-logo {
@@ -269,21 +358,23 @@ const loginWithMicrosoft = () => {
   --fa-primary-color: #ffffff;
   --fa-secondary-color: #d1d5db;
   --fa-secondary-opacity: 0.7;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
 }
 
 .brand-title {
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   font-weight: 700;
-  margin: 0 0 0.5rem 0;
-  letter-spacing: 2px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  margin: 0 0 0.75rem 0;
+  letter-spacing: 3px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .brand-subtitle {
   font-size: 1.125rem;
-  color: #d1d5db;
+  color: #e5e7eb;
   margin: 0;
   font-weight: 400;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 /* ===== FEATURES ===== */
@@ -291,73 +382,78 @@ const loginWithMicrosoft = () => {
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  margin-bottom: 3rem;
+  margin-bottom: 4rem;
 }
 
 .feature-item {
   display: flex;
-  align-items: center;
-  gap: 1rem;
+  align-items: flex-start;
+  gap: 1.25rem;
   text-align: left;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateX(8px);
+  }
 }
 
 .feature-icon {
-  --fa-primary-color: #d1d5db;
-  --fa-secondary-color: #9ca3af;
+  --fa-primary-color: #ffffff;
+  --fa-secondary-color: #d1d5db;
   --fa-secondary-opacity: 0.7;
   flex-shrink: 0;
+  margin-top: 2px;
 }
 
 .feature-text h3 {
   font-size: 1.125rem;
   font-weight: 600;
-  margin: 0 0 0.25rem 0;
+  margin: 0 0 0.5rem 0;
 }
 
 .feature-text p {
   font-size: 0.875rem;
-  color: #d1d5db;
+  color: #e5e7eb;
   margin: 0;
+  line-height: 1.5;
 }
 
 /* ===== FOOTER INFO ===== */
 .footer-info {
   font-size: 0.75rem;
-  color: #9ca3af;
+  color: #d1d5db;
+  margin-top: 3rem;
 }
 
 /* ===== SEÇÃO DIREITA ===== */
 .login-right-section {
+  min-height: 100vh;
   background: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 2rem;
-}
-
-.login-container {
-  height: 100vh;
-  width: 100%;
-  overflow: hidden;
+  padding: 2rem;
 }
 
 .login-form-container {
   width: 100%;
-  /* max-width: 400px; */
-  background: white;
-  /* padding: 2rem; */
-  border-radius: 2px;
-  /* box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1); */
+  max-width: 420px;
 }
 
 /* ===== HEADER DO LOGIN ===== */
 .login-header {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
 
 .login-header h2 {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 600;
   color: #111827;
   margin: 0 0 0.5rem 0;
@@ -388,53 +484,104 @@ const loginWithMicrosoft = () => {
   color: #374151;
 }
 
-.login-input {
-  font-size: 0.875rem;
+:deep(.login-input) {
+  .q-field__control {
+    border-radius: 8px;
+    border-color: #e5e7eb;
+    background: #ffffff;
+    transition: all 0.2s ease;
+
+    &:hover {
+      border-color: #d1d5db;
+      background: #f9fafb;
+    }
+  }
+
+  &.q-field--focused .q-field__control {
+    border-color: #374151;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(55, 65, 81, 0.1);
+  }
+
+  .q-field__native {
+    font-size: 0.875rem;
+    padding: 12px 16px;
+  }
 }
 
 .input-icon {
   --fa-primary-color: #6b7280;
   --fa-secondary-color: #9ca3af;
   --fa-secondary-opacity: 0.6;
+  font-size: 18px;
 }
 
 .password-toggle {
   color: #6b7280;
+
+  &:hover {
+    color: #374151;
+  }
 }
 
 .form-options {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: -0.5rem;
 }
 
-.remember-checkbox {
+:deep(.remember-checkbox) {
   font-size: 0.875rem;
+
+  .q-checkbox__label {
+    color: #374151;
+  }
+
+  .q-checkbox__inner {
+    color: #374151;
+  }
 }
 
 .forgot-password-btn {
   font-size: 0.875rem;
-  color: #3b82f6;
+  color: #374151;
   padding: 0;
-}
+  font-weight: 500;
 
-/* .forgot-password-btn:hover {
-  color: #2563eb;
-} */
+  &:hover {
+    color: #111827;
+    text-decoration: underline;
+  }
+}
 
 /* ===== BOTÃO DE LOGIN ===== */
 .login-btn {
-  background: #374151;
+  background: linear-gradient(135deg, #6b7280, #374151);
   color: white;
   font-weight: 500;
   padding: 12px 24px;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 0.875rem;
   width: 100%;
-}
+  box-shadow: 0 4px 14px 0 rgba(55, 65, 81, 0.25);
+  transition: all 0.3s ease;
 
-.login-btn:hover {
-  background: #111827;
+  &:hover {
+    background: linear-gradient(135deg, #4b5563, #1f2937);
+    box-shadow: 0 6px 20px 0 rgba(55, 65, 81, 0.4);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    background: #e5e7eb;
+    color: #9ca3af;
+    box-shadow: none;
+  }
 }
 
 /* ===== DIVIDER ===== */
@@ -472,77 +619,136 @@ const loginWithMicrosoft = () => {
 .social-btn {
   width: 100%;
   padding: 12px 24px;
-  border-radius: 2px !important;
+  border-radius: 8px;
   font-size: 0.875rem;
   border: 1px solid #e5e7eb;
   color: #374151;
-}
+  transition: all 0.2s ease;
 
-/*
-.social-btn:hover {
-  background: #f9fafb;
-  border-color: #d1d5db;
-} */
+  &:hover {
+    background: #f9fafb;
+    border-color: #d1d5db;
+  }
+}
 
 /* ===== LINK DE REGISTRO ===== */
 .register-link {
   text-align: center;
   font-size: 0.875rem;
   color: #6b7280;
+  margin-top: 1.5rem;
 }
 
 .register-btn {
-  color: #3b82f6;
+  color: #374151;
   font-weight: 500;
   padding: 0 0.25rem;
+
+  &:hover {
+    color: #111827;
+    text-decoration: underline;
+  }
 }
 
-/*
-.register-btn:hover {
-  color: #2563eb;
-} */
+/* ===== TOAST DE ERRO ===== */
+.error-toast {
+  background: linear-gradient(135deg, #DC2626, #B91C1C);
+  color: white;
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 10px 25px -3px rgba(220, 38, 38, 0.3);
+  backdrop-filter: blur(10px);
+  min-width: 300px;
+}
+
+.error-icon {
+  --fa-primary-color: #ffffff;
+  --fa-secondary-color: rgba(255, 255, 255, 0.8);
+  --fa-secondary-opacity: 1;
+  font-size: 24px;
+  margin-right: 12px;
+}
+
+.error-message {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.close-button {
+  color: rgba(255, 255, 255, 0.8);
+
+  &:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* ===== NOTIFICAÇÕES MODERNAS ===== */
+:deep(.modern-notification) {
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  font-weight: 500;
+}
 
 /* ===== RESPONSIVIDADE ===== */
-@media (max-width: 768px) {
-  .row {
-    flex-direction: column;
-  }
-
+@media (max-width: 1024px) {
   .login-left-section {
     display: none;
   }
 
   .login-right-section {
-    width: 100%;
-    padding: 1rem;
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .login-right-section {
+    padding: 1.5rem;
   }
 
-  .brand-title {
-    font-size: 2rem;
+  .login-form-container {
+    max-width: 100%;
+  }
+
+  .login-header h2 {
+    font-size: 1.5rem;
   }
 }
 
 @media (max-width: 480px) {
-  .login-container {
-    max-width: 100%;
-    padding: 0;
+  .login-right-section {
+    padding: 1rem;
   }
 
-  .brand-title {
-    font-size: 1.75rem;
+  .login-header {
+    margin-bottom: 2rem;
   }
 
-  .features-section {
-    gap: 1.5rem;
+  .login-header h2 {
+    font-size: 1.25rem;
+  }
+
+  .form-options {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
   }
 }
 
-.q-field--outlined.q-field--focused .q-field__control {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 1px #3b82f6;
+/* ===== ANIMAÇÕES ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.q-checkbox .q-checkbox__icon {
-  color: #3b82f6;
+.login-form-container {
+  animation: fadeInUp 0.6s ease;
 }
 </style>
