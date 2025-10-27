@@ -172,7 +172,7 @@ const errorMessage = ref("");
 const emailRef = ref(null);
 const senhaRef = ref(null);
 
-// Formulário
+// Formulárioform.email
 const form = reactive({
   email: "",
   senha: "",
@@ -181,7 +181,7 @@ const form = reactive({
 
 // Função de submit
 const onSubmit = async () => {
-  if (!form.usuario || !form.senha) {
+  if (!form.email || !form.senha) {
     $q.notify({
       color: "negative",
       message: "Preencha todos os campos",
@@ -195,7 +195,7 @@ const onSubmit = async () => {
 
   try {
     const response = await $api.post("/auth/login", {
-      usuario: form.usuario,
+      usuario: form.email,
       senha: form.senha,
     });
 
