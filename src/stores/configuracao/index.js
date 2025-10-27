@@ -15,7 +15,7 @@ export const useConfiguracaoStore = defineStore("configuracao", {
     },
 
     async salvar(dto) {
-      const response = await api.post(path, dto);
+      const response = await api.put(path, dto);
       this.configuracao = response.data;
       return response;
     },
