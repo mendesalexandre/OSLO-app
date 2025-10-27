@@ -5,9 +5,7 @@ import { Notify } from "quasar";
 
 // Cria a instância do axios com baseURL dinâmica
 const api = axios.create({
-  baseURL: process.env.DEV
-    ? "http://sistemaoslo.com.br/api"
-    : "https://homologacao-api.sistemaoslo.com.br/api",
+  baseURL: process.env.API_URL,
 });
 
 export default boot(({ app, router, store }) => {
