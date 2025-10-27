@@ -144,14 +144,14 @@
 
         <div class="row q-gutter-md">
           <div class="col">
-            <q-card flat bordered class="text-center q-pa-md">
-              <div class="text-h4 text-primary">{{ estatisticas.total_dois || 0 }}</div>
+            <q-card flat bordered class="text-center q-pa-md bg-primary text-white">
+              <div class="text-h4">{{ estatisticas?.total_dois || 0 }}</div>
               <div class="text-caption">Total de DOIs</div>
             </q-card>
           </div>
           <div class="col">
             <q-card flat bordered class="text-center q-pa-md">
-              <div class="text-h4 text-positive">{{ estatisticas.dois_hoje || 0 }}</div>
+              <div class="text-h4 text-positive">{{ estatisticas?.dois_hoje || 0 }}</div>
               <div class="text-caption">Hoje</div>
             </q-card>
           </div>
@@ -164,7 +164,7 @@
         </div>
 
         <div v-if="estatisticas.ultima_importacao" class="q-mt-md text-body2">
-          <strong>Última importação:</strong> {{ estatisticas.ultima_importacao }}
+          <strong>Última importação:</strong> {{ estatisticas?.ultima_importacao }}
         </div>
       </q-card-section>
 
@@ -174,7 +174,7 @@
           <q-card-section>
             <div class="text-h6">Logs Completos da Sincronização</div>
           </q-card-section>
-
+          <q-separator />
           <q-card-section class="q-pt-none">
             <q-scroll-area style="height: 400px;">
               <div v-for="(log, index) in logs" :key="index" class="q-mb-xs text-caption">
