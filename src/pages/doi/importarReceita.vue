@@ -1,6 +1,6 @@
 <template>
   <modal v-model="showModalImportacaoDoi" tamanho="lg" titulo="Sincronização de DOIs da Receita Federal">
-    <q-card class="w-full" bordered>
+    <q-card bordered>
       <!-- Status do Token -->
       <q-card-section class="no-padding">
         <q-banner dense inline-actions :class="tokenValido ? 'text-positive' : 'text-negative'">
@@ -193,7 +193,7 @@
     </q-card>
 
     <template #rodape>
-      <div class="flex justify-between q-gutter-sm">
+      <q-card-section class="flex justify-between q-gutter-sm">
         <div>
           <q-btn label="Cancelar" color="red-8" outline />
         </div>
@@ -210,7 +210,7 @@
           icon="eva-clock-outline"
           :disable="!tokenValido || !loteForm.dataInicio || !loteForm.dataFim || progresso.ativo" /> -->
         </div>
-      </div>
+      </q-card-section>
     </template>
   </modal>
 </template>
