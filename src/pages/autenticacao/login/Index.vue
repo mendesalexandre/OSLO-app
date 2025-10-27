@@ -182,101 +182,56 @@ const form = reactive({
 // Função de submit
 const onSubmit = async () => {
   // Validar campos
-  emailRef.value?.validate();
-  senhaRef.value?.validate();
-
-  if (!form.email || !form.senha) {
+  if (!form.usuario || !form.senha) {
+    $q.notify({
+      color: "negative",
+      message: "Preencha todos os campos",
+      icon: "fa-duotone fa-triangle-exclamation",
+      position: "top"
+    });
     return;
   }
 
   loading.value = true;
 
   try {
-    // Fazer requisição para a API Laravel
+    // Login na API
     const response = await $api.post("/auth/login", {
-      email: form.email,
-      password: form.senha,
-      remember: form.lembrarMe,
+      usuario: form.usuario,
+      senha: form.senha,
     });
 
-    // Login bem-sucedido
-    $q.notify({
-      color: "positive",
-      message: response.data.message || "Login realizado com sucesso!",
-      icon: "fa-duotone fa-circle-check",
-      position: "top",
-      classes: 'modern-notification'
-    });
-
-    // Salvar dados no localStorage
-    if (form.lembrarMe) {
-      localStorage.setItem("doi_remember_user", form.usuario);
-    } else {
-      localStorage.removeItem("doi_remember_user");
-    }
-
-    // Salvar token e dados do usuário
+    // Salvar token
     localStorage.setItem("doi_auth_token", response.data.token);
     localStorage.setItem("doi_user", JSON.stringify(response.data.user));
 
-    // Salvar permissões se existirem
-    if (response.data.permissions) {
-      localStorage.setItem(
-        "doi_permissions",
-        JSON.stringify(response.data.permissions)
-      );
-    }
+    // Notificação de sucesso
+    $q.notify({
+      color: "positive",
+      message: "Login realizado com sucesso!",
+      icon: "fa-duotone fa-circle-check",
+      position: "top"
+    });
 
-    // Salvar informações da sessão
-    if (response.data.session) {
-      localStorage.setItem(
-        "doi_session_config",
-        JSON.stringify(response.data.session)
-      );
-    }
-
-    // Redirecionar para dashboard ou página solicitada
-    const redirectTo = router.currentRoute.value.query.redirect || "#/";
+    // Redirecionar para tarefas
     setTimeout(() => {
-      router.push(redirectTo);
+      router.push("/tarefas");
     }, 500);
+
   } catch (error) {
-    // Tratar diferentes tipos de erro
-    if (error.response) {
-      const status = error.response.status;
-      const data = error.response.data;
+    // Mostrar erro
+    const mensagem = error.response?.data?.error || "Erro ao fazer login";
 
-      if (status === 401) {
-        errorMessage.value = data.error || "Credenciais inválidas";
-      } else if (status === 422) {
-        const errors = data.errors;
-        if (errors) {
-          const firstError = Object.values(errors)[0];
-          errorMessage.value = Array.isArray(firstError)
-            ? firstError[0]
-            : firstError;
-        } else {
-          errorMessage.value = data.error || "Dados inválidos";
-        }
-      } else if (status >= 500) {
-        errorMessage.value =
-          "Erro interno do servidor. Tente novamente mais tarde.";
-      } else {
-        errorMessage.value = data.error || "Erro na autenticação";
-      }
-    } else if (error.request) {
-      errorMessage.value =
-        "Erro de conexão. Verifique sua internet e tente novamente.";
-    } else {
-      errorMessage.value = "Erro inesperado. Tente novamente.";
-    }
-
-    showError.value = true;
+    $q.notify({
+      color: "negative",
+      message: mensagem,
+      icon: "fa-duotone fa-circle-xmark",
+      position: "top"
+    });
   } finally {
     loading.value = false;
   }
 };
-
 // Função esqueci senha
 const onEsqueciSenha = () => {
   $q.notify({
