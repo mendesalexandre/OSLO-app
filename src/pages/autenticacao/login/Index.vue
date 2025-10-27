@@ -58,7 +58,7 @@
           </div>
 
           <!-- Formulário de login -->
-          <q-form @submit="onSubmit" class="login-form">
+          <q-form @submit.prevent="onSubmit" class="login-form">
             <!-- Campo de usuário (email ou telefone) -->
             <div class="form-group">
               <label class="form-label">E-mail ou Telefone</label>
