@@ -9,7 +9,7 @@ const routes = [
         name: "tarefas",
         meta: {
           title: "Tarefas",
-          requiresAuth: true,
+          publico: false,
         },
       },
 
@@ -19,7 +19,7 @@ const routes = [
         name: "doi.index",
         meta: {
           title: "Declaração sobre Operações Imobiliárias",
-          requiresAuth: true,
+          publico: false,
         },
       },
 
@@ -29,7 +29,7 @@ const routes = [
         name: "caixa",
         meta: {
           title: "Declaração sobre Operações Imobiliárias",
-          requiresAuth: true,
+          publico: false,
         },
       },
 
@@ -39,7 +39,7 @@ const routes = [
         name: "movimento-caixa",
         meta: {
           title: "Declaração sobre Operações Imobiliárias",
-          requiresAuth: true,
+          publico: false,
         },
       },
 
@@ -49,7 +49,7 @@ const routes = [
         name: "transacao",
         meta: {
           title: "Declaração sobre Operações Imobiliárias",
-          requiresAuth: true,
+          publico: false,
         },
       },
 
@@ -59,7 +59,7 @@ const routes = [
         name: "configuracao.index",
         meta: {
           title: "Declaração sobre Operações Imobiliárias",
-          requiresAuth: true,
+          publico: false,
         },
         children: [
           // Redirect padrão para cartório
@@ -158,7 +158,7 @@ const routes = [
         name: "natureza.index",
         meta: {
           title: "Declaração sobre Operações Imobiliárias",
-          requiresAuth: true,
+          publico: false,
         },
       },
 
@@ -168,7 +168,7 @@ const routes = [
         name: "matricula.index",
         meta: {
           title: "Declaração sobre Operações Imobiliárias",
-          requiresAuth: true,
+          publico: false,
         },
       },
 
@@ -225,7 +225,7 @@ const routes = [
         name: "matricula.index",
         meta: {
           title: "Declaração sobre Operações Imobiliárias",
-          requiresAuth: true,
+          publico: false,
         },
       },
     ],
@@ -239,6 +239,9 @@ const routes = [
         path: "login",
         component: () => import("pages/autenticacao/login/Index.vue"),
         name: "login",
+        meta: {
+          publico: true,
+        },
       },
     ],
   },

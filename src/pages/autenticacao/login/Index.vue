@@ -181,8 +181,7 @@ const form = reactive({
 
 // Função de submit
 const onSubmit = async () => {
-  // Validar campos
-  if (!form.email || !form.senha) {
+  if (!form.usuario || !form.senha) {
     $q.notify({
       color: "negative",
       message: "Preencha todos os campos",
@@ -195,16 +194,16 @@ const onSubmit = async () => {
   loading.value = true;
 
   try {
-    // Login na API
     const response = await $api.post("/auth/login", {
-      email: form.email,
-      password: form.senha,
+      usuario: form.usuario,
+      senha: form.senha,
     });
 
-    // Salvar token
-    localStorage.setItem("access_token", response.data.access_token);
+    // Salva APENAS o token
+    localStorage.setItem("access_token", response.data.token);
 
-    // Notificação de sucesso
+    // NÃO salva o usuário - vai buscar sempre do banco
+
     $q.notify({
       color: "positive",
       message: "Login realizado com sucesso!",
@@ -212,13 +211,11 @@ const onSubmit = async () => {
       position: "top"
     });
 
-    // Redirecionar para tarefas
     setTimeout(() => {
-      router.push({ name: "tarefas" });
+      router.push("/tarefas");
     }, 500);
 
   } catch (error) {
-    // Mostrar erro
     const mensagem = error.response?.data?.error || "Erro ao fazer login";
 
     $q.notify({
