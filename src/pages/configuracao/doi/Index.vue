@@ -32,13 +32,19 @@ const configuracaoStore = useConfiguracaoStore();
 const valor = ref("");
 const chave = ref("CONFIG_DOI_WEB_COOKIE");
 async function salvar() {
-  const resposta = await configuracaoStore.salvar(chave.value, valor.value);
+  const resposta = await configuracaoStore.salvar({
+    chave: chave.value,
+    valor: valor.value
+  });
   console.log(resposta);
   valor.value = resposta.data?.valor
 }
 
 onMounted(async () => {
-  const resposta = await configuracaoStore.index(chave.value, valor.value);
+  const resposta = await configuracaoStore.index({
+    chave: chave.value,
+    valor: valor.value
+  });
   valor.value = resposta.data?.valor
 })
 </script>
