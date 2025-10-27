@@ -236,7 +236,7 @@ const onSubmit = async () => {
     }
 
     // Redirecionar para dashboard ou página solicitada
-    const redirectTo = router.currentRoute.value.query.redirect || "/";
+    const redirectTo = router.currentRoute.value.query.redirect || "#/";
     setTimeout(() => {
       router.push(redirectTo);
     }, 500);
