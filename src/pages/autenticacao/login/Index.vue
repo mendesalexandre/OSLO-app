@@ -62,8 +62,8 @@
             <!-- Campo de usuário (email ou telefone) -->
             <div class="form-group">
               <label class="form-label">E-mail ou Telefone</label>
-              <q-input v-model="form.usuario" type="text" outlined placeholder="Digite seu e-mail ou telefone"
-                class="login-input" :rules="[val => !!val || 'Campo obrigatório']" ref="usuarioRef" dense autofocus
+              <q-input v-model="form.email" type="text" outlined placeholder="Digite seu e-mail ou telefone"
+                class="login-input" :rules="[val => !!val || 'Campo obrigatório']" ref="emailRef" dense autofocus
                 hide-bottom-space>
                 <template v-slot:prepend>
                   <q-icon name="fa-duotone fa-user" class="input-icon" />
@@ -97,7 +97,7 @@
 
             <!-- Botão de login -->
             <q-btn label="Entrar" type="submit" class="login-btn" :loading="loading" unelevated
-              :disable="!form.usuario || !form.senha" icon-right="fa-duotone fa-arrow-right-to-bracket">
+              :disable="!form.email || !form.senha" icon-right="fa-duotone fa-arrow-right-to-bracket">
               <template v-slot:loading>
                 <q-spinner class="on-left" />
                 Entrando...
@@ -169,12 +169,12 @@ const showError = ref(false);
 const errorMessage = ref("");
 
 // Referências dos campos
-const usuarioRef = ref(null);
+const emailRef = ref(null);
 const senhaRef = ref(null);
 
 // Formulário
 const form = reactive({
-  usuario: "",
+  email: "",
   senha: "",
   lembrarMe: false,
 });
@@ -185,7 +185,7 @@ const onSubmit = async () => {
   usuarioRef.value?.validate();
   senhaRef.value?.validate();
 
-  if (!form.usuario || !form.senha) {
+  if (!form.email || !form.senha) {
     return;
   }
 
@@ -194,7 +194,7 @@ const onSubmit = async () => {
   try {
     // Fazer requisição para a API Laravel
     const response = await $api.post("/auth/login", {
-      usuario: form.usuario,
+      email: form.email,
       senha: form.senha,
       remember: form.lembrarMe,
     });
