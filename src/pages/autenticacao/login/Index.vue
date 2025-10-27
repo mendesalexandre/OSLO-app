@@ -202,8 +202,7 @@ const onSubmit = async () => {
     });
 
     // Salvar token
-    localStorage.setItem("doi_auth_token", response.data.access_token);
-    localStorage.setItem("doi_user", JSON.stringify(response.data.user));
+    localStorage.setItem("access_token", response.data.access_token);
 
     // Notificação de sucesso
     $q.notify({
