@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
     <!-- Listagem de DOI -->
-    <q-card flat bordered>
+    <q-card bordered>
       <!-- Header da seção -->
       <q-card-section class="q-pa-none">
         <div class="section-header">
@@ -26,11 +26,12 @@
           </div>
         </div>
       </q-card-section>
-
-      <!-- Tabela -->
+    </q-card>
+    <!-- Tabela -->
+    <q-card bordered>
       <q-card-section class="q-pa-none">
-        <q-table :rows="declaracoes" :columns="columns" bordered dense :rows-per-page-options="[10, 20, 50, 0]"
-          no-data-label="Nenhuma declaração encontrada" class="custom-table" :loading="loading">
+        <q-table flat square :rows="declaracoes" :columns="columns" :rows-per-page-options="[10, 20, 50, 0]"
+          :loading="loading">
           <!-- Header customizado -->
           <template #header-cell="props">
             <q-th :props="props" class="table-header">
@@ -408,8 +409,7 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   padding: 12px 16px;
-  background: #e9ecef;
-  border-radius: 2px;
+  // background: #e9ecef;
 
   .section-title {
     font-size: 0.875rem;
