@@ -6,7 +6,7 @@ import { api } from "src/boot/axios"; // Importar instância do axios
 export default boot(async ({ app, router }) => {
   // Configurações
   const AUTH_CONFIG = {
-    tokenKey: "doi_auth_token",
+    tokenKey: "access_token",
     userKey: "doi_user",
     permissionsKey: "doi_permissions",
     rememberKey: "doi_remember_user",
