@@ -33,19 +33,26 @@ const configuracaoStore = useConfiguracaoStore();
 const { configuracao } = storeToRefs(configuracaoStore);
 const valor = ref("");
 const chave = ref("CONFIG_DOI_WEB_COOKIE");
+
+const configuracaoLocal = ref({
+  chave: chave.value,
+  valor: ""
+});
+
 async function salvar() {
   const resposta = await configuracaoStore.salvar({
     chave: chave.value,
-    valor: valor.value
+    valor: configuracaoLocal.value.valor
   });
   console.log(resposta);
-  valor.value = resposta.data?.valor
+  configuracaoLocal.value = resposta.data;
 }
 
 onMounted(async () => {
   console.log("mounted");
   console.log(chave.value);
   const resposta = await configuracaoStore.show(chave.value);
+  configuracaoLocal.value = resposta.data;
   console.log(resposta);
 });
 </script>
