@@ -47,7 +47,7 @@
 
         <div class="row q-col-gutter-md">
           <!-- Período -->
-          <div class="col-md-6 col-12">
+          <!-- <div class="col-md-6 col-12">
             <v-label label="Data Início" />
             <q-input v-model="loteForm.dataInicio" type="date" outlined dense
               :rules="[(val) => !!val || 'Campo obrigatório']" />
@@ -58,7 +58,7 @@
               (val) => !!val || 'Campo obrigatório',
               (val) => val >= loteForm.dataInicio || 'Data fim deve ser maior que data início',
             ]" />
-          </div>
+          </div> -->
 
           <!-- Configurações avançadas -->
           <div class="col-md-4 col-12">
