@@ -56,8 +56,8 @@ export default boot(({ app, router, store }) => {
 
         // Redireciona para a página de login
         // Verifica se já não está na página de login para evitar loop
-        if (router.currentRoute.value.path !== "/login") {
-          router.push("/login");
+        if (router.currentRoute.value.path !== "/auth/login") {
+          router.push({ name: "login" });
         }
       }
 
