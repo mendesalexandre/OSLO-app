@@ -150,14 +150,14 @@
             </q-card>
           </div>
           <div class="col">
-            <q-card flat bordered class="text-center q-pa-md">
-              <div class="text-h4 text-positive">{{ estatisticas?.dois_hoje || 0 }}</div>
+            <q-card flat bordered class="text-center q-pa-md bg-positive text-white">
+              <div class="text-h4">{{ estatisticas?.dois_hoje || 0 }}</div>
               <div class="text-caption">Hoje</div>
             </q-card>
           </div>
           <div class="col">
-            <q-card flat bordered class="text-center q-pa-md">
-              <div class="text-h4 text-info">{{ estatisticas.dois_semana || 0 }}</div>
+            <q-card flat bordered class="text-center q-pa-md bg-info text-white">
+              <div class="text-h4">{{ estatisticas?.dois_semana || 0 }}</div>
               <div class="text-caption">Esta Semana</div>
             </q-card>
           </div>
