@@ -1,5 +1,5 @@
 <template>
-  <modal v-model="showLoteModal" tamanho="md" titulo="Gerar Lote de Declarações">
+  <modal v-model="showLoteModal" tamanho="md" titulo="Gerar Lote de Declarações" @close="onCancelar">
     <q-card class="full-width" bordered>
       <q-card-section>
         <div class="text-subtitle2 text-uppercase">
@@ -143,5 +143,9 @@ const onCriarLote = async (dataInicio, dataFim) => {
   } finally {
     loading.value = false;
   }
+};
+
+const onCancelar = () => {
+  showLoteModal.value = !showLoteModal.value;
 };
 </script>
