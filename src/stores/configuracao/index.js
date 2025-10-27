@@ -13,5 +13,11 @@ export const useConfiguracaoStore = defineStore("configuracao", {
       const response = await api.get(path);
       this.configuracoes = response.data;
     },
+
+    async salvar(dto) {
+      const response = await api.post(path, dto);
+      this.configuracao = response.data;
+      return response;
+    },
   },
 });
