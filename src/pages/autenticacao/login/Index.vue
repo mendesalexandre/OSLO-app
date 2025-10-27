@@ -304,17 +304,20 @@ checkRememberedUser();
 <style lang="scss" scoped>
 /* ===== LAYOUT PRINCIPAL ===== */
 .login-page {
-  min-height: 100vh;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
   background: #f9fafb;
 }
 
 .full-height {
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 
 /* ===== SEÇÃO ESQUERDA ===== */
 .login-left-section {
-  min-height: 100vh;
+  height: 100vh;
   background: linear-gradient(135deg, #6b7280 0%, #374151 100%);
   display: flex;
   align-items: center;
@@ -433,12 +436,13 @@ checkRememberedUser();
 
 /* ===== SEÇÃO DIREITA ===== */
 .login-right-section {
-  min-height: 100vh;
+  height: 100vh;
   background: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2rem;
+  overflow-y: auto;
 }
 
 .login-form-container {
@@ -449,14 +453,14 @@ checkRememberedUser();
 /* ===== HEADER DO LOGIN ===== */
 .login-header {
   text-align: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .login-header h2 {
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   font-weight: 600;
   color: #111827;
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 0.25rem 0;
 }
 
 .login-header p {
@@ -469,7 +473,7 @@ checkRememberedUser();
 .login-form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
 }
 
 .form-group {
@@ -711,7 +715,15 @@ checkRememberedUser();
   }
 
   .login-header h2 {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
+  }
+
+  .login-header {
+    margin-bottom: 1.25rem;
+  }
+
+  .login-form {
+    gap: 1rem;
   }
 }
 
@@ -721,18 +733,31 @@ checkRememberedUser();
   }
 
   .login-header {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
   }
 
   .login-header h2 {
-    font-size: 1.25rem;
+    font-size: 1.125rem;
   }
 
   .form-options {
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.75rem;
+    gap: 0.5rem;
   }
+
+  .login-form {
+    gap: 0.875rem;
+  }
+}
+
+/* ===== FIX SCROLL ===== */
+body,
+html {
+  overflow: hidden;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
 /* ===== ANIMAÇÕES ===== */
