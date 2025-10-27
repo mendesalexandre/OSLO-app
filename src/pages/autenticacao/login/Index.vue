@@ -195,8 +195,8 @@ const onSubmit = async () => {
 
   try {
     const response = await $api.post("/auth/login", {
-      usuario: form.email,
-      senha: form.senha,
+      email: form.email,
+      password: form.senha,
     });
 
     // Salva APENAS o token
