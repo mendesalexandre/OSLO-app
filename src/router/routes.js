@@ -13,30 +13,50 @@ const routes = [
         path: "doi",
         component: () => import("pages/doi/Index.vue"),
         name: "doi.index",
+        meta: {
+          title: "Declaração sobre Operações Imobiliárias",
+          requiresAuth: true,
+        },
       },
 
       {
         path: "caixa",
         component: () => import("pages/caixa/Index.vue"),
         name: "caixa",
+        meta: {
+          title: "Declaração sobre Operações Imobiliárias",
+          requiresAuth: true,
+        },
       },
 
       {
         path: "caixa/movimento",
         component: () => import("pages/movimento-caixa/Index.vue"),
         name: "movimento-caixa",
+        meta: {
+          title: "Declaração sobre Operações Imobiliárias",
+          requiresAuth: true,
+        },
       },
 
       {
         path: "transacao",
         component: () => import("pages/transacao/Index.vue"),
         name: "transacao",
+        meta: {
+          title: "Declaração sobre Operações Imobiliárias",
+          requiresAuth: true,
+        },
       },
 
       {
         path: "configuracao",
         component: () => import("src/pages/configuracao/Index.vue"),
         name: "configuracao.index",
+        meta: {
+          title: "Declaração sobre Operações Imobiliárias",
+          requiresAuth: true,
+        },
         children: [
           // Redirect padrão para cartório
           {
@@ -132,18 +152,30 @@ const routes = [
         path: "administracao/natureza",
         component: () => import("src/pages/natureza/Index.vue"),
         name: "natureza.index",
+        meta: {
+          title: "Declaração sobre Operações Imobiliárias",
+          requiresAuth: true,
+        },
       },
 
       {
         path: "matricula",
         component: () => import("src/pages/matricula/Index.vue"),
         name: "matricula.index",
+        meta: {
+          title: "Declaração sobre Operações Imobiliárias",
+          requiresAuth: true,
+        },
       },
 
       // PROTOCOLO
       {
         path: "/protocolo/:id",
         name: "protocolo.index",
+        meta: {
+          title: "Declaração sobre Operações Imobiliárias",
+          requiresAuth: true,
+        },
         props: true,
         component: () => import("pages/protocolo/Index.vue"),
 
@@ -187,6 +219,10 @@ const routes = [
         path: "administracao",
         component: () => import("src/pages/administracao/Index.vue"),
         name: "matricula.index",
+        meta: {
+          title: "Declaração sobre Operações Imobiliárias",
+          requiresAuth: true,
+        },
       },
     ],
   },
@@ -198,7 +234,7 @@ const routes = [
       {
         path: "login",
         component: () => import("pages/autenticacao/login/Index.vue"),
-        name: "home",
+        name: "login",
       },
     ],
   },
