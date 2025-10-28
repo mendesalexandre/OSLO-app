@@ -211,10 +211,8 @@ const onSubmit = async () => {
       position: "top"
     });
 
-    setTimeout(() => {
-      // router.push({ name: "tarefas" });
-      window.location.href = "#/tarefas";
-    }, 500);
+    window.location.href = "#/tarefas";
+
 
   } catch (error) {
     const mensagem = error.response?.data?.error || "Erro ao fazer login";
