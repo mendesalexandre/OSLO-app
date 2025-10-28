@@ -3,7 +3,7 @@
     @close="fecharModal">
     <q-card bordered>
       <!-- Status do Token -->
-      <q-card-section class="no-padding">
+      <q-card-section>
         <q-banner dense inline-actions :class="tokenValido ? 'text-positive' : 'text-negative'">
           {{ tokenValido ? 'Token DOI válido' : 'Token DOI inválido ou não configurado' }}
 
@@ -11,8 +11,20 @@
             <q-btn outline @click="verificarToken" :loading="verificandoToken" label="Verificar" />
           </template>
         </q-banner>
-        <q-separator />
-        <q-markup-table flat bordered square style="border: none;">
+
+
+
+        <!-- <q-banner :class=" tokenValido ? 'text-positive' : 'text-negative'"
+          :icon=" tokenValido ? 'eva-checkmark-circle-outline' : 'eva-alert-circle-outline'">
+          {{ tokenValido ? 'Token DOI válido' : 'Token DOI inválido ou não configurado' }}
+          <template v-slot:action>
+            <q-btn flat @click=" verificarToken" :loading="verificandoToken" label="Verificar" size="sm" />
+</template>
+</q-banner> -->
+      </q-card-section>
+      <q-separator />
+      <q-card-section>
+        <q-markup-table flat bordered square class="bg-grey-2">
           <tr>
             <td>Nome do Responsável </td>
             <td>{{ dadosToken?.dados?.idToken?.name }} </td>
@@ -26,15 +38,6 @@
             <td>{{ formatarCpfCnpj(dadosToken?.dados?.cnpjAtuacao) }} </td>
           </tr>
         </q-markup-table>
-
-
-        <!-- <q-banner :class=" tokenValido ? 'text-positive' : 'text-negative'"
-          :icon=" tokenValido ? 'eva-checkmark-circle-outline' : 'eva-alert-circle-outline'">
-          {{ tokenValido ? 'Token DOI válido' : 'Token DOI inválido ou não configurado' }}
-          <template v-slot:action>
-            <q-btn flat @click=" verificarToken" :loading="verificandoToken" label="Verificar" size="sm" />
-</template>
-</q-banner> -->
       </q-card-section>
 
       <q-separator />
@@ -204,8 +207,8 @@
             <q-btn outline label="Ver Estatísticas" color="info" @click="obterEstatisticas" :loading="carregandoStats"
               icon="eva-bar-chart-outline" :disable="progresso.ativo" />
             <q-btn outline label="Sincronizar" color="blue-9" @click="sincronizarDeclaracaoReceita" :loading="loading"
-              icon="eva-cloud-download-outline"
-              :disable="!tokenValido || !loteForm.dataInicio || !loteForm.dataFim || progresso.ativo" />
+              icon="eva-cloud-download-outline" :disable="!tokenValido || progresso.ativo" />
+            <!-- :disable="!tokenValido || !loteForm.dataInicio || !loteForm.dataFim || progresso.ativo" /> -->
           </div>
           <!-- <q-btn label="Background" color="secondary" @click="sincronizarAsync" :loading="loadingAsync"
           icon="eva-clock-outline"

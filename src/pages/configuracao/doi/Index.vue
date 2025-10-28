@@ -7,7 +7,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
           <v-label label="Informar o cookie do navegador pra iniciar a importação dos arquivos" :obrigatorio="true"
             :ajuda="'Informar o cookie do navegador pra iniciar a importação dos arquivos'"></v-label>
-          <q-input outlined dense v-model="configuracao.valor" />
+          <q-input outlined dense v-model="configuracaoLocal.valor" />
         </div>
       </div>
     </q-card-section>
