@@ -95,12 +95,18 @@ export default defineConfig((ctx) => {
 
       // Quasar plugins
       plugins: [
-        "AddressbarColor",
-        "AppFullscreen",
-        "BottomSheet",
+        "Dialog",
+        "Dark",
         "Loading",
-        "LocalStorage",
+        "Screen",
         "Notify",
+        "LocalStorage",
+        "SessionStorage",
+        "AppFullscreen",
+        "LoadingBar",
+        "BottomSheet",
+        "Platform",
+        "Cookies",
       ],
     },
 
