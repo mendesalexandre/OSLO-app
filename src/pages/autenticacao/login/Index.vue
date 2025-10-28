@@ -211,8 +211,7 @@ const onSubmit = async () => {
       position: "top"
     });
 
-    window.location.href = "#/tarefas";
-
+    window.location.href = "/"
 
   } catch (error) {
     const mensagem = error.response?.data?.error || "Erro ao fazer login";
