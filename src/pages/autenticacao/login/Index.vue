@@ -200,7 +200,7 @@ const onSubmit = async () => {
     });
 
     // Salva APENAS o token
-    localStorage.setItem("access_token", response.data.token);
+    localStorage.setItem("access_token", response.data.access_token);
 
     // NÃO salva o usuário - vai buscar sempre do banco
 
@@ -212,7 +212,8 @@ const onSubmit = async () => {
     });
 
     setTimeout(() => {
-      router.push("/tarefas");
+      // router.push({ name: "tarefas" });
+      window.location.href = "#/tarefas";
     }, 500);
 
   } catch (error) {
