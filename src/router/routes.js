@@ -24,6 +24,16 @@ const routes = [
       },
 
       {
+        path: "doi/lote",
+        component: () => import("pages/lote/Index.vue"),
+        name: "lote.index",
+        meta: {
+          title: "Lotes DOI",
+          publico: false,
+        },
+      },
+
+      {
         path: "caixa",
         component: () => import("pages/caixa/Index.vue"),
         name: "caixa",
