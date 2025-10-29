@@ -120,6 +120,7 @@ const onCriarLote = async (dataInicio, dataFim) => {
       message: `Lote criado com sucesso! ${response.total_dois} Declarações incluídas.`,
       icon: "eva-checkmark-circle-outline",
       position: "top-right",
+      timeout: 10000,
       actions: [
         {
           label: "Download",
