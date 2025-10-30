@@ -409,7 +409,6 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   padding: 12px 16px;
-  // background: #e9ecef;
 
   .section-title {
     font-size: 0.875rem;
