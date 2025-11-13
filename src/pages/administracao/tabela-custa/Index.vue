@@ -227,8 +227,8 @@ const buscarTabelasDebounce = debounce(buscarTabelas, 500)
 
 const abrirAtos = (tabela) => {
   router.push({
-    name: 'tabela-custa-atos',
-    params: { tabelaCustaId: tabela.id }
+    name: 'administracao.tabela-custa.atos.index',
+    params: { tabelaCustaId: tabela.uuid }
   })
 }
 
