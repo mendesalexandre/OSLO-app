@@ -43,24 +43,24 @@ const routes = [
         },
       },
 
-      {
-        path: "/administracao/tabela-custa",
-        component: () => import("src/pages/tabela-custa/Index.vue"),
-        name: "tabela-custa.index",
-        meta: {
-          title: "Tabela de Custas",
-          publico: false,
-        },
-      },
-      {
-        path: "/administracao/tabela-custa/atos/:tabelaCustaId",
-        component: () => import("src/pages/tabela-custa/Index.vue"),
-        name: "tabela-custa.editar",
-        meta: {
-          title: "Tabela de Custas",
-          publico: false,
-        },
-      },
+      // {
+      //   path: "/administracao/tabela-custa",
+      //   component: () => import("src/pages/tabela-custa/Index.vue"),
+      //   name: "tabela-custa.index",
+      //   meta: {
+      //     title: "Tabela de Custas",
+      //     publico: false,
+      //   },
+      // },
+      // {
+      //   path: "/administracao/tabela-custa/atos/:tabelaCustaId",
+      //   component: () => import("src/pages/tabela-custa/Index.vue"),
+      //   name: "tabela-custa.editar",
+      //   meta: {
+      //     title: "Tabela de Custas",
+      //     publico: false,
+      //   },
+      // },
 
       {
         path: "caixa/movimento",
@@ -251,11 +251,34 @@ const routes = [
       {
         path: "administracao",
         component: () => import("src/pages/administracao/Index.vue"),
-        name: "matricula.index",
+        name: "administracao.index",
         meta: {
-          title: "Declaração sobre Operações Imobiliárias",
+          title: "Administração",
           publico: false,
         },
+        children: [
+          {
+            path: "tabela-custa",
+            name: "administracao.tabela-custa.index",
+            component: () =>
+              import("src/pages/administracao/tabela-custa/Index.vue"),
+            meta: {
+              title: "Tabelas de Custas",
+              publico: false,
+            },
+          },
+          {
+            path: "tabela-custa/:tabelaCustaId/atos",
+            name: "administracao.tabela-custa.atos.index",
+            component: () =>
+              import("src/pages/administracao/tabela-custa/atos/Index.vue"),
+            props: true,
+            meta: {
+              title: "Atos da Tabela de Custas",
+              publico: false,
+            },
+          },
+        ],
       },
     ],
   },
