@@ -19,7 +19,8 @@
         <div class="row q-col-gutter-md">
           <!-- Ano -->
           <div class="col-12 col-sm-6 col-md-3">
-            <q-select v-model="filtros.ano" :options="anosDisponiveis" label="Ano" outlined dense clearable
+            <v-label label="Ano"></v-label>
+            <q-select v-model="filtros.ano" :options="anosDisponiveis" outlined dense clearable
               @update:model-value="buscarTabelas">
               <template v-slot:prepend>
                 <q-icon name="event" />
@@ -29,8 +30,9 @@
 
           <!-- Estado -->
           <div class="col-12 col-sm-6 col-md-3">
+            <v-label label="Estado"></v-label>
             <q-select v-model="filtros.estado_id" :options="estados" option-label="nome" option-value="id" emit-value
-              map-options label="Estado" outlined dense clearable @update:model-value="buscarTabelas">
+              map-options outlined dense clearable @update:model-value="buscarTabelas">
               <template v-slot:prepend>
                 <q-icon name="place" />
               </template>
@@ -39,8 +41,9 @@
 
           <!-- Status -->
           <div class="col-12 col-sm-6 col-md-2">
+            <v-label label="Status"></v-label>
             <q-select v-model="filtros.is_ativo" :options="statusOptions" option-label="label" option-value="value"
-              emit-value map-options label="Status" outlined dense clearable @update:model-value="buscarTabelas">
+              emit-value map-options outlined dense clearable @update:model-value="buscarTabelas">
               <template v-slot:prepend>
                 <q-icon name="toggle_on" />
               </template>
@@ -49,8 +52,8 @@
 
           <!-- Busca -->
           <div class="col-12 col-sm-6 col-md-4">
-            <q-input v-model="filtros.busca" label="Buscar por nome" outlined dense clearable
-              @update:model-value="buscarTabelasDebounce">
+            <v-label label="Buscar por nome"></v-label>
+            <q-input v-model="filtros.busca" outlined dense clearable @update:model-value="buscarTabelasDebounce">
               <template v-slot:prepend>
                 <q-icon name="search" />
               </template>
