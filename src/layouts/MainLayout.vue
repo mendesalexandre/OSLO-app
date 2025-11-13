@@ -154,7 +154,7 @@
             </q-item-section>
           </q-item>
 
-          <q-item clickable v-ripple @click="logout" class="menu-item-hover">
+          <q-item clickable v-ripple class="menu-item-hover">
             <q-item-section>
               <q-item-label>
                 <q-icon name="fa-duotone fa-arrow-right-from-bracket" size="14px" color="grey-6" />

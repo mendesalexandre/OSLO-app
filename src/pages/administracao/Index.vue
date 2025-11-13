@@ -1,5 +1,5 @@
 <template>
-  <q-page class="pagina-administracao q-pa-md">
+  <q-page class="pagina-administracao">
     <!-- Gestão de Usuários -->
     <div class="secao-admin q-mb-lg">
       <h6 class="titulo-secao q-mb-sm">Gestão de Usuários</h6>
@@ -141,6 +141,7 @@
         </q-card>
       </div>
     </div>
+    <router-view />
   </q-page>
 </template>
 

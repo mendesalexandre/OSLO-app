@@ -256,29 +256,28 @@ const routes = [
           title: "Administração",
           publico: false,
         },
-        children: [
-          {
-            path: "tabela-custa",
-            name: "administracao.tabela-custa.index",
-            component: () =>
-              import("src/pages/administracao/tabela-custa/Index.vue"),
-            meta: {
-              title: "Tabelas de Custas",
-              publico: false,
-            },
-          },
-          {
-            path: "tabela-custa/:tabelaCustaId/atos",
-            name: "administracao.tabela-custa.atos.index",
-            component: () =>
-              import("src/pages/administracao/tabela-custa/atos/Index.vue"),
-            props: true,
-            meta: {
-              title: "Atos da Tabela de Custas",
-              publico: false,
-            },
-          },
-        ],
+      },
+
+      {
+        path: "administracao/tabela-custa",
+        name: "administracao.tabela-custa.index",
+        component: () =>
+          import("src/pages/administracao/tabela-custa/Index.vue"),
+        meta: {
+          title: "Tabelas de Custas",
+          publico: false,
+        },
+      },
+      {
+        path: "administracao/tabela-custa/:tabelaCustaId/atos",
+        name: "administracao.tabela-custa.atos.index",
+        component: () =>
+          import("src/pages/administracao/tabela-custa/atos/Index.vue"),
+        props: true,
+        meta: {
+          title: "Atos da Tabela de Custas",
+          publico: false,
+        },
       },
     ],
   },

@@ -420,7 +420,7 @@
     </template>
   </modal>
 
-  <ProtocoloShow v-model="showModalProtocolo" />
+  <!-- <ProtocoloShow v-model="showModalProtocolo" /> -->
 </template>
 
 <script setup>
