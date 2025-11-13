@@ -44,6 +44,25 @@ const routes = [
       },
 
       {
+        path: "/administracao/tabela-custa",
+        component: () => import("src/pages/tabela-custa/Index.vue"),
+        name: "tabela-custa.index",
+        meta: {
+          title: "Tabela de Custas",
+          publico: false,
+        },
+      },
+      {
+        path: "/administracao/tabela-custa/atos/:tabelaCustaId",
+        component: () => import("src/pages/tabela-custa/Index.vue"),
+        name: "tabela-custa.editar",
+        meta: {
+          title: "Tabela de Custas",
+          publico: false,
+        },
+      },
+
+      {
         path: "caixa/movimento",
         component: () => import("pages/movimento-caixa/Index.vue"),
         name: "movimento-caixa",
