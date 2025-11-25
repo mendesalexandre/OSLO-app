@@ -192,6 +192,16 @@ const routes = [
       },
 
       {
+        path: "administracao/natureza/create",
+        component: () => import("src/pages/natureza/Create.vue"),
+        name: "natureza.create",
+        meta: {
+          title: "Natureza - Novo",
+          publico: false,
+        },
+      },
+
+      {
         path: "matricula",
         component: () => import("src/pages/matricula/Index.vue"),
         name: "matricula.index",

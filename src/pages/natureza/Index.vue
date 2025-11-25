@@ -2,7 +2,7 @@
   <q-page padding>
     <div class="flex justify-between q-mb-sm">
       <div>
-        <h1 class="text-2xl font-semibold text-slate-900">
+        <h1 class="text-slate-900">
           Naturezas de Documentos
         </h1>
         <p class="text-slate-500 mt-1">
