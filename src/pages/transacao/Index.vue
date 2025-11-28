@@ -126,7 +126,7 @@
         <q-card bordered>
           <q-card-section>
             <!-- Tipo de Lançamento -->
-            <div class="col-12 grupo-tipo-protocolo">
+            <div class="col-md-12 col-sm-12 col-xs-12 grupo-tipo-protocolo">
               <v-label label="Tipo de Lançamento" obrigatorio />
               <q-btn-toggle dense v-model="form.type" :options="tiposLancamento" spread unelevated
                 class="tipo-protocolo" />
@@ -134,26 +134,26 @@
           </q-card-section>
           <q-card-section>
             <div class="row q-col-gutter-sm">
-              <div class="col-md-12">
+              <div class="col-md-12 col-sm-12 col-xs-12">
                 <v-label label="Valor" obrigatorio />
                 <v-money v-model.number="form.amount" outlined type="number" dense />
               </div>
 
-              <div class="col-md-12">
+              <div class="col-md-12 col-sm-12 col-xs-12">
                 <v-label label="Descrição" obrigatorio />
                 <q-input v-model="form.descricao" outlined type="textarea" rows="3"
                   :rules="[val => !!val || 'Campo obrigatório']" hide-bottom-space />
               </div>
-              <div class="col-md-12">
+              <div class="col-md-12 col-sm-12 col-xs-12">
                 <v-label label="Categoria" obrigatorio />
                 <v-select v-model="form.categoria_id" outlined dense :options="categorias" option-value="nome"
                   option-label="nome" />
               </div>
-              <div class="col-md-12">
+              <div class="col-md-12 col-sm-12 col-xs-12">
                 <v-label label="Data" obrigatorio />
                 <v-date v-model="form.data" outlined :rules="[val => !!val || 'Campo obrigatório']" hide-bottom-space />
               </div>
-              <div class="col-md-12">
+              <div class="col-md-12 col-sm-12 col-xs-12">
                 <v-label label="Caixa" obrigatorio />
                 <v-select v-model="form.cashier_id" outlined :options="caixas" dense option-value="id"
                   option-label="nome" emit-value map-options :rules="[val => !!val || 'Campo obrigatório']"
@@ -164,9 +164,24 @@
         </q-card>
 
         <template #rodape>
-          <q-card-section class="flex justify-end q-col-gutter-sm">
+          <!-- <q-card-section class="flex justify-end bg-grey-3">
             <q-btn outline label="Cancelar" />
-            <q-btn color="primary" label="Salvar" @click="saveTransaction" :loading="saving" />
+            <q-btn color="primary" label="Salvar" @click="saveTransaction" :loading="saving" outline />
+          </q-card-section> -->
+          <q-card-section>
+            <div class="flex justify-between">
+              <div>
+                <q-btn label="Cancelar" color="negative" outline @click="cancelar" :disable="salvando" />
+              </div>
+              <div class="q-mr-md">
+                <q-btn label="Salvar" color="primary" @click="saveTransaction" outline :loading="saving">
+                  <template v-slot:loading>
+                    <q-spinner class="q-mr-sm" />
+                    Salvando...
+                  </template>
+                </q-btn>
+              </div>
+            </div>
           </q-card-section>
         </template>
       </modal>

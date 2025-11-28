@@ -1,5 +1,0 @@
-<template>
-  <modal>
-
-  </modal>
-</template>
