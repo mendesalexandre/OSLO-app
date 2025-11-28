@@ -172,7 +172,7 @@
               <div>
                 <q-btn label="Cancelar" color="negative" outline @click="cancelar" :disable="salvando" />
               </div>
-              <div class="q-mr-md">
+              <div>
                 <q-btn label="Salvar" color="primary" @click="saveTransaction" outline :loading="saving">
                   <template v-slot:loading>
                     <q-spinner class="q-mr-sm" />
