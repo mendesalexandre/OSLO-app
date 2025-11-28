@@ -1,6 +1,6 @@
 <template>
   <label class="v-label">
-    <span class="titulo" v-html="label" :title="obrigatorio ? 'Este campo é obrigatório' : ''" />
+    <span class="v-label-titulo" v-html="label" :title="obrigatorio ? 'Este campo é obrigatório' : ''" />
 
     <span v-if="obrigatorio" class="text-red-6">*</span>
 
@@ -35,8 +35,11 @@ defineProps({
   /* font-size: 14px; */
 }
 
-.titulo {
-  font-size: 14px;
-  font-weight: normal;
+.v-label-titulo {
+  /* font-size: 14px; */
+  /* font-weight: 500; */
+  margin-bottom: 0.2rem;
+  font-weight: bold;
+  line-height: 1.2;
 }
 </style>
