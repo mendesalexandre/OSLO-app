@@ -39,7 +39,8 @@
               <q-input v-model="filters.date_to" outlined dense type="date" />
             </div> -->
 
-            <div class="col-12 col-md-3">
+            <div class="col-md-3 col-sm-12 col-xs-12">
+              <v-label label="&nbsp;"> </v-label>
               <q-btn color="primary" label="Filtrar" icon="filter_list" @click="loadTransactions" class="q-mr-sm" />
               <q-btn flat label="Limpar" @click="clearFilters" />
             </div>
