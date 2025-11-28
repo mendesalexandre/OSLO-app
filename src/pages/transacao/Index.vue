@@ -146,7 +146,7 @@
               </div>
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <v-label label="Categoria" obrigatorio />
-                <v-select v-model="form.categoria_id" outlined dense :options="categorias" option-value="nome"
+                <v-select v-model="form.categoria_id" outlined dense :options="categorias" option-value="id"
                   option-label="nome" emit-value map-options />
               </div>
               <div class="col-md-6 col-sm-12 col-xs-12">
@@ -230,8 +230,8 @@ const pagination = ref({
 const form = reactive({
   categoria_id: null,
   caixa_id: null,
-  type: 'ENTRADA',
-  amount: null,
+  tipo: 'ENTRADA',
+  valor: null,
   descricao: '',
   data: new Date().toISOString().split('T')[0]
 })
@@ -348,19 +348,34 @@ const openDialog = (transaction = null) => {
 const saveTransaction = async () => {
   saving.value = true
   try {
-    if (form.id) {
-      await api.put(`/transacao/${form.id}`, form)
-      $q.notify({
-        type: 'positive',
-        message: 'Transação atualizada com sucesso!'
-      })
-    } else {
-      await api.post('/transacao', form)
-      $q.notify({
-        type: 'positive',
-        message: 'Transação criada com sucesso!'
-      })
-    }
+    // if (form.id) {
+    //   await api.put(`/transacao/${form.id}`, {
+    //     id: form.id,
+    //     categoria_id: form.categoria_id,
+    //     caixa_id: form.caixa_id,
+    //     tipo: form.tipo,
+    //     valor: form.valor,
+    //     descricao: form.descricao,
+    //     data: form.data
+    //   })
+    //   $q.notify({
+    //     type: 'positive',
+    //     message: 'Transação atualizada com sucesso!'
+    //   })
+    // } else {
+
+    //   $q.notify({
+    //     type: 'positive',
+    //     message: 'Transação criada com sucesso!'
+    //   })
+    await api.post(`/transacao`, {
+      categoria_id: form.categoria_id,
+      caixa_id: form.caixa_id,
+      tipo: form.tipo,
+      valor: form.valor,
+      descricao: form.descricao,
+      data: form.data
+    })
     dialog.value = false
     loadTransactions()
   } catch (error) {
@@ -407,7 +422,7 @@ const clearFilters = () => {
 }
 
 const resetForm = () => {
-  form.id = null
+  // form.id = null
   form.tipo = 'ENTRADA'
   form.amount = null
   form.descricao = ''
