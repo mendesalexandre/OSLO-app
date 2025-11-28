@@ -147,7 +147,7 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <v-label label="Categoria" obrigatorio />
                 <v-select v-model="form.categoria_id" outlined dense :options="categorias" option-value="nome"
-                  option-label="nome" />
+                  option-label="nome" emit-value map-options />
               </div>
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <v-label label="Data" obrigatorio />
@@ -229,19 +229,18 @@ const pagination = ref({
 })
 
 const form = reactive({
-  id: null,
+  categoria_id: null,
+  caixa_id: null,
   type: 'ENTRADA',
   amount: null,
-  description: '',
-  category: '',
-  date: new Date().toISOString().split('T')[0],
-  cashier_id: null
+  descricao: '',
+  data: new Date().toISOString().split('T')[0]
 })
 
 // Opções
 const typeOptions = [
-  { label: 'Entrada', value: 'entrada' },
-  { label: 'Saída', value: 'saida' }
+  { label: 'Entrada', value: 'ENTRADA' },
+  { label: 'Saída', value: 'SAIDA' }
 ]
 
 const columns = [
@@ -351,13 +350,13 @@ const saveTransaction = async () => {
   saving.value = true
   try {
     if (form.id) {
-      await api.put(`/transactions/${form.id}`, form)
+      await api.put(`/transacao/${form.id}`, form)
       $q.notify({
         type: 'positive',
         message: 'Transação atualizada com sucesso!'
       })
     } else {
-      await api.post('/transactions', form)
+      await api.post('/transacao', form)
       $q.notify({
         type: 'positive',
         message: 'Transação criada com sucesso!'
@@ -410,12 +409,12 @@ const clearFilters = () => {
 
 const resetForm = () => {
   form.id = null
-  form.type = 'entrada'
+  form.tipo = 'ENTRADA'
   form.amount = null
-  form.description = ''
-  form.category = ''
-  form.date = new Date().toISOString().split('T')[0]
-  form.cashier_id = null
+  form.descricao = ''
+  form.categoria_id = null
+  form.data = new Date().toISOString().split('T')[0]
+  form.caixa_id = null
 }
 
 const formatCurrency = (value) => {

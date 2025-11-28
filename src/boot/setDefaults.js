@@ -50,13 +50,14 @@ const defaultQIcon = {
 };
 
 Notify.setDefaults({
-  // position: "top-right",
-  position: "top",
+  position: "top-right",
+  // position: "top",
   timeout: 2500,
   textColor: "white",
   actions: [{ icon: "close", color: "white", round: true }],
   progress: true,
   spinnerColor: "white",
+  icon: "eva-info-outline",
 });
 
 Loading.setDefaults({
