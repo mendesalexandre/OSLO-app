@@ -237,6 +237,11 @@ body {
   padding-top: 0 !important;
 }
 
+.q-field--auto-height.q-field--dense .q-field_control,
+.q-field--auto-height.q-field--dense .q-field_native {
+  min-height: 32px !important;
+}
+
 // AJUSTA A SCROLL
 .q-scrollarea__bar--v,
 .q-scrollarea__thumb--v {
