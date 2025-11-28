@@ -400,7 +400,7 @@
     </q-card>
 
     <template v-slot:rodape>
-      <q-card-section>
+      <q-card-section class="bg-grey-3">
         <div class="flex justify-between">
           <div>
             <q-btn label="Cancelar" color="negative" outline @click="cancelar" icon="fa-duotone fa-xmark"
