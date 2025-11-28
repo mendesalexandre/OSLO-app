@@ -192,7 +192,7 @@ const routes = [
       },
 
       {
-        path: "administracao/natureza/create",
+        path: "administracao/natureza/novo",
         component: () => import("src/pages/natureza/Create.vue"),
         name: "natureza.create",
         meta: {

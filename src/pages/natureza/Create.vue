@@ -7,117 +7,122 @@
 
       <q-separator />
 
-      <q-card>
-        <q-card-section>
-          <q-form @submit="onSubmit" class="q-gutter-md">
-            <!-- Nome e Registro Ativo -->
-            <div class="row q-col-gutter-md">
-              <div class="col-xs-12 col-md-8">
-                <q-input v-model="form.nome" label="Nome" outlined dense
-                  :rules="[val => !!val || 'Campo obrigatório']" />
-              </div>
-              <div class="col-xs-12 col-md-4">
-                <div class="q-gutter-sm">
-                  <div class="text-subtitle2">Registro Ativo</div>
-                  <q-option-group v-model="form.registro_ativo" :options="simNaoOptions" color="primary" inline dense />
+      <q-card-section>
+        <q-card bordered>
+          <q-card-section>
+            <q-form @submit="onSubmit">
+              <!-- Nome e Registro Ativo -->
+              <div class="row q-col-gutter-md">
+                <div class="col-xs-12 col-md-8">
+                  <v-label label="Nome"></v-label>
+                  <q-input v-model="form.nome" outlined dense :rules="[val => !!val || 'Campo obrigatório']" />
                 </div>
-              </div>
-            </div>
-
-            <!-- Gerenciar Modelo e Layout -->
-            <div class="row q-col-gutter-md">
-              <div class="col-xs-12 col-md-3">
-                <div class="q-gutter-sm">
-                  <div class="text-subtitle2">Gerenciar Modelo em Word?</div>
-                  <q-option-group v-model="form.gerenciar_modelo_word" :options="simNaoOptions" color="primary" inline
-                    dense />
-                </div>
-              </div>
-              <div class="col-xs-12 col-md-3">
-                <q-select v-model="form.layout_impressao" :options="layoutOptions" label="Layout de Impressão" outlined
-                  dense emit-value map-options />
-              </div>
-              <div class="col-xs-12 col-md-3">
-                <div class="q-gutter-sm">
-                  <div class="text-subtitle2">Permitir Edição da Minuta?</div>
-                  <q-option-group v-model="form.permitir_edicao_minuta" :options="simNaoOptions" color="primary" inline
-                    dense />
-                </div>
-              </div>
-              <div class="col-xs-12 col-md-3">
-                <q-btn label="Gerenciar Minuta" color="primary" outline dense @click="gerenciarMinuta" />
-              </div>
-            </div>
-
-            <!-- Permitir ato digital e Enviar certidão -->
-            <div class="row q-col-gutter-md">
-              <div class="col-xs-12 col-md-6">
-                <div class="q-gutter-sm">
-                  <div class="text-subtitle2">Permitir ser ato digital?</div>
-                  <q-option-group v-model="form.permitir_ato_digital" :options="simNaoOptions" color="primary" inline
-                    dense />
-                </div>
-              </div>
-              <div class="col-xs-12 col-md-6">
-                <div class="q-gutter-sm">
-                  <div class="text-subtitle2">Enviar certidão de ato praticado de notificação?</div>
-                  <q-option-group v-model="form.enviar_certidao_notificacao" :options="simNaoOptions" color="primary"
-                    inline dense />
-                </div>
-              </div>
-            </div>
-
-            <q-separator class="q-my-md" />
-
-            <!-- Checklist -->
-            <div>
-              <div class="text-subtitle2 q-mb-sm">Checklist</div>
-              <div class="row q-col-gutter-sm">
-                <div class="col-xs-12 col-md-10">
-                  <q-select v-model="checklistSelecionado" :options="checklistOptions" outlined dense use-input
-                    @filter="filterChecklist" placeholder="Selecione um checklist" />
-                </div>
-                <div class="col-xs-12 col-md-2">
-                  <q-btn label="Adicionar" color="primary" outline dense class="full-width"
-                    @click="adicionarChecklist" />
+                <div class="col-xs-12 col-md-4">
+                  <div class="q-gutter-sm">
+                    <v-label label="Registro Ativo"></v-label>
+                    <q-option-group v-model="form.registro_ativo" :options="simNaoOptions" color="primary" inline
+                      dense />
+                  </div>
                 </div>
               </div>
 
-              <!-- Lista de checklists adicionados -->
-              <q-list bordered separator class="q-mt-sm" v-if="form.checklists.length">
-                <q-item v-for="(checklist, index) in form.checklists" :key="index">
-                  <q-item-section>{{ checklist.nome }}</q-item-section>
-                  <q-item-section side>
-                    <q-btn icon="delete" flat dense round color="negative" size="sm" @click="removerChecklist(index)" />
-                  </q-item-section>
-                </q-item>
-              </q-list>
-            </div>
-
-            <q-separator class="q-my-md" />
-
-            <!-- Papéis Ativos -->
-            <div>
-              <div class="text-subtitle2 q-mb-sm">Papéis Ativos</div>
-              <div class="q-gutter-xs">
-                <q-chip v-for="papel in papeisAtivos" :key="papel.value"
-                  :selected.sync="form.papeis_ativos[papel.value]" clickable color="primary" text-color="white"
-                  :outline="!form.papeis_ativos[papel.value]">
-                  {{ papel.label }}
-                </q-chip>
+              <!-- Gerenciar Modelo e Layout -->
+              <div class="row q-col-gutter-md">
+                <div class="col-xs-12 col-md-3">
+                  <div class="q-gutter-sm">
+                    <v-label label="Gerenciar Modelo em Word?"></v-label>
+                    <q-option-group v-model="form.gerenciar_modelo_word" :options="simNaoOptions" color="primary" inline
+                      dense />
+                  </div>
+                </div>
+                <div class="col-xs-12 col-md-3">
+                  <v-label label="Layout de Impressão"></v-label>
+                  <q-select v-model="form.layout_impressao" :options="layoutOptions" outlined dense emit-value
+                    map-options />
+                </div>
+                <div class="col-xs-12 col-md-3">
+                  <div class="q-gutter-sm">
+                    <v-label label="Permitir Edição da Minuta?"></v-label>
+                    <q-option-group v-model="form.permitir_edicao_minuta" :options="simNaoOptions" color="primary"
+                      inline dense />
+                  </div>
+                </div>
+                <div class="col-xs-12 col-md-3">
+                  <q-btn label="Gerenciar Minuta" color="primary" outline dense @click="gerenciarMinuta" />
+                </div>
               </div>
-            </div>
 
-            <q-separator class="q-my-md" />
+              <!-- Permitir ato digital e Enviar certidão -->
+              <div class="row q-col-gutter-md">
+                <div class="col-xs-12 col-md-6">
+                  <div class="q-gutter-sm">
+                    <div class="text-subtitle2">Permitir ser ato digital?</div>
+                    <q-option-group v-model="form.permitir_ato_digital" :options="simNaoOptions" color="primary" inline
+                      dense />
+                  </div>
+                </div>
+                <div class="col-xs-12 col-md-6">
+                  <div class="q-gutter-sm">
+                    <div class="text-subtitle2">Enviar certidão de ato praticado de notificação?</div>
+                    <q-option-group v-model="form.enviar_certidao_notificacao" :options="simNaoOptions" color="primary"
+                      inline dense />
+                  </div>
+                </div>
+              </div>
 
-            <!-- Botões -->
-            <div class="row q-gutter-sm justify-end">
-              <q-btn label="Cancelar" outline color="primary" @click="onCancel" />
-              <q-btn label="Salvar" type="submit" color="primary" :loading="loading" />
-            </div>
-          </q-form>
-        </q-card-section>
-      </q-card>
+              <q-separator class="q-my-md" />
+
+              <!-- Checklist -->
+              <div>
+                <div class="text-subtitle2 q-mb-sm">Checklist</div>
+                <div class="row q-col-gutter-sm">
+                  <div class="col-xs-12 col-md-10">
+                    <q-select v-model="checklistSelecionado" :options="checklistOptions" outlined dense use-input
+                      @filter="filterChecklist" placeholder="Selecione um checklist" />
+                  </div>
+                  <div class="col-xs-12 col-md-2">
+                    <q-btn label="Adicionar" color="primary" outline dense class="full-width"
+                      @click="adicionarChecklist" />
+                  </div>
+                </div>
+
+                <!-- Lista de checklists adicionados -->
+                <q-list bordered separator class="q-mt-sm" v-if="form.checklists.length">
+                  <q-item v-for="(checklist, index) in form.checklists" :key="index">
+                    <q-item-section>{{ checklist.nome }}</q-item-section>
+                    <q-item-section side>
+                      <q-btn icon="delete" flat dense round color="negative" size="sm"
+                        @click="removerChecklist(index)" />
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </div>
+
+              <q-separator class="q-my-md" />
+
+              <!-- Papéis Ativos -->
+              <div>
+                <div class="text-subtitle2 q-mb-sm">Papéis Ativos</div>
+                <div class="q-gutter-xs">
+                  <q-chip v-for="papel in papeisAtivos" :key="papel.value"
+                    :selected.sync="form.papeis_ativos[papel.value]" clickable color="primary" text-color="white"
+                    :outline="!form.papeis_ativos[papel.value]">
+                    {{ papel.label }}
+                  </q-chip>
+                </div>
+              </div>
+
+              <q-separator />
+
+              <!-- Botões -->
+              <div class="row q-gutter-sm justify-end">
+                <q-btn label="Cancelar" outline color="primary" @click="onCancel" />
+                <q-btn label="Salvar" type="submit" color="primary" :loading="loading" />
+              </div>
+            </q-form>
+          </q-card-section>
+        </q-card>
+      </q-card-section>
     </q-card>
   </q-page>
 </template>
