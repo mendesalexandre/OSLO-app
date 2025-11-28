@@ -149,14 +149,14 @@
                 <v-select v-model="form.categoria_id" outlined dense :options="categorias" option-value="nome"
                   option-label="nome" emit-value map-options />
               </div>
-              <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="col-md-6 col-sm-12 col-xs-12">
                 <v-label label="Data" obrigatorio />
-                <v-date v-model="form.data" outlined :rules="[val => !!val || 'Campo obrigatório']" hide-bottom-space />
+                <v-date v-model="form.data" outlined :rules="[val => !!val || 'Campo obrigatório']" />
               </div>
-              <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="col-md-6 col-sm-12 col-xs-12">
                 <v-label label="Caixa" obrigatorio />
                 <v-select v-model="form.caixa_id" outlined :options="caixas" dense option-value="id" option-label="nome"
-                  emit-value map-options :rules="[val => !!val || 'Campo obrigatório']" hide-bottom-space />
+                  emit-value map-options :rules="[val => !!val || 'Campo obrigatório']" />
               </div>
             </div>
           </q-card-section>
