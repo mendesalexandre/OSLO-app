@@ -122,13 +122,13 @@
       </q-card>
 
       <!-- Dialog de Cadastro/Edição -->
-      <modal v-model="dialog" tamanho="lg" titulo="Transação" @close="fecharModal">
+      <modal v-model="dialog" tamanho="md" titulo="Transação" @close="fecharModal">
         <q-card bordered>
           <q-card-section>
             <!-- Tipo de Lançamento -->
             <div class="col-md-12 col-sm-12 col-xs-12 grupo-tipo-protocolo">
               <v-label label="Tipo de Lançamento" obrigatorio />
-              <q-btn-toggle dense v-model="form.type" :options="tiposLancamento" spread unelevated
+              <q-btn-toggle dense v-model="form.tipo" :options="tiposLancamento" spread unelevated
                 class="tipo-protocolo" />
             </div>
           </q-card-section>
@@ -136,7 +136,7 @@
             <div class="row q-col-gutter-sm">
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <v-label label="Valor" obrigatorio />
-                <v-money v-model.number="form.amount" outlined type="number" dense />
+                <v-money v-model.number="form.valor" outlined type="number" dense />
               </div>
 
               <div class="col-md-12 col-sm-12 col-xs-12">
@@ -155,9 +155,8 @@
               </div>
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <v-label label="Caixa" obrigatorio />
-                <v-select v-model="form.cashier_id" outlined :options="caixas" dense option-value="id"
-                  option-label="nome" emit-value map-options :rules="[val => !!val || 'Campo obrigatório']"
-                  hide-bottom-space />
+                <v-select v-model="form.caixa_id" outlined :options="caixas" dense option-value="id" option-label="nome"
+                  emit-value map-options :rules="[val => !!val || 'Campo obrigatório']" hide-bottom-space />
               </div>
             </div>
           </q-card-section>
@@ -450,13 +449,13 @@ const tiposLancamento = computed(() => [
     // color: 'negative',
     class: 'btn-saida'
   },
-  {
-    label: 'Ajuste',
-    value: 'AJUSTE',
-    icon: 'fa-regular fa-pen-to-square',
-    // color: 'warning',
-    class: 'btn-ajuste'
-  },
+  // {
+  //   label: 'Ajuste',
+  //   value: 'AJUSTE',
+  //   icon: 'fa-regular fa-pen-to-square',
+  //   // color: 'warning',
+  //   class: 'btn-ajuste'
+  // },
   {
     label: 'Sangria',
     value: 'SANGRIA',
