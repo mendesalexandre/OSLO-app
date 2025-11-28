@@ -1,9 +1,6 @@
 // sobrescreve variáveis do Quasar antes do import
 $generic-border-radius: 2px; // ou qualquer valor desejado, ex: 8px, 0.5rem, etc
 
-// importa o tema do Quasar depois das variáveis
-// @import "quasar/src/css/index.sass"; // importa SASS padrão do Quasar
-
 body {
   font-family: "Roboto", sans-serif !important; // Define a fonte padrão para o corpo do documento
   background-color: #f5f5f5 !important; // Cor de fundo clara e neutra

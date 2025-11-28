@@ -18,7 +18,8 @@ export default defineConfig((ctx) => {
     // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-file#css
     css: [
       "app.scss",
-      //  "estilo.scss"
+      //
+      // "estilo.scss",
     ],
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
