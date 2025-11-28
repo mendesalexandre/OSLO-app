@@ -195,6 +195,7 @@ import { useNaturezaStore } from 'src/stores/natureza'
 import { useCategoriaStore } from 'src/stores/categoria'
 import { useCaixaStore } from 'src/stores/caixa'
 import { storeToRefs } from 'pinia'
+import moment from 'moment'
 
 const $q = useQuasar()
 
@@ -369,12 +370,14 @@ const saveTransaction = async () => {
     //     message: 'Transação criada com sucesso!'
     //   })
     await api.post(`/transacao`, {
+      natureza: 'CONTA_RECEBER',
       categoria_id: form.categoria_id,
       caixa_id: form.caixa_id,
       tipo: form.tipo,
       valor: form.valor,
       descricao: form.descricao,
-      data: form.data
+      data: form.data,
+      data_vencimento: moment(form.data).add(7, 'days').format('YYYY-MM-DD')
     })
     dialog.value = false
     loadTransactions()
