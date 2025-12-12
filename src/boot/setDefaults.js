@@ -17,6 +17,7 @@ const defaultQInput = {
   outlined: true,
   dense: true,
   color: "primary",
+  hideBottomSpace: true,
 };
 
 const defaultQDialog = {
