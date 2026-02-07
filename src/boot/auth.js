@@ -3,7 +3,7 @@ import { useAuthStore } from "src/stores/auth";
 
 export default boot(({ router }) => {
   router.beforeEach(async (to, from, next) => {
-    const authStore = useAuthStore(); // ← coloca aqui dentro do beforeEach
+    const authStore = useAuthStore();
 
     // Verificar se a rota é pública
     const isPublicRoute = to.meta.publico === true;
@@ -26,14 +26,14 @@ export default boot(({ router }) => {
     // Se tem token e não é rota pública, valida permissões
     if (token && !isPublicRoute) {
       try {
-        // SEMPRE busca do banco (não verifica se já tem)
-        await authStore.getMe();
-
+        // Só busca do banco se ainda não carregou o usuário
+        if (!authStore.isAuthenticated || !authStore.user) {
+          await authStore.getMe();
+        }
         next();
       } catch (error) {
-        console.error("Erro ao buscar usuário:", error);
-        localStorage.removeItem("access_token");
-        authStore.user = null;
+        console.error("Erro ao buscar usuario:", error);
+        authStore.clearAuth();
         next({ name: "login" });
       }
       return;

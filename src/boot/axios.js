@@ -3,61 +3,102 @@ import { boot } from "quasar/wrappers";
 import axios from "axios";
 import { Notify } from "quasar";
 
-// Cria a instância do axios com baseURL dinâmica
 const api = axios.create({
   baseURL: process.env.API_URL,
 });
 
-export default boot(({ app, router, store }) => {
+// Flag para evitar múltiplos refresh simultâneos
+let isRefreshing = false;
+// Fila de requests que falharam e aguardam o refresh
+let failedQueue = [];
+
+const processQueue = (error, token = null) => {
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
+    }
+  });
+  failedQueue = [];
+};
+
+export default boot(({ app, router }) => {
   // Interceptor de REQUEST - adiciona o token em todas as requisições
   api.interceptors.request.use(
     (config) => {
       const token = localStorage.getItem("access_token");
-
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
-
       return config;
     },
-    (error) => {
-      return Promise.reject(error);
-    }
+    (error) => Promise.reject(error)
   );
 
-  // Interceptor de RESPONSE - verifica se o token expirou
+  // Interceptor de RESPONSE - refresh automático em 401
   api.interceptors.response.use(
-    (response) => {
-      // Se a resposta for bem-sucedida, apenas retorna
-      return response;
-    },
-    (error) => {
-      // Verifica se o erro é 401 (Unauthorized - token expirado ou inválido)
-      if (error.response && error.response.status === 401) {
-        // Limpa os dados de autenticação do localStorage
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("user");
-        // Adicione aqui outros itens que você armazena
+    (response) => response,
+    async (error) => {
+      const originalRequest = error.config;
 
-        // Se você usa Vuex, limpe o state também
-        // store.dispatch('auth/logout')
+      // Se 401 e não é request de refresh/login e não é retry
+      if (
+        error.response &&
+        error.response.status === 401 &&
+        !originalRequest._retry &&
+        !originalRequest.url.includes("/refresh") &&
+        !originalRequest.url.includes("/auth/login")
+      ) {
+        // Se já está fazendo refresh, enfileira este request
+        if (isRefreshing) {
+          return new Promise((resolve, reject) => {
+            failedQueue.push({ resolve, reject });
+          })
+            .then((token) => {
+              originalRequest.headers.Authorization = `Bearer ${token}`;
+              return api(originalRequest);
+            })
+            .catch((err) => Promise.reject(err));
+        }
 
-        // Se você usa Pinia, limpe o store
-        // const authStore = useAuthStore()
-        // authStore.logout()
+        originalRequest._retry = true;
+        isRefreshing = true;
 
-        // Notifica o usuário
-        Notify.create({
-          type: "negative",
-          message: "Sua sessão expirou. Faça login novamente.",
-          position: "top",
-          timeout: 3000,
-        });
+        try {
+          const response = await api.post("/refresh");
+          const newToken =
+            response.data.data?.access_token || response.data.access_token;
 
-        // Redireciona para a página de login
-        // Verifica se já não está na página de login para evitar loop
-        if (router.currentRoute.value.path !== "/auth/login") {
-          router.push({ name: "login" });
+          if (newToken) {
+            localStorage.setItem("access_token", newToken);
+            api.defaults.headers.common.Authorization = `Bearer ${newToken}`;
+            processQueue(null, newToken);
+
+            // Reenviar o request original com novo token
+            originalRequest.headers.Authorization = `Bearer ${newToken}`;
+            return api(originalRequest);
+          }
+        } catch (refreshError) {
+          processQueue(refreshError, null);
+
+          // Refresh falhou - limpa auth e redireciona
+          localStorage.removeItem("access_token");
+
+          Notify.create({
+            type: "negative",
+            message: "Sua sessao expirou. Faca login novamente.",
+            position: "top",
+            timeout: 3000,
+          });
+
+          if (router.currentRoute.value.path !== "/auth/login") {
+            router.push({ name: "login" });
+          }
+
+          return Promise.reject(refreshError);
+        } finally {
+          isRefreshing = false;
         }
       }
 

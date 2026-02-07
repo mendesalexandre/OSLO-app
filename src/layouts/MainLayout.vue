@@ -176,7 +176,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useQuasar } from "quasar";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
@@ -184,6 +184,7 @@ import CriarProtocolo from "src/components/CriarProtocolo.vue";
 import MenuNavegacao from "src/components/Menu.vue";
 import CriarIndicadorPessoal from "src/pages/indicador-pessoal/Create.vue";
 import { useEstadoStore } from "src/stores/estado";
+import { useAuthStore } from "src/stores/auth";
 
 defineOptions({
   name: "MainLayout",
@@ -192,13 +193,15 @@ defineOptions({
 const $q = useQuasar();
 const router = useRouter();
 
-// Adicione suas variáveis reativas aqui
+// Auth store
+const authStore = useAuthStore();
+const user = computed(() => authStore.user?.user || authStore.user);
+
+// Variáveis reativas
 const leftDrawerOpen = ref(false);
 const modalCriarProtocolo = ref(false);
 const modalCriarIndicador = ref(false);
 
-
-// Adicione seus métodos aqui
 const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 };
@@ -212,18 +215,46 @@ const estadoStore = useEstadoStore();
 
 const abrirModalCriarProtocolo = async () => {
   try {
-    await estadoStore.index()
+    await estadoStore.index();
     modalCriarProtocolo.value = true;
   } catch (error) {
-    console.error('Erro ao carregar estados:', error);
+    console.error("Erro ao carregar estados:", error);
     $q.notify({
-      type: 'negative',
-      message: 'Erro ao carregar estados. Tente novamente mais tarde.'
+      type: "negative",
+      message: "Erro ao carregar estados. Tente novamente mais tarde.",
     });
   }
 };
 
+// Menu do usuário
+const logout = async () => {
+  await authStore.logout();
+  router.push({ name: "login" });
+};
 
+const verPerfil = () => {
+  $q.notify({
+    type: "info",
+    message: "Funcionalidade em desenvolvimento.",
+    position: "top",
+  });
+};
+
+const editarPerfil = () => {
+  $q.notify({
+    type: "info",
+    message: "Funcionalidade em desenvolvimento.",
+    position: "top",
+  });
+};
+
+const alterarSenha = () => {
+  $q.notify({
+    type: "info",
+    message: "Funcionalidade em desenvolvimento.",
+    position: "top",
+  });
+};
 </script>
 
 <style scoped>

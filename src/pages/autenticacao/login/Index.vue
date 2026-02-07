@@ -153,6 +153,7 @@ import { ref, reactive } from "vue";
 import { useQuasar } from "quasar";
 import { useRouter } from "vue-router";
 import { api } from "src/boot/axios";
+import { useAuthStore } from "src/stores/auth";
 
 defineOptions({
   name: "LoginPage",
@@ -161,6 +162,7 @@ defineOptions({
 const $q = useQuasar();
 const router = useRouter();
 const $api = api;
+const authStore = useAuthStore();
 
 // Estado reativo
 const loading = ref(false);
@@ -199,10 +201,9 @@ const onSubmit = async () => {
       password: form.senha,
     });
 
-    // Salva APENAS o token
-    localStorage.setItem("access_token", response.data.access_token);
-
-    // NÃO salva o usuário - vai buscar sempre do banco
+    // JWT response: { success: true, data: { access_token, token_type, expires_in, user } }
+    const token = response.data.data?.access_token || response.data.access_token;
+    authStore.setToken(token);
 
     $q.notify({
       color: "positive",
@@ -211,10 +212,10 @@ const onSubmit = async () => {
       position: "top"
     });
 
-    window.location.href = "/"
+    router.push({ name: "tarefas" });
 
   } catch (error) {
-    const mensagem = error.response?.data?.error || "Erro ao fazer login";
+    const mensagem = error.response?.data?.message || error.response?.data?.error || "Erro ao fazer login";
 
     $q.notify({
       color: "negative",
