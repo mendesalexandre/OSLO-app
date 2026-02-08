@@ -1,12 +1,99 @@
-body {
-  font-family: "Roboto", sans-serif !important; // Define a fonte padrão para o corpo do documento
-  background-color: #f5f5f5 !important; // Cor de fundo clara e neutra
-  color: #212529 !important; // Cor do texto padrão
-  margin: 0 !important; // Remove margens padrão do navegador
-  padding: 0 !important; // Remove padding padrão do navegador
-  box-sizing: border-box !important; // Define o box-sizing para border-box para facilitar o layouts
+// =============================================
+// OSLO Design System — Estilos Globais
+// =============================================
+
+// --- CSS Variables ---
+:root {
+  // Tipografia
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-size-xs: 0.75rem;    // 12px
+  --font-size-sm: 0.8125rem;  // 13px
+  --font-size-base: 0.875rem; // 14px
+  --font-size-lg: 1rem;       // 16px
+  --font-size-xl: 1.25rem;    // 20px
+  --font-size-2xl: 1.5rem;    // 24px
+
+  // Cores principais — Laranja
+  --primary: #FF7A00;
+  --primary-light: #FF9A33;
+  --primary-dark: #E06C00;
+  --primary-bg: #FFF7F0;
+  --primary-rgb: 255, 122, 0;
+
+  // Sidebar — Branca, limpa
+  --sidebar-bg: #FFFFFF;
+  --sidebar-text: #5F6368;
+  --sidebar-active: #FF7A00;
+  --sidebar-hover: #F5F5F5;
+  --sidebar-accent: #FF7A00;
+  --sidebar-active-bg: #FFF3E8;
+  --sidebar-border: #E8EAED;
+
+  // Conteúdo
+  --background: #F8F9FA;
+  --surface: #FFFFFF;
+  --border-color: #E8EAED;
+  --border-color-light: #F1F3F4;
+  --border-color-dark: #DADCE0;
+
+  // Texto
+  --text-color: #202124;
+  --text-secondary: #5F6368;
+  --text-muted: #9AA0A6;
+
+  // Status
+  --success: #059669;
+  --success-bg: #ECFDF5;
+  --warning: #D97706;
+  --warning-bg: #FFFBEB;
+  --danger: #DC2626;
+  --danger-bg: #FEF2F2;
+  --info: #2563EB;
+  --info-bg: #EFF6FF;
+
+  // Sombras
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  // Bordas
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-full: 9999px;
+
+  // Transição
+  --transition: 150ms ease;
+
+  // Espaçamento
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+
+  // Backgrounds sutis
+  --bg-subtle: #F5F5F5;
 }
 
+// --- Reset Base ---
+* {
+  font-family: var(--font-family);
+}
+
+body {
+  background: var(--background);
+  color: var(--text-color);
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// --- Utilidades ---
 .w-full {
   width: 100%;
 }
@@ -15,54 +102,100 @@ body {
   height: 100%;
 }
 
-// AJUSTANDO O INPUT PARA FICAR COMO O FORM-CONTROL DO BOOTSTRAP
+// --- Scrollbar customizada ---
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #DADCE0;
+  border-radius: 3px;
+
+  &:hover {
+    background: #9AA0A6;
+  }
+}
+
+// --- Override global do Quasar ---
+
+// Cards
+.q-card {
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+}
+
+.rounded-borders {
+  border-radius: var(--radius-md) !important;
+}
+
+// Botões — SEM uppercase
+.q-btn {
+  text-transform: none !important;
+  font-weight: 500;
+  letter-spacing: 0;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-base);
+}
+
+.q-btn--rectangle {
+  border-radius: var(--radius-sm) !important;
+}
+
+.q-btn-group {
+  border-radius: var(--radius-sm) !important;
+}
+
+// Inputs
 .q-field {
   &--outlined {
     .q-field__control {
-      border-radius: 2px !important;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      border-radius: var(--radius-sm) !important;
+      transition: border-color var(--transition), box-shadow var(--transition);
 
-      &:hover {
-        border-color: none !important;
-      }
-      &:focus-within {
-        outline: none !important;
-      }
       &:before {
-        border: 1px solid #ced4da !important;
+        border: 1px solid var(--border-color) !important;
       }
     }
 
-    &--focused {
-      .q-field__label {
-        color: none !important;
-      }
+    &.q-field--focused {
+      .q-field__control {
+        &:before {
+          border-color: var(--primary) !important;
+        }
 
-      &:before,
-      &:after {
-        opacity: 0 !important;
-        height: 0 !important;
+        &:after {
+          border-color: var(--primary) !important;
+          border-width: 1px !important;
+          box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
+        }
       }
     }
 
     .q-field__native {
-      font-size: 0.875rem;
+      font-size: var(--font-size-base);
+      color: var(--text-color);
     }
 
     .q-field__label {
-      color: hsl(var(--muted-foreground));
-      font-size: 0.875rem;
+      color: var(--text-secondary);
+      font-size: var(--font-size-base);
       font-weight: 500;
     }
 
     .q-field__bottom {
-      padding: 4px 0px 0px 0px !important;
+      padding: 4px 0 0 0 !important;
     }
 
     .q-chip {
-      padding: 0.5rem 0.5rem;
-      border-radius: 2px !important;
-      background-color: #f1f1f1;
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius-sm) !important;
+      background-color: var(--bg-subtle);
     }
   }
 
@@ -72,69 +205,19 @@ body {
   }
 }
 
-// Q CARD
-.q-card {
-  border-radius: 2px !important;
-  transition: all 0.2s ease;
-  box-shadow: 0 1px 3px 0 #0000001a, 0 1px 2px -1px #0000001a !important;
-}
-
-.rounded-borders {
-  border-radius: 2px !important;
-}
-
-.q-notification {
-  border-radius: 2px !important; // ou use sua variável global
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08) !important;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.q-notification__progress {
-  border-radius: 0 !important;
-}
-
-.q-notification__badge {
-  padding: 4px 8px;
-  position: absolute;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08) !important;
-  border-radius: 2px !important;
-}
-
-.q-layout-container > div > div {
-  max-height: none !important;
-  min-height: 0;
-}
-
-// .q-dialog__inner > div {
-//   border-radius: 2px !important;
-// }
-
-// REMOVE A DUPLA BARRA DE ROLAGEM
-.q-dialog__inner--minimized {
-  //  padding: 0 !important; // 24px default
-  padding: 24px 0 !important; // 24px default
-}
-
-.q-chip {
-  // margin: 0.25rem 0.25rem 0.25rem 0;
-  padding: 0.5rem 0.5rem;
-  border-radius: 2px !important;
-  background-color: #f1f1f1;
-}
-
-// Q SELECT
+// Selects
 .q-select {
   .q-item {
     min-height: 32px !important;
     padding: 0;
     color: inherit;
-    transition: color 0.3s, background-color 0.3s;
+    transition: color var(--transition), background-color var(--transition);
 
     .q-badge {
-      padding: 0.5rem 0.5rem;
-      border-radius: 2px;
-      background-color: #f1f1f1;
-      border: 1px solid #f1f1f1;
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius-sm);
+      background-color: var(--bg-subtle);
+      border: 1px solid var(--border-color-light);
     }
   }
 
@@ -147,19 +230,77 @@ body {
   }
 }
 
-.q-btn--rectangle {
-  border-radius: 2px !important;
-  // font-size: 0.875rem;
-  // font-weight: 400;
-  // color: #37474f;
-  // text-transform: uppercase;
+// Tabelas
+.q-table {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+
+  th {
+    font-weight: 600;
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--text-secondary);
+    background: #F8F9FA;
+  }
+
+  td {
+    font-size: var(--font-size-sm);
+    color: var(--text-color);
+  }
+
+  tbody tr {
+    transition: background-color var(--transition);
+
+    &:hover {
+      background: #F8F9FB;
+    }
+  }
 }
 
-.q-btn-group {
-  border-radius: 2px !important;
+// Notificações
+.q-notification {
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-lg) !important;
 }
 
-// Q LAYOUT
+.q-notification__progress {
+  border-radius: 0 !important;
+}
+
+.q-notification__badge {
+  padding: 4px 8px;
+  position: absolute;
+  box-shadow: var(--shadow-md) !important;
+  border-radius: var(--radius-sm) !important;
+}
+
+// Chips
+.q-chip {
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm) !important;
+  background-color: var(--bg-subtle);
+}
+
+// Menus
+.q-menu {
+  box-shadow: var(--shadow-lg) !important;
+  border-radius: var(--radius-md) !important;
+  border: 1px solid var(--border-color);
+}
+
+// Dialogs
+.q-dialog__inner--minimized {
+  padding: 24px 0 !important;
+}
+
+.q-dialog__inner {
+  .q-card {
+    border-radius: var(--radius-lg);
+  }
+}
+
+// Layout
 .q-layout__shadow:after {
   content: "";
   position: absolute;
@@ -167,12 +308,44 @@ body {
   right: 0;
   bottom: 0;
   left: 0;
-  /* box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.2), 0 0px 10px rgba(0, 0, 0, 0.24); */
-  box-shadow: 0 1px 3px 0 #0000001a, 0 1px 2px -1px #0000001a !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06) !important;
 }
 
+.q-layout-container > div > div {
+  max-height: none !important;
+  min-height: 0;
+}
+
+.q-drawer--left.q-drawer--bordered {
+  border-right: 1px solid var(--border-color) !important;
+}
+
+.q-header .q-layout__shadow:after {
+  bottom: 0 !important;
+}
+
+// Scroll areas
+.q-scrollarea__bar--v,
+.q-scrollarea__thumb--v {
+  right: 0;
+  width: 5px !important;
+  border-radius: 3px !important;
+}
+
+.q-scrollarea__bar--h,
+.q-scrollarea__thumb--h {
+  bottom: 0;
+  height: 5px !important;
+  border-radius: 3px !important;
+}
+
+// --- Classes de texto reutilizáveis ---
 .titulo-secao {
-  font-size: 0.8rem;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-secondary);
 }
 
 .corpo-secao {
@@ -181,10 +354,6 @@ body {
   align-items: flex-start;
   gap: 12px;
 
-  .titulo-secao {
-    font-size: 0.8rem;
-  }
-
   .row {
     width: 100%;
     justify-content: space-between;
@@ -192,67 +361,106 @@ body {
 }
 
 .modal-titulo {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #37474f;
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--text-color);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.q-menu {
-  box-shadow: 0 1px 3px 0 #0000001a, 0 1px 2px -1px #0000001a !important;
-  border-radius: 2px !important;
+  letter-spacing: 0.03em;
 }
 
 .titulo {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #37474f;
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--text-color);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.03em;
 }
 
 .tabela-cabecalho {
-  background-color: #f8f9fa !important;
+  background-color: #F8F9FA !important;
   font-weight: 600 !important;
   text-transform: uppercase !important;
-  font-size: 0.75rem !important;
-  color: #495057 !important;
+  font-size: var(--font-size-xs) !important;
+  color: var(--text-secondary) !important;
 }
 
-.q-drawer--left.q-drawer--bordered {
-  border-right: 1px solid rgba(0, 0, 0, 0.05) !important;
+// --- Badges de status ---
+.badge-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+
+  &::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  &.pago::before,
+  &.concluido::before { background: var(--success); }
+  &.pago-parcial::before { background: var(--warning); }
+  &.aberto::before,
+  &.pendente::before { background: var(--info); }
+  &.cancelado::before,
+  &.erro::before { background: var(--danger); }
+  &.em-andamento::before,
+  &.em-processamento::before { background: #7C3AED; }
+  &.isento::before { background: #6B7280; }
 }
 
-.q-header .q-layout__shadow:after {
-  bottom: 0 !important;
-}
-
+// --- Money input ---
 .v-money3 {
-  font-size: 0.875rem !important;
+  font-size: var(--font-size-base) !important;
 }
 
+// Dense field fix
 .q-field--auto-height.q-field--dense.q-field--labeled
   .q-field__control-container {
   padding-top: 0 !important;
 }
 
-// .q-field--auto-height.q-field--dense .q-field_control,
-// .q-field--auto-height.q-field--dense .q-field_native {
-//   min-height: 32px !important;
-// }
-
-// AJUSTA A SCROLL
-.q-scrollarea__bar--v,
-.q-scrollarea__thumb--v {
-  right: 0;
-  width: 5px !important;
-  border-radius: 0 !important;
+// --- OSLO utility classes ---
+.oslo-page-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-color);
+  line-height: 1.3;
 }
 
-.q-scrollarea__bar--h,
-.q-scrollarea__thumb--h {
-  bottom: 0;
-  width: 5px !important;
-  border-radius: 0 !important;
+.oslo-page-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.oslo-page-header {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+
+  .oslo-page-header-icon {
+    --fa-primary-color: var(--text-color);
+    --fa-secondary-color: var(--text-secondary);
+    --fa-secondary-opacity: 0.6;
+  }
+}
+
+.oslo-text-secondary {
+  color: var(--text-secondary) !important;
+}
+
+.oslo-text-muted {
+  color: var(--text-muted) !important;
+}
+
+.oslo-label {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+  display: block;
+  margin-bottom: 4px;
 }

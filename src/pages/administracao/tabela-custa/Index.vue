@@ -3,8 +3,8 @@
     <!-- Header -->
     <div class="row items-center q-mb-md">
       <div class="col">
-        <div class="text-h5">Tabelas de Custas</div>
-        <div class="text-caption text-grey-7">
+        <div class="oslo-page-title">Tabelas de Custas</div>
+        <div class="oslo-page-subtitle">
           Gerencie as tabelas de custas por estado e município
         </div>
       </div>
@@ -68,7 +68,7 @@
       <q-card-section>
         <div class="text-center q-py-xl">
           <q-spinner color="primary" size="50px" />
-          <div class="text-grey-7 q-mt-md">Carregando tabelas...</div>
+          <div class="oslo-text-secondary q-mt-md">Carregando tabelas...</div>
         </div>
       </q-card-section>
     </q-card>
@@ -81,7 +81,7 @@
             <div class="row items-center">
               <div class="col">
                 <div class="text-h6">{{ tabela.nome }}</div>
-                <div class="text-caption text-grey-7">
+                <div class="text-caption oslo-text-secondary">
                   {{ tabela.nome }}
                   <span v-if="tabela.cidade"> - {{ tabela.cidade.nome }}</span>
                 </div>
@@ -98,19 +98,19 @@
           <q-card-section>
             <div class="row q-col-gutter-sm text-caption">
               <div class="col-6">
-                <div class="text-grey-7">Ano</div>
+                <div class="oslo-text-secondary">Ano</div>
                 <div class="text-weight-medium">{{ tabela.ano }}</div>
               </div>
               <div class="col-6">
-                <div class="text-grey-7">Total de Atos</div>
+                <div class="oslo-text-secondary">Total de Atos</div>
                 <div class="text-weight-medium">{{ tabela.atos_count || 0 }}</div>
               </div>
               <div class="col-6">
-                <div class="text-grey-7">Vigência Início</div>
+                <div class="oslo-text-secondary">Vigência Início</div>
                 <div class="text-weight-medium">{{ formatDate(tabela.vigencia_inicio) }}</div>
               </div>
               <div class="col-6">
-                <div class="text-grey-7">Vigência Fim</div>
+                <div class="oslo-text-secondary">Vigência Fim</div>
                 <div class="text-weight-medium">
                   {{ tabela.vigencia_fim ? formatDate(tabela.vigencia_fim) : 'Indeterminado' }}
                 </div>
@@ -138,7 +138,7 @@
         <q-card flat bordered class="bg-grey-2">
           <q-card-section class="text-center q-py-xl">
             <q-icon name="inbox" size="64px" color="grey-6" class="q-mb-md" />
-            <div class="text-h6 text-grey-7">Nenhuma tabela encontrada</div>
+            <div class="text-h6 oslo-text-secondary">Nenhuma tabela encontrada</div>
             <div class="text-caption text-grey-6 q-mt-sm">
               Crie uma nova tabela de custas para começar
             </div>

@@ -20,6 +20,7 @@ const routes = [
         meta: {
           title: "Declaração sobre Operações Imobiliárias",
           publico: false,
+          permissao: ["DOI_LISTAR"],
         },
       },
 
@@ -30,6 +31,7 @@ const routes = [
         meta: {
           title: "Lotes DOI",
           publico: false,
+          permissao: ["DOI_LISTAR"],
         },
       },
 
@@ -38,37 +40,20 @@ const routes = [
         component: () => import("pages/caixa/Index.vue"),
         name: "caixa",
         meta: {
-          title: "Declaração sobre Operações Imobiliárias",
+          title: "Caixa",
           publico: false,
+          permissao: ["CAIXA_LISTAR"],
         },
       },
-
-      // {
-      //   path: "/administracao/tabela-custa",
-      //   component: () => import("src/pages/tabela-custa/Index.vue"),
-      //   name: "tabela-custa.index",
-      //   meta: {
-      //     title: "Tabela de Custas",
-      //     publico: false,
-      //   },
-      // },
-      // {
-      //   path: "/administracao/tabela-custa/atos/:tabelaCustaId",
-      //   component: () => import("src/pages/tabela-custa/Index.vue"),
-      //   name: "tabela-custa.editar",
-      //   meta: {
-      //     title: "Tabela de Custas",
-      //     publico: false,
-      //   },
-      // },
 
       {
         path: "caixa/movimento",
         component: () => import("pages/movimento-caixa/Index.vue"),
         name: "movimento-caixa",
         meta: {
-          title: "Declaração sobre Operações Imobiliárias",
+          title: "Movimento de Caixa",
           publico: false,
+          permissao: ["CAIXA_MOVIMENTO_LISTAR"],
         },
       },
 
@@ -77,8 +62,9 @@ const routes = [
         component: () => import("pages/transacao/Index.vue"),
         name: "transacao",
         meta: {
-          title: "Declaração sobre Operações Imobiliárias",
+          title: "Transações",
           publico: false,
+          permissao: ["TRANSACAO_LISTAR"],
         },
       },
 
@@ -87,96 +73,46 @@ const routes = [
         component: () => import("src/pages/configuracao/Index.vue"),
         name: "configuracao.index",
         meta: {
-          title: "Declaração sobre Operações Imobiliárias",
+          title: "Configurações",
           publico: false,
+          permissao: ["CONFIGURACAO_LISTAR"],
         },
         children: [
-          // Redirect padrão para cartório
           {
             path: "",
             redirect: { name: "configuracao.cartorio" },
             name: "configuracao.redicionado",
           },
 
-          // Configurações do Cartório
           {
             path: "cartorio",
             component: () => import("pages/configuracao/cartorio/Index.vue"),
             name: "configuracao.cartorio",
           },
 
-          // Portal de Estatísticas
           {
             path: "estatistica",
             component: () => import("pages/configuracao/estatistica/Index.vue"),
             name: "configuracao.estatistica",
           },
 
-          // DOI - Declaração sobre Operações Imobiliárias
           {
             path: "doi",
             component: () => import("pages/configuracao/doi/Index.vue"),
             name: "configuracao.doi",
           },
 
-          // Centrais
           {
             path: "centrais",
             component: () => import("pages/configuracao/centrais/Index.vue"),
             name: "configuracao.centrais",
           },
 
-          // Financeiro
-          // {
-          //   path: "financeiro",
-          //   component: () => import("pages/configuracao/financeiro/Index.vue"),
-          //   name: "configuracao.financeiro",
-          // },
-
-          // E-mail & WhatsApp
           {
             path: "email",
             component: () => import("pages/configuracao/email/Index.vue"),
             name: "configuracao.email",
           },
-
-          // Selo
-          // {
-          //   path: "selo",
-          //   component: () => import("pages/configuracao/selo/Index.vue"),
-          //   name: "configuracao.selo",
-          // },
-
-          // // Indisponibilidade
-          // {
-          //   path: "indisponibilidade",
-          //   component: () =>
-          //     import("pages/configuracao/indisponibilidade/Index.vue"),
-          //   name: "configuracao.indisponibilidade",
-          // },
-
-          // Atendimento
-          // {
-          //   path: "atendimento",
-          //   component: () => import("pages/configuracao/atendimento/Index.vue"),
-          //   name: "configuracao.atendimento",
-          // },
-
-          // ONR - Certidão
-          // {
-          //   path: "onr/certidao",
-          //   component: () =>
-          //     import("pages/configuracao/onr/certidao/Index.vue"),
-          //   name: "configuracao.onr.certidao.index",
-          // },
-
-          // ONR - E-Protocolo (dentro de centrais)
-          // {
-          //   path: "centrais/onr/eprotocolo",
-          //   component: () =>
-          //     import("pages/configuracao/centrais/onr/eprotocolo/Index.vue"),
-          //   name: "configuracao.centrais.onr.eprotocolo.index",
-          // },
         ],
       },
 
@@ -186,8 +122,9 @@ const routes = [
         component: () => import("src/pages/natureza/Index.vue"),
         name: "natureza.index",
         meta: {
-          title: "Declaração sobre Operações Imobiliárias",
+          title: "Naturezas",
           publico: false,
+          permissao: ["NATUREZA_LISTAR"],
         },
       },
 
@@ -198,6 +135,7 @@ const routes = [
         meta: {
           title: "Natureza - Novo",
           publico: false,
+          permissao: ["NATUREZA_CRIAR"],
         },
       },
 
@@ -206,7 +144,7 @@ const routes = [
         component: () => import("src/pages/matricula/Index.vue"),
         name: "matricula.index",
         meta: {
-          title: "Declaração sobre Operações Imobiliárias",
+          title: "Matrículas",
           publico: false,
         },
       },
@@ -216,8 +154,9 @@ const routes = [
         path: "/protocolo/:id",
         name: "protocolo.index",
         meta: {
-          title: "Declaração sobre Operações Imobiliárias",
+          title: "Protocolo",
           requiresAuth: true,
+          permissao: ["PROTOCOLO_VISUALIZAR"],
         },
         props: true,
         component: () => import("pages/protocolo/Index.vue"),
@@ -238,22 +177,6 @@ const routes = [
             meta: { title: "Protocolo - Geral" },
             component: () => import("pages/protocolo/geral/Index.vue"),
           },
-
-          // {
-          //   path: "/protocolo/:id/atos",
-          //   name: "protocolo.atos",
-          //   props: true,
-          //   meta: { title: "Protocolo - Atos" },
-          //   component: () => import("pages/protocolo/atos/Index.vue"),
-          // },
-
-          // {
-          //   path: "/protocolo/:id/financeiro",
-          //   name: "protocolo.financeiro",
-          //   props: true,
-          //   meta: { title: "Protocolo - Financeiro" },
-          //   component: () => import("pages/protocolo/financeiro/Index.vue"),
-          // },
         ],
       },
 
@@ -276,6 +199,7 @@ const routes = [
         meta: {
           title: "Tabelas de Custas",
           publico: false,
+          permissao: ["TABELA_CUSTA_LISTAR"],
         },
       },
       {
@@ -286,6 +210,54 @@ const routes = [
         props: true,
         meta: {
           title: "Atos da Tabela de Custas",
+          publico: false,
+          permissao: ["TABELA_CUSTA_LISTAR"],
+        },
+      },
+
+      // GRUPOS DE PERMISSÃO
+      {
+        path: "administracao/grupos",
+        name: "administracao.grupos.index",
+        component: () => import("src/pages/administracao/grupos/Index.vue"),
+        meta: {
+          title: "Grupos de Permissão",
+          publico: false,
+          permissao: ["GRUPO_LISTAR"],
+        },
+      },
+
+      // PERMISSÕES DO SISTEMA
+      {
+        path: "administracao/permissoes",
+        name: "administracao.permissoes.index",
+        component: () => import("src/pages/administracao/permissoes/Index.vue"),
+        meta: {
+          title: "Permissões",
+          publico: false,
+          permissao: ["PERMISSAO_LISTAR"],
+        },
+      },
+
+      // PERMISSÕES DE USUÁRIOS
+      {
+        path: "administracao/usuarios-permissoes",
+        name: "administracao.usuarios-permissoes.index",
+        component: () => import("src/pages/administracao/usuarios-permissoes/Index.vue"),
+        meta: {
+          title: "Permissões de Usuários",
+          publico: false,
+          permissao: ["USUARIO_PERMISSAO_LISTAR"],
+        },
+      },
+
+      // SEM PERMISSÃO
+      {
+        path: "sem-permissao",
+        name: "sem-permissao",
+        component: () => import("pages/SemPermissaoPage.vue"),
+        meta: {
+          title: "Acesso Negado",
           publico: false,
         },
       },

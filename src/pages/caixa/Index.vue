@@ -2,8 +2,8 @@
   <q-page padding>
     <div class="row items-center q-mb-md">
       <div class="col">
-        <div class="text-h4">Caixas</div>
-        <div class="text-subtitle2 text-grey-7">Cadastro de caixas disponíveis</div>
+        <div class="oslo-page-title">Caixas</div>
+        <div class="oslo-page-subtitle">Cadastro de caixas disponíveis</div>
       </div>
       <div class="col-auto">
         <q-btn color="primary" icon="add" label="Novo Caixa" @click="openDialog()" />
@@ -18,7 +18,7 @@
             <div class="row items-center q-mb-sm">
               <div class="col">
                 <div class="text-h6">{{ caixa.nome }}</div>
-                <div class="text-caption text-grey-7">{{ caixa.descricao }}</div>
+                <div class="text-caption" style="color: var(--text-secondary)">{{ caixa.descricao }}</div>
               </div>
               <div class="col-auto">
                 <q-chip :color="caixa.is_ativo ? 'positive' : 'grey'" text-color="white" size="sm">
@@ -31,11 +31,11 @@
 
             <div class="q-gutter-sm">
               <div class="row justify-between">
-                <span class="text-grey-7">Saldo Atual:</span>
+                <span style="color: var(--text-secondary)">Saldo Atual:</span>
                 <span class="text-h6 text-positive">{{ formatCurrency(caixa.saldo_atual) }}</span>
               </div>
               <div class="row justify-between text-caption">
-                <span class="text-grey-7">Requer Abertura:</span>
+                <span style="color: var(--text-secondary)">Requer Abertura:</span>
                 <span>{{ caixa.requer_abertura ? 'Sim' : 'Não' }}</span>
               </div>
             </div>

@@ -128,95 +128,80 @@
 </script>
 
 <style lang="scss" scoped>
-// Header da página
 .page-header {
   display: flex;
   align-items: center;
   padding: 16px;
-  border-radius: 2px;
-  // background: linear-gradient(90deg, #f8f9fa 0%, #ffffff 100%);
 
   .page-header-icon {
-    --fa-primary-color: #374151;
-    --fa-secondary-color: #6b7280;
+    --fa-primary-color: var(--text-color);
+    --fa-secondary-color: var(--text-secondary);
     --fa-secondary-opacity: 0.6;
   }
 
   .page-title {
-    font-size: 1rem;
+    font-size: var(--font-size-base);
     font-weight: 600;
-    color: #374151;
+    color: var(--text-color);
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
 }
 
-// Menu de configurações
 .config-menu {
   .config-item {
-    transition: all 0.3s ease;
+    transition: all var(--transition);
     border-radius: 0;
     padding: 12px 16px;
 
     .config-icon {
-      --fa-primary-color: #6b7280;
-      --fa-secondary-color: #9ca3af;
+      --fa-primary-color: var(--text-secondary);
+      --fa-secondary-color: var(--text-muted);
       --fa-secondary-opacity: 0.6;
-      transition: all 0.3s ease;
+      transition: all var(--transition);
     }
 
     &:hover {
-      background-color: #f8f9fa;
+      background-color: var(--bg-subtle);
 
       .config-icon {
-        --fa-primary-color: #374151;
-        --fa-secondary-color: #6b7280;
+        --fa-primary-color: var(--text-color);
+        --fa-secondary-color: var(--text-secondary);
       }
     }
 
     &.config-item-active {
-      background-color: #dbeafe;
+      background-color: rgba(var(--primary-rgb), 0.08);
 
       .q-item-section {
-        color: #1976d2;
+        color: var(--primary);
         font-weight: 600;
       }
 
       .config-icon {
-        --fa-primary-color: #1976d2;
-        --fa-secondary-color: #3b82f6;
+        --fa-primary-color: var(--primary);
+        --fa-secondary-color: var(--accent);
         --fa-secondary-opacity: 0.7;
       }
     }
   }
 
   .q-separator {
-    background-color: #e5e7eb;
+    background-color: var(--border-color);
   }
 }
 
-// Responsividade
 @media (max-width: 768px) {
   .page-header {
     padding: 12px 16px;
 
     .page-title {
-      font-size: 0.9rem;
+      font-size: var(--font-size-sm);
     }
   }
 
   .config-item {
     padding: 10px 12px !important;
   }
-}
-
-// Estilo adicional para melhor visual
-.q-card {
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  border: 1px solid #e5e7eb;
-}
-
-.q-page {
-  background-color: #f9fafb;
 }
 </style>

@@ -277,89 +277,34 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
-// Header compacto
 .compact-header {
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .protocolo-titulo {
   font-weight: 600;
   font-size: 1.1rem;
-  color: #37474f;
+  color: var(--text-color);
   text-overflow: ellipsis;
   text-transform: uppercase;
 }
 
-// Container de tabs - EXATAMENTE igual ao modal
-.tabs-container {
-  padding: 0 1rem;
-  background: #fff;
-  // border-top: 1px solid #e0e0e0;
-
-  :deep(.q-tabs) {
-    background: transparent;
-
-    .q-tab {
-      padding: 0px 16px;
-      border-radius: 0;
-      text-transform: none;
-      color: #37474f;
-      // font-weight: 400 !important;
-      letter-spacing: 0.5px;
-
-      &.q-tab--active {
-        color: #495057;
-        font-weight: 600 !important;
-        font-size: 12px !important;
-      }
-
-      &:hover {
-        color: #495057;
-        background-color: rgba(0, 0, 0, 0.04);
-
-      }
-    }
-
-    .q-tab__indicator {
-      height: 1px !important;
-      background-color: #f5f5f5 !important;
-    }
-
-    .q-tab__label {
-      font-weight: 400 !important;
-      text-transform: uppercase;
-      font-size: 1.75rem !important;
-      letter-spacing: 0.5px;
-      color: #37474f;
-    }
-
-    // Remove o ripple effect
-    .q-ripple {
-      display: none;
-    }
-  }
-}
-
-// Styling para tabs com badges
 .tab-with-badge {
   display: flex;
   align-items: center;
   text-transform: uppercase;
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   font-weight: 600;
   letter-spacing: 0.5px;
 }
 
-// Conteúdo principal
 .protocolo-content-compact {
-  min-height: calc(100vh - 160px); // Ajustado para o header maior
+  min-height: calc(100vh - 160px);
   padding-bottom: 60px;
 }
 
-// Footer compacto
 .protocolo-footer {
-  border-top: 1px solid #f0f0f0;
-  // min-height: 60px;
+  border-top: 1px solid var(--border-color);
   box-shadow: 0 1px 3px 0 #0000001a, 0 1px 2px -1px #0000001a !important;
 }
 
@@ -371,25 +316,9 @@ onMounted(async () => {
   }
 }
 
-// Responsividade
 @media (max-width: 768px) {
   .compact-header {
-    min-height: 88px; // Reduzido no mobile
-  }
-
-  .tabs-container {
-    padding: 0 0.5rem;
-
-    :deep(.q-tabs) {
-      .q-tab {
-        padding: 0px 12px;
-        min-height: 36px !important;
-
-        .tab-with-badge {
-          font-size: 0.7rem;
-        }
-      }
-    }
+    min-height: 88px;
   }
 
   .protocolo-content-compact {
@@ -408,22 +337,6 @@ onMounted(async () => {
 }
 
 @media (max-width: 480px) {
-  .tabs-container {
-    :deep(.q-tabs) {
-      .q-tab {
-        padding: 0px 8px;
-
-        .tab-with-badge {
-          font-size: 0.65rem;
-
-          span {
-            display: none; // Esconde texto no mobile muito pequeno
-          }
-        }
-      }
-    }
-  }
-
   .financial-summary-compact {
     .row {
       flex-direction: column;

@@ -501,18 +501,17 @@ onMounted(async () => {
 </script>
 <style scoped lang="scss">
 .text-positive {
-  color: #21BA45;
+  color: var(--success);
 }
 
 .text-negative {
-  color: #C10015;
+  color: var(--danger);
 }
 
 .grupo-tipo-protocolo {
   :deep(.q-btn) {
-    // color: #37474f;
-    border-radius: 2px !important;
-    border: 1px solid #e0e0e0 !important;
+    border-radius: var(--radius-sm) !important;
+    border: 1px solid var(--border-color) !important;
 
     .q-btn__content {
       padding: 0;

@@ -85,27 +85,19 @@ const navigateTo = (module) => {
 </script>
 
 <style lang="scss" scoped>
-.financial-dashboard {
-  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-  min-height: 100vh;
-  padding: 0;
-}
-
-// Header
 .dashboard-header {
   padding: 20px 24px;
-  background: rgba(0, 0, 0, 0.3);
+  background: var(--bg-subtle);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .dashboard-title {
-  color: #ffffff;
-  font-size: 1.5rem;
+  color: var(--text-color);
+  font-size: 1.25rem;
   font-weight: 600;
   margin: 0;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-// Cards Container
 .financial-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -115,15 +107,14 @@ const navigateTo = (module) => {
   margin: 0 auto;
 }
 
-// Card Base
 .financial-card {
   background: #ffffff;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   padding: 24px 16px;
   text-align: center;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all var(--transition);
+  border: 1px solid var(--border-color);
   position: relative;
   overflow: hidden;
   min-height: 120px;
@@ -144,13 +135,8 @@ const navigateTo = (module) => {
   }
 
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-
-    &::before {
-      height: 100%;
-      opacity: 0.1;
-    }
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
 
     .card-icon {
       transform: scale(1.1);
@@ -158,90 +144,60 @@ const navigateTo = (module) => {
   }
 }
 
-// Ícones
 .card-icon {
   color: #ffffff;
   transition: transform 0.3s ease;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-// Labels
 .card-label {
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   font-weight: 700;
   color: #ffffff;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   line-height: 1.2;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-// Cores específicas para cada card
 .card-despesa {
-  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-
-  &::before {
-    background: #e74c3c;
-  }
+  background: var(--negative);
+  &::before { background: var(--negative); }
 }
 
 .card-receita {
-  background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
-
-  &::before {
-    background: #27ae60;
-  }
+  background: var(--positive);
+  &::before { background: var(--positive); }
 }
 
 .card-transferencia {
-  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-
-  &::before {
-    background: #3498db;
-  }
+  background: var(--info);
+  &::before { background: var(--info); }
 }
 
 .card-cheques {
-  background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
-
-  &::before {
-    background: #f39c12;
-  }
+  background: var(--warning);
+  &::before { background: var(--warning); }
 }
 
 .card-extrato {
-  background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
-
-  &::before {
-    background: #e67e22;
-  }
+  background: #e67e22;
+  &::before { background: #e67e22; }
 }
 
 .card-notas {
-  background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
-
-  &::before {
-    background: #9b59b6;
-  }
+  background: #8e44ad;
+  &::before { background: #8e44ad; }
 }
 
 .card-caixas {
-  background: linear-gradient(135deg, #795548 0%, #5d4037 100%);
-
-  &::before {
-    background: #795548;
-  }
+  background: var(--secondary);
+  &::before { background: var(--secondary); }
 }
 
 .card-valores {
-  background: linear-gradient(135deg, #673ab7 0%, #512da8 100%);
-
-  &::before {
-    background: #673ab7;
-  }
+  background: var(--accent);
+  &::before { background: var(--accent); }
 }
 
-// Responsividade
 @media (max-width: 768px) {
   .financial-cards {
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -255,22 +211,12 @@ const navigateTo = (module) => {
     gap: 8px;
   }
 
-  .card-icon {
-    .q-icon {
-      font-size: 24px !important;
-    }
-  }
-
   .card-label {
     font-size: 0.7rem;
   }
 
   .dashboard-header {
     padding: 16px 20px;
-  }
-
-  .dashboard-title {
-    font-size: 1.25rem;
   }
 }
 
@@ -287,38 +233,8 @@ const navigateTo = (module) => {
     gap: 6px;
   }
 
-  .card-icon {
-    .q-icon {
-      font-size: 20px !important;
-    }
-  }
-
   .card-label {
     font-size: 0.65rem;
-  }
-}
-
-// Animação de entrada
-.financial-card {
-  animation: slideInUp 0.6s ease-out;
-  animation-fill-mode: both;
-}
-
-@for $i from 1 through 8 {
-  .financial-card:nth-child(#{$i}) {
-    animation-delay: #{$i * 0.1}s;
-  }
-}
-
-@keyframes slideInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
   }
 }
 </style>

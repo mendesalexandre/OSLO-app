@@ -2,8 +2,8 @@
   <q-page padding>
     <div class="row items-center q-mb-md">
       <div class="col">
-        <div class="text-h4">Movimentos de Caixa</div>
-        <div class="text-subtitle2 text-grey-7">Turnos e expedientes</div>
+        <div class="oslo-page-title">Movimentos de Caixa</div>
+        <div class="oslo-page-subtitle">Turnos e expedientes</div>
       </div>
       <div class="col-auto">
         <q-btn color="primary" icon="add" label="Abrir Caixa" @click="openDialogAbrir()" />
@@ -18,7 +18,7 @@
             <div class="row items-center q-mb-sm">
               <div class="col">
                 <div class="text-h6">{{ movimento.caixa.nome }}</div>
-                <div class="text-caption text-grey-7">
+                <div class="text-caption" style="color: var(--text-secondary)">
                   Aberto em {{ formatDateTime(movimento.data_abertura) }}
                 </div>
               </div>
@@ -33,15 +33,15 @@
 
             <div class="q-gutter-sm">
               <div class="row justify-between">
-                <span class="text-grey-7">Saldo Inicial:</span>
+                <span style="color: var(--text-secondary)">Saldo Inicial:</span>
                 <span>{{ formatCurrency(movimento.saldo_inicial_informado) }}</span>
               </div>
               <div class="row justify-between">
-                <span class="text-grey-7">Entradas:</span>
+                <span style="color: var(--text-secondary)">Entradas:</span>
                 <span class="text-positive">{{ formatCurrency(movimento.total_entradas) }}</span>
               </div>
               <div class="row justify-between">
-                <span class="text-grey-7">Saídas:</span>
+                <span style="color: var(--text-secondary)">Saídas:</span>
                 <span class="text-negative">{{ formatCurrency(movimento.total_saidas) }}</span>
               </div>
               <q-separator />
@@ -55,7 +55,7 @@
 
             <q-separator class="q-my-md" />
 
-            <div class="text-caption text-grey-7">
+            <div class="text-caption" style="color: var(--text-secondary)">
               <q-icon name="person" size="xs" />
               {{ movimento.usuario_abertura.name }}
             </div>

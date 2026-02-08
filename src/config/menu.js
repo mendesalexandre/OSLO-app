@@ -1,0 +1,68 @@
+export const menuItens = [
+  {
+    icone: "fa-duotone fa-house",
+    tooltip: "Início",
+    label: "Início",
+    rota: { name: "tarefas" },
+  },
+  {
+    icone: "fa-duotone fa-solid fa-square-plus",
+    tooltip: "Novo Protocolo",
+    label: "Novo Protocolo",
+    acao: "criarProtocolo",
+    permissao: ["PROTOCOLO_CRIAR"],
+  },
+  {
+    icone: "fa-regular fa-bars",
+    tooltip: "Menu de Navegação",
+    label: "Navegação",
+    acao: "menuNavegacao",
+  },
+  {
+    icone: "fa-regular fa-magnifying-glass",
+    tooltip: "Buscar",
+    label: "Buscar",
+    rota: { name: "matricula.index" },
+  },
+  { separador: true, label: "Módulos" },
+  {
+    icone: "fa-duotone fa-file-signature",
+    tooltip: "DOI",
+    label: "DOI",
+    rota: { name: "doi.index" },
+    modulo: "DOI",
+  },
+  {
+    icone: "fa-duotone fa-folder",
+    tooltip: "Contratos",
+    label: "Contratos",
+    rota: { name: "tarefas" },
+    permissao: ["CONTRATO_LISTAR"],
+  },
+  {
+    icone: "fa-duotone fa-calendar-days",
+    tooltip: "Agenda",
+    label: "Agenda",
+    rota: { name: "tarefas" },
+  },
+  {
+    icone: "fa-duotone fa-envelope",
+    tooltip: "Mensagens",
+    label: "Mensagens",
+    rota: { name: "tarefas" },
+  },
+  { separador: true, label: "Financeiro" },
+  {
+    icone: "fa-duotone fa-cash-register",
+    tooltip: "Caixa",
+    label: "Caixa",
+    rota: { name: "caixa" },
+    modulo: "Caixa",
+  },
+  {
+    icone: "fa-duotone fa-chart-pie",
+    tooltip: "Relatórios",
+    label: "Relatórios",
+    rota: { name: "tarefas" },
+  },
+];

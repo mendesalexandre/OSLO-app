@@ -85,55 +85,36 @@ const confirmarExclusao = (anotacao) => {
   display: flex;
   align-items: center;
   padding: 16px;
-  background: #fafafa;
-  border-bottom: 1px solid #f0f0f0;
+  background: var(--bg-subtle);
+  border-bottom: 1px solid var(--border-color);
 
   .ds-header-title {
     font-weight: 600;
-    color: #424242;
+    color: var(--text-color);
   }
 }
 
 .ds-anotacoes-melhoradas {
   .ds-nova-anotacao {
-    background: #f8f9fa;
+    background: var(--bg-subtle);
     padding: 12px;
-    border-radius: 2px;
-    border: 1px solid #e9ecef;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
   }
 
   .ds-annotations {
-    // Container das anotações com altura fixa
     max-height: 400px;
 
     .ds-annotations-container {
-      // Área com scroll interno limitado
       max-height: 320px;
       overflow-y: auto;
-
-      &::-webkit-scrollbar {
-        width: 4px;
-      }
-
-      &::-webkit-scrollbar-track {
-        background: #f5f5f5;
-      }
-
-      &::-webkit-scrollbar-thumb {
-        background: #ccc;
-        border-radius: 2px;
-
-        &:hover {
-          background: #999;
-        }
-      }
     }
   }
 
   .ds-annotation-item {
     padding: 4px;
-    border-bottom: 1px solid #f5f5f5;
-    transition: all 0.2s ease;
+    border-bottom: 1px solid var(--border-color);
+    transition: all var(--transition);
 
     &:hover {
       .anotacao-actions {
@@ -163,28 +144,25 @@ const confirmarExclusao = (anotacao) => {
   transition: transform 0.2s ease;
 }
 
-// Tabela com background branco
 .ds-table-branca {
   .ds-table-label {
     width: 30%;
     font-weight: 500;
-    color: #666;
+    color: var(--text-secondary);
     padding: 8px 16px;
-    background: #ffffff !important; // Background branco forçado
+    background: #ffffff !important;
   }
 
   .ds-table-value {
     padding: 4px 16px;
-    color: #424242;
-    background: #ffffff !important; // Background branco forçado
+    color: var(--text-color);
+    background: #ffffff !important;
   }
 
-  // Remove hover effect da tabela
   tbody tr:hover {
     background: transparent !important;
   }
 
-  // Força background branco em toda a tabela
   tbody tr {
     background: #ffffff !important;
   }
@@ -194,17 +172,16 @@ const confirmarExclusao = (anotacao) => {
   .ds-table-label {
     width: 30%;
     font-weight: 500;
-    color: #666;
+    color: var(--text-secondary);
     padding: 8px 16px;
-    background: #fafafa;
+    background: var(--bg-subtle);
   }
 
   .ds-table-value {
     padding: 8px 16px;
-    color: #424242;
+    color: var(--text-color);
   }
 
-  // Remove hover effect da tabela
   tbody tr:hover {
     background: transparent !important;
   }

@@ -6,7 +6,7 @@
         <div class="row items-center full-width q-gutter-sm">
           <!-- Info do protocolo compacta -->
           <div class="protocol-badge-compact">
-            <q-chip :label="titulo" color="blue-grey-2" text-color="blue-grey-8" size="sm"
+            <q-chip :label="titulo" color="grey-3" text-color="grey-9" size="sm"
               class="rounded-borders text-weight-medium" />
           </div>
 
@@ -180,10 +180,9 @@ const titulo = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-// CSS mantido igual ao original
 .compact-header {
   min-height: 56px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .protocol-badge-compact {
@@ -196,22 +195,22 @@ const titulo = computed(() => {
   .compact-tab {
     min-height: 40px;
     padding: 0;
-    transition: all 0.2s ease;
+    transition: all var(--transition);
 
     &:hover {
-      background: rgba(var(--q-primary-rgb), 0.05);
+      background: rgba(var(--primary-rgb), 0.05);
     }
 
     &.q-tab--active {
-      background: rgba(var(--q-primary-rgb), 0.1);
+      background: rgba(var(--primary-rgb), 0.1);
 
       .tab-content-compact {
         .q-icon {
-          color: var(--q-primary);
+          color: var(--primary);
         }
 
         .tab-label-compact {
-          color: var(--q-primary);
+          color: var(--primary);
           font-weight: 600;
         }
       }
@@ -225,14 +224,14 @@ const titulo = computed(() => {
       position: relative;
 
       .q-icon {
-        color: #666;
+        color: var(--text-secondary);
         transition: color 0.2s ease;
       }
 
       .tab-label-compact {
         font-size: 0.8rem;
         font-weight: 500;
-        color: #555;
+        color: var(--text-secondary);
         transition: all 0.2s ease;
       }
 
@@ -249,7 +248,7 @@ const titulo = computed(() => {
 }
 
 .compact-footer {
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid var(--border-color);
   min-height: 60px;
 }
 

@@ -31,15 +31,14 @@ defineProps({
 .v-label {
   display: inline-flex;
   align-items: center;
-  /* font-weight: 500; */
-  /* font-size: 14px; */
+  gap: 2px;
+  margin-bottom: 4px;
 }
 
 .v-label-titulo {
-  /* font-size: 14px; */
-  /* font-weight: 500; */
-  margin-bottom: 0.2rem;
-  font-weight: bold;
-  line-height: 1.2;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+  line-height: 1.3;
 }
 </style>

@@ -644,30 +644,27 @@ watch(model, (newVal) => {
 .corpo-secao {
   align-items: center;
   padding: 12px 16px;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  // border-radius: 2px;
+  background: var(--bg-subtle);
 
   .titulo-secao {
-    font-size: 0.875rem;
+    font-size: var(--font-size-sm);
     font-weight: 500;
-    color: #37474f;
+    color: var(--text-color);
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
 
   .q-icon {
-    color: #607d8b;
+    color: var(--text-secondary);
     font-size: 1rem;
   }
 }
 
 .grupo-tipo-protocolo {
   :deep(.q-btn) {
-    color: #37474f;
-    border-radius: 2px !important;
-    border: 1px solid #e0e0e0 !important;
-    // padding: 8px 16px;
-    /* ajuste conforme necessário */
+    color: var(--text-color);
+    border-radius: var(--radius-sm) !important;
+    border: 1px solid var(--border-color) !important;
 
     .q-btn__content {
       padding: 0;
@@ -679,50 +676,33 @@ watch(model, (newVal) => {
     }
 
     &.q-btn--outline {
-      border: 1px solid #e0e0e0;
+      border: 1px solid var(--border-color);
       background-color: white;
     }
 
-    /* Botão selecionado - quando tem bg-primary */
     &.bg-primary {
       border-color: $primary !important;
     }
 
-    /* Alternativa usando aria-pressed */
     &[aria-pressed="true"] {
       border-color: $primary !important;
     }
 
-    /* Ajusta o q-focus-helper para cobrir 100% */
     .q-focus-helper {
       background-color: currentColor;
       opacity: 0;
       border-radius: inherit;
     }
 
-    /* Hover */
     &:hover .q-focus-helper {
       opacity: 0.1;
     }
-
-    /* Ou force o hover diretamente no botão */
-    // &:hover {
-    //   // background-color: rgba(0, 0, 0, 0.04) !important;
-    // }
-
-    /* Hover no botão selecionado */
-    // &.bg-primary:hover,
-    // &[aria-pressed="true"]:hover {
-    //   // background-color: #1565c0 !important;
-    //   /* Azul mais escuro */
-    // }
   }
 }
 
 :deep(.q-btn-group) {
   column-gap: 4px !important;
 }
-
 
 :deep(.q-field__focusable-action) {
   font-size: 20px !important;

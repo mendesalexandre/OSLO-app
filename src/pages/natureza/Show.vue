@@ -1,50 +1,42 @@
 <template>
   <modal v-model="model" tamanho="sm" :titulo="titulo">
-    <q-card bordered>
+    <q-card flat bordered>
       <q-card-section>
-        <div class="row q-col-gutter-sm">
+        <div class="row q-col-gutter-md">
           <div class="col-md-10 col-sm-12">
-            <label for="">Nome</label>
-            <q-input v-model="natureza.nome" />
+            <label class="oslo-label">Nome</label>
+            <q-input v-model="natureza.nome" outlined dense />
           </div>
           <div class="col-md-2 col-sm-12 col-xs-12">
-            <label for="" class="text-caption text-slate-500">Ativo?</label>
-            <v-input-check
-              class="text-caption text-slate-500"
-              v-model="natureza.is_ativo"
-            />
+            <label class="oslo-label">Ativo?</label>
+            <v-input-check v-model="natureza.is_ativo" />
           </div>
         </div>
       </q-card-section>
     </q-card>
 
     <template #rodape>
-      <q-card-section>
-        <div class="flex justify-end q-gutter-sm">
-          <q-btn
-            label="Cancelar"
-            color="negative"
-            icon="close"
-            class="shadcn-btn"
-            @click="model = false"
-          >
-            <q-tooltip> Cancelar </q-tooltip>
-          </q-btn>
-
-          <q-btn
-            label="Salvar"
-            color="primary"
-            icon="save"
-            class="shadcn-btn"
-            @click="salvar"
-          >
-            <q-tooltip> Salvar Loteamento </q-tooltip>
-          </q-btn>
-        </div>
-      </q-card-section>
+      <div class="flex justify-end q-gutter-sm">
+        <q-btn
+          label="Cancelar"
+          flat
+          no-caps
+          color="grey-7"
+          @click="model = false"
+        />
+        <q-btn
+          label="Salvar"
+          color="primary"
+          unelevated
+          no-caps
+          icon="save"
+          @click="salvar"
+        />
+      </div>
     </template>
   </modal>
 </template>
+
 <script setup>
 import { storeToRefs } from "pinia";
 import { useNaturezaStore } from "src/stores/natureza";
@@ -60,6 +52,16 @@ const titulo = computed(() =>
 );
 
 const salvar = async () => {
-  const response = await loteamentoStore.create(loteamento.value);
+  // TODO: implement save
 };
 </script>
+
+<style lang="scss" scoped>
+.oslo-label {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+  display: block;
+  margin-bottom: 4px;
+}
+</style>

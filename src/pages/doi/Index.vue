@@ -404,82 +404,42 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
-// Headers das seções
 .section-header {
   display: flex;
   align-items: center;
   padding: 12px 16px;
 
   .section-title {
-    font-size: 0.875rem;
+    font-size: var(--font-size-base);
     font-weight: 600;
-    color: #37474f;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    color: var(--text-color);
+    letter-spacing: 0;
   }
 
   .q-icon {
-    color: #607d8b;
+    color: var(--text-muted);
     font-size: 1.1rem;
   }
 }
 
-// Estilos customizados para tabelas
-.custom-table {
-  border: none;
-
-  :deep(.q-table__top) {
-    border-bottom: 1px solid #e0e0e0;
-  }
-
-  :deep(tbody tr) {
-    border-bottom: 1px solid #e0e0e0;
-
-    &:last-child {
-      border-bottom: none;
-    }
-
-    &:hover {
-      background-color: #f8f9fa;
-    }
-  }
-
-  :deep(.q-table__bottom) {
-    // background-color: #f8f9fa;
-    border-top: 1px solid #e0e0e0;
-    color: #37474f;
-  }
-}
-
-// Headers das tabelas
 .table-header {
-  color: #37474f;
+  color: var(--text-secondary);
   font-weight: 600;
   text-transform: uppercase;
-  font-size: 0.75rem;
-  letter-spacing: 0.5px;
-  border-bottom: 1px solid #e0e0e0;
+  font-size: var(--font-size-xs);
+  letter-spacing: 0.03em;
+  border-bottom: 1px solid var(--border-color);
+  background: #F8F9FA;
 }
 
-// Botões customizados
 .btn-custom {
-  transition: all 0.2s ease;
-
-  &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
+  transition: all var(--transition);
 }
 
 .action-btn {
-  transition: all 0.2s ease;
-
-  &:hover {
-    transform: scale(1.1);
-  }
+  transition: all var(--transition);
 }
 
-// Responsividade
 @media (max-width: 768px) {
   .section-header {
     padding: 8px 12px;
@@ -488,7 +448,7 @@ onMounted(async () => {
     gap: 12px;
 
     .section-title {
-      font-size: 0.8rem;
+      font-size: var(--font-size-sm);
     }
 
     .row {
@@ -497,25 +457,9 @@ onMounted(async () => {
     }
   }
 
-  .custom-table {
-
-    :deep(.q-table__top),
-    :deep(.q-table__bottom) {
-      padding: 8px 12px;
-    }
-  }
-
   .table-header {
     font-size: 0.7rem;
     padding: 8px 12px;
-  }
-
-  .btn-custom {
-    .q-btn__content {
-      .q-icon+span {
-        display: none;
-      }
-    }
   }
 }
 </style>

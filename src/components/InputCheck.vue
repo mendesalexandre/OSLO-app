@@ -3,8 +3,8 @@
     <v-label v-if="label" :label="label" :obrigatorio="required" />
 
     <div class="bootstrap-radio-group">
-      <q-radio v-model="localValue" :val="true" :label="yesLabel" :disable="disable" color="blue-8" />
-      <q-radio v-model="localValue" :val="false" :label="noLabel" :disable="disable" color="red-8" />
+      <q-radio v-model="localValue" :val="true" :label="yesLabel" :disable="disable" color="positive" />
+      <q-radio v-model="localValue" :val="false" :label="noLabel" :disable="disable" color="negative" />
     </div>
 
     <div v-if="error" class="text-negative text-caption q-mt-xs">{{ error }}</div>
@@ -109,7 +109,7 @@ watch(localValue, (newValue) => {
     // Label - alinhamento vertical corrigido
     .q-radio__label {
       font-size: 0.875rem;
-      color: #37474f;
+      color: var(--text-color);
       padding-left: 4px !important;
       line-height: 1.43;
       margin-top: 0 !important;
@@ -126,8 +126,8 @@ watch(localValue, (newValue) => {
       opacity: 0.6;
 
       .q-radio__bg path:first-child {
-        fill: #e9ecef;
-        stroke: #dee2e6;
+        fill: var(--bg-subtle);
+        stroke: var(--border-color);
       }
     }
   }

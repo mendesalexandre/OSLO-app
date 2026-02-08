@@ -28,8 +28,27 @@ export default boot(({ router }) => {
       try {
         // Só busca do banco se ainda não carregou o usuário
         if (!authStore.isAuthenticated || !authStore.user) {
+          // Carregar do localStorage enquanto espera a API
+          authStore.loadFromStorage();
           await authStore.getMe();
         }
+
+        // Verificar permissão da rota
+        if (to.meta.permissao) {
+          const permissoes = Array.isArray(to.meta.permissao)
+            ? to.meta.permissao
+            : [to.meta.permissao];
+
+          const temAcesso =
+            authStore.isAdmin ||
+            permissoes.some((p) => authStore.permissoes.includes(p));
+
+          if (!temAcesso) {
+            next({ name: "sem-permissao" });
+            return;
+          }
+        }
+
         next();
       } catch (error) {
         console.error("Erro ao buscar usuario:", error);

@@ -361,66 +361,54 @@ const navigateTo = (route, options = {}) => {
   font-size: 1rem;
 }
 
-// Headers das seções
 .section-header {
   display: flex;
   align-items: center;
   font-weight: 600;
-  color: #334155; // slate-700
-  font-size: 0.875rem;
+  color: var(--text-color);
+  font-size: var(--font-size-xs);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.04em;
   padding: 16px 16px 8px 16px;
 }
 
 .menu-titulo {
-  // font-size: 1rem;
   font-weight: 500;
-  color: #2d3436; // slate-700
-  // text-transform: uppercase;
-  letter-spacing: 0.5px;
+  color: var(--text-color);
+  letter-spacing: 0;
 }
 
-// Items do menu
 .menu-item {
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   margin: 1px 12px;
-  transition: all 0.2s ease;
+  transition: all var(--transition);
   min-height: 40px;
 
   &:hover {
-    background-color: #f8fafc; // slate-50
-    transform: translateX(4px);
+    background-color: var(--bg-subtle);
+    transform: translateX(2px);
   }
 
   .q-item__section--avatar {
     min-width: 40px;
 
     .q-icon {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
+      color: var(--text-secondary);
     }
   }
 
   .q-item__section--main {
-    font-size: 0.875rem;
-    color: #334155; // slate-700
+    font-size: var(--font-size-sm);
+    color: var(--text-color);
   }
 }
 
-// Separadores
 .q-separator {
   margin: 8px 16px;
-  background-color: #e2e8f0; // slate-200
+  background-color: var(--border-color);
 }
 
-// Scroll area
-.q-scroll-area {
-  .q-scrollarea__content {
-    padding-bottom: 24px;
-  }
-}
-
-// Layout responsivo
 @media (max-width: 480px) {
   :deep(.q-layout-container) {
     .q-layout {
