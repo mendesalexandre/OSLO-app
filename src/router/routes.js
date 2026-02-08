@@ -180,6 +180,17 @@ const routes = [
         ],
       },
 
+      // DEMO PROTOCOLO
+      {
+        path: "demo-protocolo",
+        component: () => import("pages/protocolo/Demo.vue"),
+        name: "demo.protocolo",
+        meta: {
+          title: "Demo - Protocolo",
+          publico: false,
+        },
+      },
+
       // ADMINISTRAÇÃO
       {
         path: "administracao",
