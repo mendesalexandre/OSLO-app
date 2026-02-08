@@ -93,38 +93,51 @@
                 <q-card-section>
                   <div class="text-h6 q-mb-md">Informações do Protocolo</div>
 
-                  <div class="q-gutter-md">
-                    <div class="row">
-                      <div class="col-4 text-weight-medium text-grey-7">Número:</div>
-                      <div class="col-8">#2026/000123</div>
+                  <!-- Grid de Cards com Ícones -->
+                  <div class="info-grid">
+                    <!-- Número -->
+                    <div class="info-card">
+                      <q-icon name="fa-duotone fa-hashtag" size="20px" class="info-icon" />
+                      <div class="info-label">Número</div>
+                      <div class="info-value">#2026/000123</div>
                     </div>
-                    <q-separator />
-                    <div class="row">
-                      <div class="col-4 text-weight-medium text-grey-7">Data:</div>
-                      <div class="col-8">08/02/2026 14:30</div>
+
+                    <!-- Apresentante -->
+                    <div class="info-card">
+                      <q-icon name="fa-duotone fa-user" size="20px" class="info-icon" />
+                      <div class="info-label">Apresentante</div>
+                      <div class="info-value">João da Silva Santos</div>
                     </div>
-                    <q-separator />
-                    <div class="row">
-                      <div class="col-4 text-weight-medium text-grey-7">Tipo:</div>
-                      <div class="col-8">
-                        <q-chip size="sm" color="blue-2" text-color="blue-8">Normal</q-chip>
+
+                    <!-- Data -->
+                    <div class="info-card">
+                      <q-icon name="fa-duotone fa-calendar" size="20px" class="info-icon" />
+                      <div class="info-label">Data de Abertura</div>
+                      <div class="info-value">08/02/2026 14:30</div>
+                    </div>
+
+                    <!-- CPF/CNPJ -->
+                    <div class="info-card">
+                      <q-icon name="fa-duotone fa-id-card" size="20px" class="info-icon" />
+                      <div class="info-label">CPF/CNPJ</div>
+                      <div class="info-value">123.456.789-00</div>
+                    </div>
+
+                    <!-- Tipo -->
+                    <div class="info-card">
+                      <q-icon name="fa-duotone fa-file-lines" size="20px" class="info-icon" />
+                      <div class="info-label">Tipo</div>
+                      <div class="info-value">
+                        <q-chip size="sm" color="blue-2" text-color="blue-8" class="q-mt-xs">Normal</q-chip>
                       </div>
                     </div>
-                    <q-separator />
-                    <div class="row">
-                      <div class="col-4 text-weight-medium text-grey-7">Apresentante:</div>
-                      <div class="col-8">João da Silva Santos</div>
-                    </div>
-                    <q-separator />
-                    <div class="row">
-                      <div class="col-4 text-weight-medium text-grey-7">CPF/CNPJ:</div>
-                      <div class="col-8">123.456.789-00</div>
-                    </div>
-                    <q-separator />
-                    <div class="row">
-                      <div class="col-4 text-weight-medium text-grey-7">Status:</div>
-                      <div class="col-8">
-                        <q-chip size="sm" color="orange-2" text-color="orange-8">Em Andamento</q-chip>
+
+                    <!-- Status -->
+                    <div class="info-card">
+                      <q-icon name="fa-duotone fa-circle-dot" size="20px" class="info-icon" />
+                      <div class="info-label">Status</div>
+                      <div class="info-value">
+                        <q-chip size="sm" color="orange-2" text-color="orange-8" class="q-mt-xs">Em Andamento</q-chip>
                       </div>
                     </div>
                   </div>
@@ -454,6 +467,55 @@ const pagamentosColumns = [
       align-items: flex-start;
       gap: 4px;
     }
+  }
+}
+
+// Grid de Cards de Informações
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+.info-card {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all var(--transition);
+  position: relative;
+
+  &:hover {
+    border-color: var(--border-color-dark);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .info-icon {
+    color: var(--primary);
+    margin-bottom: 4px;
+  }
+
+  .info-label {
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--text-muted);
+  }
+
+  .info-value {
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    color: var(--text-color);
+    line-height: 1.4;
   }
 }
 </style>
