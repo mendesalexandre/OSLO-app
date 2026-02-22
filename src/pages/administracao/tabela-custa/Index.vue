@@ -1,293 +1,265 @@
 <template>
   <q-page padding>
+
     <!-- Header -->
-    <div class="row items-center q-mb-md">
+    <div class="row items-center q-mb-lg">
       <div class="col">
         <div class="oslo-page-title">Tabelas de Custas</div>
-        <div class="oslo-page-subtitle">
-          Gerencie as tabelas de custas por estado e município
-        </div>
-      </div>
-      <div class="col-auto">
-        <q-btn color="primary" icon="add" label="Nova Tabela" @click="abrirFormulario()" />
+        <div class="oslo-page-subtitle">Gerencie as tabelas de custas cartoriais por ano</div>
       </div>
     </div>
 
     <!-- Filtros -->
     <q-card flat bordered class="q-mb-md">
-      <q-card-section>
-        <div class="row q-col-gutter-md">
-          <!-- Ano -->
-          <div class="col-12 col-sm-6 col-md-3">
-            <v-label label="Ano"></v-label>
-            <q-select v-model="filtros.ano" :options="anosDisponiveis" outlined dense clearable
-              @update:model-value="buscarTabelas">
-              <template v-slot:prepend>
-                <q-icon name="event" />
+      <q-card-section class="q-py-sm">
+        <div class="row q-col-gutter-md items-end">
+
+          <div class="col-12 col-sm-4 col-md-3">
+            <v-label label="Ano" />
+            <q-select
+              v-model="filtros.ano"
+              :options="anosDisponiveis"
+              outlined dense clearable emit-value map-options
+              @update:model-value="buscarTabelas"
+            >
+              <template #prepend>
+                <q-icon name="fa-regular fa-calendar" size="14px" />
               </template>
             </q-select>
           </div>
 
-          <!-- Estado -->
-          <div class="col-12 col-sm-6 col-md-3">
-            <v-label label="Estado"></v-label>
-            <q-select v-model="filtros.estado_id" :options="estados" option-label="nome" option-value="id" emit-value
-              map-options outlined dense clearable @update:model-value="buscarTabelas">
-              <template v-slot:prepend>
-                <q-icon name="place" />
+          <div class="col-12 col-sm-4 col-md-3">
+            <v-label label="Status" />
+            <q-select
+              v-model="filtros.is_ativo"
+              :options="statusOptions"
+              option-label="label" option-value="value"
+              outlined dense clearable emit-value map-options
+              @update:model-value="buscarTabelas"
+            >
+              <template #prepend>
+                <q-icon name="fa-regular fa-circle-check" size="14px" />
               </template>
             </q-select>
           </div>
 
-          <!-- Status -->
-          <div class="col-12 col-sm-6 col-md-2">
-            <v-label label="Status"></v-label>
-            <q-select v-model="filtros.is_ativo" :options="statusOptions" option-label="label" option-value="value"
-              emit-value map-options outlined dense clearable @update:model-value="buscarTabelas">
-              <template v-slot:prepend>
-                <q-icon name="toggle_on" />
-              </template>
-            </q-select>
-          </div>
-
-          <!-- Busca -->
-          <div class="col-12 col-sm-6 col-md-4">
-            <v-label label="Buscar por nome"></v-label>
-            <q-input v-model="filtros.busca" outlined dense clearable @update:model-value="buscarTabelasDebounce">
-              <template v-slot:prepend>
-                <q-icon name="search" />
+          <div class="col-12 col-sm-4 col-md-4">
+            <v-label label="Buscar" />
+            <q-input
+              v-model="filtros.busca"
+              outlined dense clearable placeholder="Nome da tabela..."
+              @update:model-value="buscarTabelasDebounce"
+            >
+              <template #prepend>
+                <q-icon name="fa-regular fa-magnifying-glass" size="14px" />
               </template>
             </q-input>
           </div>
+
+          <div class="col-auto">
+            <q-btn
+              flat dense
+              icon="fa-regular fa-arrows-rotate"
+              color="grey-7"
+              @click="buscarTabelas"
+            >
+              <q-tooltip>Atualizar</q-tooltip>
+            </q-btn>
+          </div>
+
         </div>
       </q-card-section>
     </q-card>
 
     <!-- Loading -->
-    <q-card v-if="loading" flat bordered>
-      <q-card-section>
-        <div class="text-center q-py-xl">
-          <q-spinner color="primary" size="50px" />
-          <div class="oslo-text-secondary q-mt-md">Carregando tabelas...</div>
+    <div v-if="loading" class="row justify-center q-py-xl">
+      <q-spinner color="primary" size="40px" />
+    </div>
+
+    <!-- Sem dados -->
+    <q-card v-else-if="!tabelas.length" flat bordered>
+      <q-card-section class="text-center q-py-xl">
+        <q-icon name="fa-duotone fa-table-list" size="56px" color="grey-5" class="q-mb-md" />
+        <div class="text-h6 oslo-text-secondary">Nenhuma tabela encontrada</div>
+        <div class="text-caption text-grey-6 q-mt-xs">
+          Ajuste os filtros ou execute os seeders para popular os dados
         </div>
       </q-card-section>
     </q-card>
 
     <!-- Lista de Tabelas -->
     <div v-else class="row q-col-gutter-md">
-      <div v-for="tabela in tabelas" :key="tabela.id" class="col-12 col-sm-6 col-md-4">
-        <q-card flat bordered class="cursor-pointer" @click="abrirAtos(tabela)">
-          <q-card-section>
-            <div class="row items-center">
+      <div
+        v-for="tabela in tabelas"
+        :key="tabela.id"
+        class="col-12 col-sm-6 col-md-4"
+      >
+        <q-card flat bordered class="oslo-tabela-card">
+
+          <!-- Topo do card -->
+          <q-card-section class="q-pb-sm">
+            <div class="row items-start no-wrap">
               <div class="col">
-                <div class="text-h6">{{ tabela.nome }}</div>
-                <div class="text-caption oslo-text-secondary">
+                <div class="text-subtitle1 text-weight-semibold ellipsis-2-lines">
                   {{ tabela.nome }}
-                  <span v-if="tabela.cidade"> - {{ tabela.cidade.nome }}</span>
                 </div>
               </div>
-              <div class="col-auto">
-                <q-badge :color="tabela.is_ativo ? 'positive' : 'grey-5'"
-                  :label="tabela.is_ativo ? 'Ativa' : 'Inativa'" />
-              </div>
+              <q-badge
+                :color="tabela.is_ativo ? 'positive' : 'grey-5'"
+                :label="tabela.is_ativo ? 'Ativa' : 'Inativa'"
+                class="q-ml-sm"
+              />
             </div>
           </q-card-section>
 
           <q-separator />
 
-          <q-card-section>
-            <div class="row q-col-gutter-sm text-caption">
+          <!-- Dados da tabela -->
+          <q-card-section class="q-py-sm">
+            <div class="row q-col-gutter-xs">
+
               <div class="col-6">
-                <div class="oslo-text-secondary">Ano</div>
-                <div class="text-weight-medium">{{ tabela.ano }}</div>
+                <div class="row items-center q-gutter-x-xs text-caption oslo-text-secondary">
+                  <q-icon name="fa-regular fa-calendar" size="12px" />
+                  <span>Ano</span>
+                </div>
+                <div class="text-weight-semibold text-h6 text-primary">{{ tabela.ano }}</div>
               </div>
+
               <div class="col-6">
-                <div class="oslo-text-secondary">Total de Atos</div>
-                <div class="text-weight-medium">{{ tabela.atos_count || 0 }}</div>
+                <div class="row items-center q-gutter-x-xs text-caption oslo-text-secondary">
+                  <q-icon name="fa-regular fa-file-lines" size="12px" />
+                  <span>Atos</span>
+                </div>
+                <div class="text-weight-semibold text-h6">{{ tabela.atos_count ?? 0 }}</div>
               </div>
-              <div class="col-6">
-                <div class="oslo-text-secondary">Vigência Início</div>
-                <div class="text-weight-medium">{{ formatDate(tabela.vigencia_inicio) }}</div>
+
+              <div class="col-6 q-mt-xs">
+                <div class="text-caption oslo-text-secondary">Vigência início</div>
+                <div class="text-caption text-weight-medium">{{ formatDate(tabela.vigencia_inicio) }}</div>
               </div>
-              <div class="col-6">
-                <div class="oslo-text-secondary">Vigência Fim</div>
-                <div class="text-weight-medium">
+
+              <div class="col-6 q-mt-xs">
+                <div class="text-caption oslo-text-secondary">Vigência fim</div>
+                <div class="text-caption text-weight-medium">
                   {{ tabela.vigencia_fim ? formatDate(tabela.vigencia_fim) : 'Indeterminado' }}
                 </div>
               </div>
+
             </div>
           </q-card-section>
 
           <q-separator />
 
-          <q-card-actions>
-            <q-btn flat dense icon="list" label="Ver Atos" color="primary" @click.stop="abrirAtos(tabela)" />
+          <!-- Ações -->
+          <q-card-actions class="q-px-md q-py-xs">
+            <q-btn
+              flat dense no-caps
+              icon="fa-regular fa-list"
+              label="Ver Atos"
+              color="primary"
+              @click="abrirAtos(tabela)"
+            />
             <q-space />
-            <q-btn flat dense round icon="edit" color="primary" @click.stop="abrirFormulario(tabela)">
+            <q-btn flat dense round icon="fa-regular fa-pen-to-square" color="grey-7" @click.stop="abrirFormulario(tabela)">
               <q-tooltip>Editar</q-tooltip>
             </q-btn>
-            <q-btn flat dense round icon="delete" color="negative" @click.stop="confirmarExclusao(tabela)">
-              <q-tooltip>Excluir</q-tooltip>
-            </q-btn>
           </q-card-actions>
-        </q-card>
-      </div>
 
-      <!-- Sem dados -->
-      <div v-if="!tabelas.length" class="col-12">
-        <q-card flat bordered class="bg-grey-2">
-          <q-card-section class="text-center q-py-xl">
-            <q-icon name="inbox" size="64px" color="grey-6" class="q-mb-md" />
-            <div class="text-h6 oslo-text-secondary">Nenhuma tabela encontrada</div>
-            <div class="text-caption text-grey-6 q-mt-sm">
-              Crie uma nova tabela de custas para começar
-            </div>
-            <q-btn color="primary" label="Criar Primeira Tabela" icon="add" class="q-mt-md"
-              @click="abrirFormulario()" />
-          </q-card-section>
         </q-card>
       </div>
     </div>
 
-    <!-- Dialog de Formulário -->
-    <!-- <q-dialog v-model="dialogFormulario" persistent>
-      <formulario-tabela :tabela="tabelaSelecionada" @salvo="onTabelaSalva" @cancelar="dialogFormulario = false" />
-    </q-dialog> -->
   </q-page>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useQuasar } from 'quasar'
+import { useQuasar, debounce, date } from 'quasar'
 import { useRouter } from 'vue-router'
 import { api } from 'src/boot/axios'
-import { debounce, date } from 'quasar'
-// import FormularioTabela from './components/FormularioTabela.vue'
 
-const $q = useQuasar()
+defineOptions({ name: 'TabelaCustaIndex' })
+
+const $q    = useQuasar()
 const router = useRouter()
 
-// Estado
-const loading = ref(false)
-const tabelas = ref([])
+// ── Estado ──────────────────────────────────────────────────────────────────
+const loading           = ref(false)
+const tabelas           = ref([])
 const tabelaSelecionada = ref(null)
-const dialogFormulario = ref(false)
 
-// Filtros
+// ── Filtros ──────────────────────────────────────────────────────────────────
+const anoAtual = new Date().getFullYear()
+
+const anosDisponiveis = Array.from({ length: 6 }, (_, i) => ({
+  label: String(anoAtual - i),
+  value: anoAtual - i,
+}))
+
+const statusOptions = [
+  { label: 'Ativa', value: true },
+  { label: 'Inativa', value: false },
+]
+
 const filtros = ref({
   ano: null,
-  estado_id: null,
   is_ativo: null,
-  busca: ''
+  busca: '',
 })
 
-const anosDisponiveis = ref([])
-const estados = ref([])
-const statusOptions = ref([
-  { label: 'Ativa', value: true },
-  { label: 'Inativa', value: false }
-])
-
-// Methods
-const carregarDadosIniciais = async () => {
-  try {
-    const [anosRes, estadosRes] = await Promise.all([
-      api.get('/tabela-custa/anos-disponiveis'),
-      api.get('/estados')
-    ])
-
-    anosDisponiveis.value = anosRes.data
-    estados.value = estadosRes.data
-  } catch (error) {
-    console.error('Erro ao carregar dados iniciais:', error)
-  }
-}
-
+// ── API ──────────────────────────────────────────────────────────────────────
 const buscarTabelas = async () => {
   loading.value = true
-
   try {
-    const { data } = await api.get('/tabela-custa', {
-      params: filtros.value
-    })
+    const params = {}
+    if (filtros.value.ano)      params.ano      = filtros.value.ano
+    if (filtros.value.busca)    params.busca    = filtros.value.busca
+    if (filtros.value.is_ativo !== null) params.is_ativo = filtros.value.is_ativo
 
-    tabelas.value = data
-  } catch (error) {
-    $q.notify({
-      type: 'negative',
-      message: 'Erro ao carregar tabelas',
-      caption: error.response?.data?.message
-    })
+    const { data } = await api.get('/tabela-custa', { params })
+    tabelas.value = data.dados ?? data
+  } catch (e) {
+    $q.notify({ type: 'negative', message: 'Erro ao carregar tabelas', caption: e.response?.data?.mensagem })
   } finally {
     loading.value = false
   }
 }
 
-const buscarTabelasDebounce = debounce(buscarTabelas, 500)
+const buscarTabelasDebounce = debounce(buscarTabelas, 400)
 
+// ── Navegação ─────────────────────────────────────────────────────────────────
 const abrirAtos = (tabela) => {
   router.push({
     name: 'administracao.tabela-custa.atos.index',
-    params: { tabelaCustaId: tabela.uuid }
+    params: { tabelaCustaId: tabela.id },
   })
 }
 
 const abrirFormulario = (tabela = null) => {
   tabelaSelecionada.value = tabela
-  dialogFormulario.value = true
+  $q.notify({ type: 'info', message: 'Edição em desenvolvimento', position: 'top' })
 }
 
-const confirmarExclusao = (tabela) => {
-  $q.dialog({
-    title: 'Confirmar Exclusão',
-    message: `Deseja realmente excluir a tabela "${tabela.nome}"? Todos os atos vinculados também serão excluídos.`,
-    cancel: {
-      label: 'Cancelar',
-      flat: true
-    },
-    ok: {
-      label: 'Excluir',
-      color: 'negative'
-    },
-    persistent: true
-  }).onOk(async () => {
-    try {
-      await api.delete(`/tabela-custa/${tabela.id}`)
+// ── Helpers ───────────────────────────────────────────────────────────────────
+const formatDate = (d) => d ? date.formatDate(d, 'DD/MM/YYYY') : '—'
 
-      $q.notify({
-        type: 'positive',
-        message: 'Tabela excluída com sucesso'
-      })
-
-      buscarTabelas()
-    } catch (error) {
-      $q.notify({
-        type: 'negative',
-        message: 'Erro ao excluir tabela',
-        caption: error.response?.data?.message
-      })
-    }
-  })
-}
-
-const onTabelaSalva = () => {
-  dialogFormulario.value = false
-  buscarTabelas()
-
-  $q.notify({
-    type: 'positive',
-    message: 'Tabela salva com sucesso'
-  })
-}
-
-// Helpers
-const formatDate = (dateString) => {
-  return date.formatDate(dateString, 'DD/MM/YYYY')
-}
-
-// Lifecycle
-onMounted(() => {
-  carregarDadosIniciais()
-  buscarTabelas()
-})
+// ── Lifecycle ─────────────────────────────────────────────────────────────────
+onMounted(buscarTabelas)
 </script>
+
+<style lang="scss" scoped>
+.oslo-tabela-card {
+  transition: box-shadow 0.2s;
+  &:hover {
+    box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+  }
+}
+.ellipsis-2-lines {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+</style>
