@@ -151,44 +151,86 @@ const routes = [
 
       // PROTOCOLO
       {
-        path: "/protocolo/:id",
-        name: "protocolo.index",
+        path: "protocolo",
+        component: () => import("pages/protocolo/ProtocoloListaPage.vue"),
+        name: "protocolo.lista",
         meta: {
-          title: "Protocolo",
-          requiresAuth: true,
-          permissao: ["PROTOCOLO_VISUALIZAR"],
+          title: "Protocolos",
+          publico: false,
+          permissao: ["PROTOCOLO_LISTAR"],
         },
-        props: true,
-        component: () => import("pages/protocolo/Index.vue"),
-
-        children: [
-          {
-            path: "",
-            redirect: (to) => {
-              const id = to.params.id;
-              return { name: "protocolo.geral", params: { id } };
-            },
-            name: "protocolo.redirect",
-          },
-          {
-            path: "/protocolo/:id/geral",
-            name: "protocolo.geral",
-            props: true,
-            meta: { title: "Protocolo - Geral" },
-            component: () => import("pages/protocolo/geral/Index.vue"),
-          },
-        ],
       },
 
-      // DEMO PROTOCOLO
+      // RECIBOS
       {
-        path: "demo-protocolo",
-        component: () => import("pages/protocolo/Demo.vue"),
-        name: "demo.protocolo",
+        path: "recibo",
+        component: () => import("pages/recibo/ReciboListaPage.vue"),
+        name: "recibo.lista",
         meta: {
-          title: "Demo - Protocolo",
+          title: "Recibos",
           publico: false,
+          permissao: ["RECIBO_LISTAR"],
         },
+      },
+      {
+        path: "protocolo/criar",
+        component: () => import("pages/protocolo/ProtocoloCriarPage.vue"),
+        name: "protocolo.criar",
+        meta: {
+          title: "Novo Protocolo",
+          publico: false,
+          permissao: ["PROTOCOLO_CRIAR"],
+        },
+      },
+      {
+        path: "protocolo/:uuid",
+        component: () => import("pages/protocolo/Index.vue"),
+        redirect: (to) => ({
+          name: "protocolo.geral",
+          params: { uuid: to.params.uuid },
+        }),
+        meta: {
+          title: "Detalhes do Protocolo",
+          publico: false,
+          permissao: ["PROTOCOLO_VISUALIZAR"],
+        },
+        children: [
+          {
+            path: "geral",
+            name: "protocolo.geral",
+            component: () =>
+              import("components/protocolo/ProtocoloInfoTab.vue"),
+            meta: { title: "Informações Gerais" },
+          },
+          {
+            path: "atos",
+            name: "protocolo.atos",
+            component: () =>
+              import("components/protocolo/ProtocoloAtosTab.vue"),
+            meta: { title: "Atos & Registros" },
+          },
+          {
+            path: "financeiro",
+            name: "protocolo.financeiro",
+            component: () =>
+              import("components/protocolo/ProtocoloFinanceiroTab.vue"),
+            meta: { title: "Financeiro" },
+          },
+          {
+            path: "anotacoes",
+            name: "protocolo.anotacoes",
+            component: () =>
+              import("components/protocolo/ProtocoloAnotacoesTab.vue"),
+            meta: { title: "Anotações" },
+          },
+          {
+            path: "recibos",
+            name: "protocolo.recibos",
+            component: () =>
+              import("components/protocolo/ProtocoloRecibosTab.vue"),
+            meta: { title: "Recibos" },
+          },
+        ],
       },
 
       // ADMINISTRAÇÃO
@@ -226,6 +268,18 @@ const routes = [
         },
       },
 
+      {
+        path: "administracao/produto",
+        name: "administracao.produto.index",
+        component: () =>
+          import("src/pages/administracao/produto/Index.vue"),
+        meta: {
+          title: "Produtos / Serviços",
+          publico: false,
+          permissao: ["PRODUTO_LISTAR"],
+        },
+      },
+
       // GRUPOS DE PERMISSÃO
       {
         path: "administracao/grupos",
@@ -254,11 +308,36 @@ const routes = [
       {
         path: "administracao/usuarios-permissoes",
         name: "administracao.usuarios-permissoes.index",
-        component: () => import("src/pages/administracao/usuarios-permissoes/Index.vue"),
+        component: () =>
+          import("src/pages/administracao/usuarios-permissoes/Index.vue"),
         meta: {
           title: "Permissões de Usuários",
           publico: false,
           permissao: ["USUARIO_PERMISSAO_LISTAR"],
+        },
+      },
+
+      // FORMAS DE PAGAMENTO
+      {
+        path: "administracao/forma-pagamento",
+        name: "administracao.forma-pagamento.index",
+        component: () => import("src/pages/admin/FormaPagamentoPage.vue"),
+        meta: {
+          title: "Formas de Pagamento",
+          publico: false,
+          permissao: ["FORMA_PAGAMENTO_LISTAR"],
+        },
+      },
+
+      // MEIOS DE PAGAMENTO
+      {
+        path: "administracao/meio-pagamento",
+        name: "administracao.meio-pagamento.index",
+        component: () => import("src/pages/admin/MeioPagamentoPage.vue"),
+        meta: {
+          title: "Meios de Pagamento",
+          publico: false,
+          permissao: ["MEIO_PAGAMENTO_LISTAR"],
         },
       },
 
@@ -289,6 +368,33 @@ const routes = [
       },
     ],
   },
+
+  // Rotas públicas de cadastro
+  {
+    path: "/cadastro",
+    component: () => import("pages/publico/CadastroPage.vue"),
+    name: "cadastro",
+    meta: {
+      publico: true,
+    },
+  },
+  {
+    path: "/cadastro-sucesso",
+    component: () => import("pages/publico/CadastroSucessoPage.vue"),
+    name: "cadastro-sucesso",
+    meta: {
+      publico: true,
+    },
+  },
+  {
+    path: "/verificar-email/:token",
+    component: () => import("pages/publico/VerificarEmailPage.vue"),
+    name: "verificar-email",
+    meta: {
+      publico: true,
+    },
+  },
+
   // Always leave this as last one,
   // but you can also remove it
   {

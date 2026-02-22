@@ -81,6 +81,12 @@ const menus = [
         to: { name: "tarefas" },
         permissao: "ATO_LISTAR",
       },
+      {
+        label: "Produtos / Serviços",
+        icon: "fa-duotone fa-box-open",
+        to: { name: "administracao.produto.index" },
+        permissao: "PRODUTO_LISTAR",
+      },
     ],
   },
   {
@@ -89,13 +95,13 @@ const menus = [
       {
         label: "Formas de Pagamento",
         icon: "fa-duotone fa-credit-card",
-        to: { name: "tarefas" },
+        to: { name: "administracao.forma-pagamento.index" },
         permissao: "FORMA_PAGAMENTO_LISTAR",
       },
       {
         label: "Meios de Pagamento",
         icon: "fa-duotone fa-money-bill-transfer",
-        to: { name: "tarefas" },
+        to: { name: "administracao.meio-pagamento.index" },
         permissao: "MEIO_PAGAMENTO_LISTAR",
       },
       {
