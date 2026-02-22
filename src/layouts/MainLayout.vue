@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <!-- Header -->
-    <q-header class="oslo-header">
+    <!-- <q-header class="oslo-header">
       <q-toolbar class="oslo-toolbar">
         <q-btn
           flat
@@ -13,7 +13,6 @@
           @click="toggleMini"
         />
 
-        <!-- Breadcrumb -->
         <q-breadcrumbs class="oslo-breadcrumb q-ml-md" active-color="grey-8" separator-color="grey-5">
           <q-breadcrumbs-el label="OSLO" icon="fa-duotone fa-building-columns" :to="{ name: 'tarefas' }" />
           <q-breadcrumbs-el v-if="currentPageTitle" :label="currentPageTitle" />
@@ -21,7 +20,6 @@
 
         <q-space />
 
-        <!-- User Dropdown -->
         <q-btn flat no-caps dense class="oslo-user-btn">
           <div class="oslo-user-avatar">
             {{ userInitial }}
@@ -57,7 +55,7 @@
           </q-menu>
         </q-btn>
       </q-toolbar>
-    </q-header>
+    </q-header> -->
 
     <!-- Sidebar -->
     <q-drawer
@@ -74,14 +72,54 @@
       no-swipe-close
     >
       <!-- Logo -->
-      <div class="oslo-sidebar__logo" @click="router.push({ name: 'tarefas' })">
-        <q-icon name="fa-duotone fa-building-columns" size="22px" />
-        <transition name="fade">
-          <span v-show="!miniState" class="oslo-sidebar__logo-text">OSLO</span>
-        </transition>
+      <div class="oslo-sidebar__logo">
+        <div class="oslo-sidebar__logo-brand" @click="router.push({ name: 'tarefas' })">
+          <q-icon name="fa-duotone fa-building-columns" size="22px" />
+          <transition name="fade">
+            <span v-show="!miniState" class="oslo-sidebar__logo-text">OSLO</span>
+          </transition>
+        </div>
+        <q-btn
+          v-show="!miniState"
+          flat
+          round
+          dense
+          :icon="miniState ? 'fa-regular fa-indent' : 'fa-regular fa-outdent'"
+          size="sm"
+          color="grey-6"
+          class="oslo-sidebar__toggle"
+          @click="toggleMini"
+        />
+        <q-btn
+          v-show="miniState"
+          flat
+          round
+          dense
+          icon="fa-regular fa-bars"
+          size="sm"
+          color="grey-6"
+          class="oslo-sidebar__toggle"
+          @click="toggleMini"
+        />
       </div>
 
       <q-separator class="oslo-sidebar__separator" />
+
+      <!-- Informações da Empresa -->
+      <div v-if="!miniState && empresa" class="oslo-sidebar__empresa q-px-md q-py-sm">
+        <div class="text-caption text-grey-6">Empresa</div>
+        <div class="text-body2 text-weight-medium text-truncate">
+          {{ empresa.nome_fantasia || empresa.razao_social }}
+        </div>
+        <div v-if="empresa.is_trial_ativo" class="text-caption text-orange">
+          {{ empresa.dias_restantes_trial }} dias restantes
+        </div>
+        <div v-else-if="empresa.is_read_only" class="text-caption text-negative">
+          Trial expirado
+        </div>
+      </div>
+
+      <q-separator v-if="!miniState && empresa" class="oslo-sidebar__separator" />
 
       <!-- Menu Items -->
       <q-scroll-area class="oslo-sidebar__scroll">
@@ -179,6 +217,9 @@
 
     <!-- Content -->
     <q-page-container>
+      <!-- Banner de Trial -->
+      <trial-banner />
+
       <router-view />
     </q-page-container>
 
@@ -196,6 +237,7 @@ import { useRouter, useRoute } from "vue-router";
 import CriarProtocolo from "src/components/CriarProtocolo.vue";
 import MenuNavegacao from "src/components/Menu.vue";
 import CriarIndicadorPessoal from "src/pages/indicador-pessoal/Create.vue";
+import TrialBanner from "src/components/TrialBanner.vue";
 import { useEstadoStore } from "src/stores/estado";
 import { useAuthStore } from "src/stores/auth";
 import { usePermissao } from "src/composables/usePermissao";
@@ -209,6 +251,7 @@ const route = useRoute();
 
 const authStore = useAuthStore();
 const user = computed(() => authStore.user?.user || authStore.user);
+const empresa = computed(() => user.value?.empresa);
 const userInitial = computed(() => {
   const nome = user.value?.nome || "U";
   return nome.charAt(0).toUpperCase();
@@ -221,7 +264,7 @@ const menuFiltrado = computed(() => filtrarMenu(menuItens));
 
 // Sidebar state
 const drawerOpen = ref(true);
-const miniState = ref(true);
+const miniState = ref(false);
 
 const toggleMini = () => {
   if ($q.screen.lt.md) {
@@ -363,13 +406,21 @@ const alterarSenha = () => {
   height: 56px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 0 8px 0 12px;
+  color: var(--text-color);
+}
+
+.oslo-sidebar__logo-brand {
+  display: flex;
+  align-items: center;
   gap: 10px;
   cursor: pointer;
-  color: var(--text-color);
   font-weight: 700;
   font-size: 1.125rem;
   letter-spacing: 0.05em;
+  flex: 1;
+  min-width: 0;
   transition: opacity var(--transition);
 
   .q-icon {
@@ -380,6 +431,10 @@ const alterarSenha = () => {
   &:hover {
     opacity: 0.85;
   }
+}
+
+.oslo-sidebar__toggle {
+  flex-shrink: 0;
 }
 
 .oslo-sidebar__logo-text {
@@ -398,18 +453,29 @@ const alterarSenha = () => {
 
 // Section separators
 .oslo-sidebar__section {
-  padding: 16px 16px 6px;
-  font-size: 11px;
-  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 16px 6px;
+  font-size: 10px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   color: var(--text-muted);
   white-space: nowrap;
   overflow: hidden;
+
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-color);
+    min-width: 8px;
+  }
 }
 
 .oslo-sidebar__section-line {
-  margin: 8px 4px;
+  margin: 12px 8px;
   background: var(--border-color);
 }
 
@@ -469,6 +535,11 @@ const alterarSenha = () => {
 
 // Mini mode: centralizar ícones
 .oslo-sidebar--mini {
+  .oslo-sidebar__logo {
+    justify-content: center;
+    padding: 0;
+  }
+
   .oslo-sidebar__item {
     margin: 2px 4px;
     padding: 0 !important;
@@ -533,6 +604,13 @@ const alterarSenha = () => {
       }
     }
   }
+}
+
+// Empresa section
+.oslo-sidebar__empresa {
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 4px;
+  margin: 8px;
 }
 
 // Footer
