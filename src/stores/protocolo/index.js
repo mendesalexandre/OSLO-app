@@ -74,7 +74,7 @@ export const useProtocoloStore = defineStore('protocolo', {
         if (data.sucesso) {
           this.protocolo = data.dados
         }
-        return data
+        return this.protocolo
       } finally {
         this.carregando = false
       }
@@ -186,6 +186,43 @@ export const useProtocoloStore = defineStore('protocolo', {
         await this.carregar(id)
       }
       return data
+    },
+
+    // ===== ETAPAS =====
+    async mudarEtapa(id, etapaId, observacao = null) {
+      this.carregando = true
+      try {
+        const { data } = await api.post(`/protocolo/${id}/etapa`, {
+          etapa_id: etapaId,
+          observacao,
+        })
+        if (data.sucesso) {
+          this.protocolo = data.dados
+        }
+        return data
+      } finally {
+        this.carregando = false
+      }
+    },
+
+    async voltarEtapa(id, observacao = null) {
+      this.carregando = true
+      try {
+        const { data } = await api.post(`/protocolo/${id}/etapa/voltar`, {
+          observacao,
+        })
+        if (data.sucesso) {
+          this.protocolo = data.dados
+        }
+        return data
+      } finally {
+        this.carregando = false
+      }
+    },
+
+    async listarEtapas() {
+      const { data } = await api.get('/protocolo/etapas/listar')
+      return data.sucesso ? data.dados : []
     },
 
     // ===== FILTROS =====

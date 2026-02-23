@@ -74,7 +74,7 @@
       <!-- Logo -->
       <div class="oslo-sidebar__logo">
         <div class="oslo-sidebar__logo-brand" @click="router.push({ name: 'tarefas' })">
-          <q-icon name="fa-duotone fa-building-columns" size="22px" />
+          <l-icon name="landmark" :size="22" />
           <transition name="fade">
             <span v-show="!miniState" class="oslo-sidebar__logo-text">OSLO</span>
           </transition>
@@ -84,23 +84,25 @@
           flat
           round
           dense
-          :icon="miniState ? 'fa-regular fa-indent' : 'fa-regular fa-outdent'"
           size="sm"
           color="grey-6"
           class="oslo-sidebar__toggle"
           @click="toggleMini"
-        />
+        >
+          <l-icon name="panel-left-close" :size="16" />
+        </q-btn>
         <q-btn
           v-show="miniState"
           flat
           round
           dense
-          icon="fa-regular fa-bars"
           size="sm"
           color="grey-6"
           class="oslo-sidebar__toggle"
           @click="toggleMini"
-        />
+        >
+          <l-icon name="panel-left" :size="16" />
+        </q-btn>
       </div>
 
       <q-separator class="oslo-sidebar__separator" />
@@ -140,7 +142,7 @@
               @click="handleMenuClick(item)"
             >
               <q-item-section avatar class="oslo-sidebar__icon">
-                <q-icon :name="item.icone" size="16px" />
+                <l-icon :name="item.icone" :size="16" />
               </q-item-section>
               <q-item-section v-show="!miniState" class="oslo-sidebar__label">
                 {{ item.label || item.tooltip }}
@@ -173,7 +175,7 @@
           @click="router.push({ name: 'administracao.index' })"
         >
           <q-item-section avatar class="oslo-sidebar__icon">
-            <q-icon name="fa-duotone fa-sliders" size="16px" />
+            <l-icon name="settings-2" :size="16" />
           </q-item-section>
           <q-item-section v-show="!miniState" class="oslo-sidebar__label">
             Administração
@@ -197,7 +199,7 @@
           @click="logout"
         >
           <q-item-section avatar class="oslo-sidebar__icon">
-            <q-icon name="fa-duotone fa-arrow-right-from-bracket" size="16px" />
+            <l-icon name="log-out" :size="16" />
           </q-item-section>
           <q-item-section v-show="!miniState" class="oslo-sidebar__label">
             Sair
@@ -502,8 +504,8 @@ const alterarSenha = () => {
     background: var(--sidebar-active-bg);
     color: var(--sidebar-active);
 
-    .oslo-sidebar__icon .q-icon {
-      color: var(--sidebar-active) !important;
+    .oslo-sidebar__icon {
+      color: var(--sidebar-active);
     }
 
     .oslo-sidebar__label {
@@ -519,11 +521,7 @@ const alterarSenha = () => {
 .oslo-sidebar__icon {
   min-width: 36px !important;
   justify-content: center;
-
-  .q-icon {
-    color: inherit;
-    font-size: 16px !important;
-  }
+  color: inherit;
 }
 
 .oslo-sidebar__label {

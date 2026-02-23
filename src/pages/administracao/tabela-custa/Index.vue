@@ -23,7 +23,7 @@
               @update:model-value="buscarTabelas"
             >
               <template #prepend>
-                <q-icon name="fa-regular fa-calendar" size="14px" />
+                <l-icon name="calendar" :size="14" />
               </template>
             </q-select>
           </div>
@@ -38,7 +38,7 @@
               @update:model-value="buscarTabelas"
             >
               <template #prepend>
-                <q-icon name="fa-regular fa-circle-check" size="14px" />
+                <l-icon name="check-circle" :size="14" />
               </template>
             </q-select>
           </div>
@@ -51,7 +51,7 @@
               @update:model-value="buscarTabelasDebounce"
             >
               <template #prepend>
-                <q-icon name="fa-regular fa-magnifying-glass" size="14px" />
+                <l-icon name="search" :size="14" />
               </template>
             </q-input>
           </div>
@@ -59,10 +59,10 @@
           <div class="col-auto">
             <q-btn
               flat dense
-              icon="fa-regular fa-arrows-rotate"
               color="grey-7"
               @click="buscarTabelas"
             >
+              <l-icon name="refresh-cw" :size="16" />
               <q-tooltip>Atualizar</q-tooltip>
             </q-btn>
           </div>
@@ -79,7 +79,7 @@
     <!-- Sem dados -->
     <q-card v-else-if="!tabelas.length" flat bordered>
       <q-card-section class="text-center q-py-xl">
-        <q-icon name="fa-duotone fa-table-list" size="56px" color="grey-5" class="q-mb-md" />
+        <l-icon name="table-2" :size="56" class="q-mb-md oslo-text-muted" />
         <div class="text-h6 oslo-text-secondary">Nenhuma tabela encontrada</div>
         <div class="text-caption text-grey-6 q-mt-xs">
           Ajuste os filtros ou execute os seeders para popular os dados
@@ -120,7 +120,7 @@
 
               <div class="col-6">
                 <div class="row items-center q-gutter-x-xs text-caption oslo-text-secondary">
-                  <q-icon name="fa-regular fa-calendar" size="12px" />
+                  <l-icon name="calendar" :size="12" />
                   <span>Ano</span>
                 </div>
                 <div class="text-weight-semibold text-h6 text-primary">{{ tabela.ano }}</div>
@@ -128,7 +128,7 @@
 
               <div class="col-6">
                 <div class="row items-center q-gutter-x-xs text-caption oslo-text-secondary">
-                  <q-icon name="fa-regular fa-file-lines" size="12px" />
+                  <l-icon name="file-text" :size="12" />
                   <span>Atos</span>
                 </div>
                 <div class="text-weight-semibold text-h6">{{ tabela.atos_count ?? 0 }}</div>
@@ -155,13 +155,13 @@
           <q-card-actions class="q-px-md q-py-xs">
             <q-btn
               flat dense no-caps
-              icon="fa-regular fa-list"
               label="Ver Atos"
               color="primary"
               @click="abrirAtos(tabela)"
             />
             <q-space />
-            <q-btn flat dense round icon="fa-regular fa-pen-to-square" color="grey-7" @click.stop="abrirFormulario(tabela)">
+            <q-btn flat dense round color="grey-7" @click.stop="abrirFormulario(tabela)">
+              <l-icon name="pen" :size="16" />
               <q-tooltip>Editar</q-tooltip>
             </q-btn>
           </q-card-actions>

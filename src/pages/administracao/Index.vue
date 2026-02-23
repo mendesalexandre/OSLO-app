@@ -24,7 +24,7 @@
           :to="item.to"
           class="oslo-card-admin"
         >
-          <q-icon :name="item.icon" size="22px" class="oslo-card-admin__icon" />
+          <l-icon :name="item.icon" :size="22" class="oslo-card-admin__icon" />
           <span class="oslo-card-admin__label">{{ item.label }}</span>
           <q-icon name="chevron_right" size="16px" class="oslo-card-admin__arrow" />
         </router-link>
@@ -33,7 +33,7 @@
 
     <!-- Sem permissão -->
     <div v-if="menusFiltrados.length === 0" class="oslo-empty-state">
-      <q-icon name="fa-duotone fa-lock" size="48px" />
+      <l-icon name="lock" :size="48" />
       <p>Você não possui permissão para acessar módulos de administração.</p>
     </div>
   </q-page>
@@ -53,37 +53,37 @@ const menus = [
     children: [
       {
         label: "Naturezas",
-        icon: "fa-duotone fa-list",
+        icon: "list",
         to: { name: "natureza.index" },
         permissao: "NATUREZA_LISTAR",
       },
       {
         label: "Domínios",
-        icon: "fa-duotone fa-layer-group",
+        icon: "layers",
         to: { name: "tarefas" },
         permissao: "DOMINIO_LISTAR",
       },
       {
         label: "Feriados",
-        icon: "fa-duotone fa-calendar",
+        icon: "calendar",
         to: { name: "tarefas" },
         permissao: "FERIADO_LISTAR",
       },
       {
         label: "Tabelas de Custas",
-        icon: "fa-duotone fa-table-list",
+        icon: "table-2",
         to: { name: "administracao.tabela-custa.index" },
         permissao: "TABELA_CUSTA_LISTAR",
       },
       {
         label: "Atos",
-        icon: "fa-duotone fa-file-signature",
+        icon: "file-pen-line",
         to: { name: "tarefas" },
         permissao: "ATO_LISTAR",
       },
       {
         label: "Produtos / Serviços",
-        icon: "fa-duotone fa-box-open",
+        icon: "package-open",
         to: { name: "administracao.produto.index" },
         permissao: "PRODUTO_LISTAR",
       },
@@ -94,25 +94,25 @@ const menus = [
     children: [
       {
         label: "Formas de Pagamento",
-        icon: "fa-duotone fa-credit-card",
+        icon: "credit-card",
         to: { name: "administracao.forma-pagamento.index" },
         permissao: "FORMA_PAGAMENTO_LISTAR",
       },
       {
         label: "Meios de Pagamento",
-        icon: "fa-duotone fa-money-bill-transfer",
+        icon: "arrow-left-right",
         to: { name: "administracao.meio-pagamento.index" },
         permissao: "MEIO_PAGAMENTO_LISTAR",
       },
       {
         label: "Caixas",
-        icon: "fa-duotone fa-cash-register",
+        icon: "store",
         to: { name: "caixa" },
         permissao: "CAIXA_LISTAR",
       },
       {
         label: "Transações",
-        icon: "fa-duotone fa-arrow-right-arrow-left",
+        icon: "arrow-left-right",
         to: { name: "transacao" },
         permissao: "TRANSACAO_LISTAR",
       },
@@ -123,25 +123,25 @@ const menus = [
     children: [
       {
         label: "Grupos",
-        icon: "fa-duotone fa-users-gear",
+        icon: "users-round",
         to: { name: "administracao.grupos.index" },
         permissao: "GRUPO_LISTAR",
       },
       {
         label: "Permissões",
-        icon: "fa-duotone fa-shield-halved",
+        icon: "shield",
         to: { name: "administracao.permissoes.index" },
         permissao: "PERMISSAO_LISTAR",
       },
       {
         label: "Usuários",
-        icon: "fa-duotone fa-user-gear",
+        icon: "user-cog",
         to: { name: "administracao.usuarios-permissoes.index" },
         permissao: "USUARIO_PERMISSAO_LISTAR",
       },
       {
         label: "Auditoria",
-        icon: "fa-duotone fa-clipboard-list-check",
+        icon: "clipboard-check",
         to: { name: "tarefas" },
         permissao: "AUDITORIA_LISTAR",
       },
@@ -152,13 +152,13 @@ const menus = [
     children: [
       {
         label: "Estados",
-        icon: "fa-duotone fa-map",
+        icon: "map",
         to: { name: "tarefas" },
         permissao: "ESTADO_LISTAR",
       },
       {
         label: "Cidades",
-        icon: "fa-duotone fa-location-dot",
+        icon: "map-pin",
         to: { name: "tarefas" },
         permissao: "CIDADE_LISTAR",
       },

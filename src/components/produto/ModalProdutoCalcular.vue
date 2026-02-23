@@ -26,12 +26,13 @@
       <div class="col-6 flex items-end">
         <q-btn
           unelevated color="primary" no-caps
-          icon="fa-regular fa-calculator"
-          label="Calcular"
           class="full-width"
           :loading="calculando"
           @click="calcular"
-        />
+        >
+          <l-icon name="calculator" :size="16" class="q-mr-sm" />
+          Calcular
+        </q-btn>
       </div>
     </div>
 
@@ -52,7 +53,7 @@
         class="row items-center justify-between q-py-xs oslo-imposto-row"
       >
         <div class="row items-center q-gutter-x-xs">
-          <q-icon name="fa-regular fa-minus" size="10px" color="negative" />
+          <l-icon name="minus" :size="10" color="negative" />
           <span class="text-caption">{{ imp.nome }}</span>
           <q-badge
             v-if="imp.percentual"

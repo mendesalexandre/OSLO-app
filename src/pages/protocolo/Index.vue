@@ -1,203 +1,192 @@
 <template>
-  <q-page>
-    <!-- Header compacto -->
-    <q-header class="text-dark bg-white shadow-sm compact-header" elevated>
-      <q-toolbar style="min-height: 40px;">
-        <div class="row items-center full-width q-gutter-sm">
-          <!-- Título e Tabs na mesma linha -->
-          <div class="protocolo-titulo">
-            {{ titulo }}
-          </div>
+  <q-page :style-fn="pageTweak">
+    <q-header class=" bg-white text-dark">
+      <q-toolbar>
 
-          <!-- TABS na mesma linha do título -->
-          <div class="tabs-inline">
-            <q-tabs v-model="tab" align="left" active-color="primary" indicator-color="primary">
-              <q-route-tab name="geral" :to="{
-                name: 'protocolo.geral',
-                params: { id: $route.params.id },
-              }">
-                Informações Gerais
-              </q-route-tab>
-
-              <q-route-tab name="ato_registro" :to="{ name: 'protocolo.atos', params: { id: $route.params.id } }">
-                <div class="tab-with-badge">
-                  <span>Atos</span>
-                  <q-chip v-if="totalAtos > 0" :label="totalAtos" color="orange-3" text-color="orange-8" size="xs"
-                    class="rounded-borders q-ml-sm" />
-                </div>
-              </q-route-tab>
-
-              <q-route-tab name="financeiro" :to="{
-                name: 'protocolo.financeiro',
-                params: { id: $route.params.id },
-              }">
-                <div class="tab-with-badge">
-                  <span>Financeiro</span>
-                  <q-chip v-if="valorRestante > 0" label="!" color="red-3" text-color="red-8" size="xs"
-                    class="rounded-borders q-ml-sm" />
-                </div>
-              </q-route-tab>
-            </q-tabs>
-          </div>
-          <q-space />
-          <!-- Ações principais compactas -->
-          <div class="row q-gutter-xs">
-            <q-btn v-if="valorRestante > 0" color="green-6" size="sm" icon="eva-credit-card-outline"
-              @click="receberPagamento" class="rounded-borders" dense>
-              <q-tooltip>Receber Pagamento</q-tooltip>
-            </q-btn>
-
-            <q-btn color="blue-6" size="sm" icon="eva-printer-outline" outline @click="imprimirProtocolo"
-              class="rounded-borders" dense>
-              <q-tooltip>Imprimir</q-tooltip>
-            </q-btn>
-
-            <q-btn icon="eva-more-vertical-outline" flat round size="sm" color="grey-7">
-              <q-menu class="rounded-borders">
-                <q-list dense>
-                  <q-item clickable @click="duplicarProtocolo" class="q-py-xs">
-                    <q-item-section avatar>
-                      <q-icon name="eva-copy-outline" size="16px" />
-                    </q-item-section>
-                    <q-item-section>
-                      <div class="text-caption">Duplicar</div>
-                    </q-item-section>
-                  </q-item>
-
-                  <q-item clickable @click="arquivarProtocolo" class="q-py-xs">
-                    <q-item-section avatar>
-                      <q-icon name="eva-archive-outline" size="16px" />
-                    </q-item-section>
-                    <q-item-section>
-                      <div class="text-caption">Arquivar</div>
-                    </q-item-section>
-                  </q-item>
-
-                  <q-separator />
-
-                  <q-item clickable @click="excluirProtocolo" class="text-negative q-py-xs">
-                    <q-item-section avatar>
-                      <q-icon name="eva-trash-2-outline" size="16px" />
-                    </q-item-section>
-                    <q-item-section>
-                      <div class="text-caption">Excluir</div>
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-menu>
-            </q-btn>
-          </div>
+        <div class="text-uppercase text-h6 text-dark text-weight-bold q-ml-md">
+          {{ titulo }}
         </div>
+
+        <q-space />
+
+        <q-tabs :model-value="rotaAtiva" mobile-arrows align="left" no-caps active-color="white"
+          indicator-color="transparent" class="oslo-tabs-pill">
+          <q-route-tab :to="{ name: 'protocolo.geral', params: { uuid: $route.params.uuid } }" name="geral"
+            label="Informações Gerais" class="oslo-tab-pill" />
+          <q-route-tab :to="{ name: 'protocolo.atos', params: { uuid: $route.params.uuid } }" name="atos"
+            class="oslo-tab-pill">
+            <div class="oslo-tab-pill__content">
+              <span>Atos & Registros</span>
+              <q-badge v-if="totalAtos > 0" :label="totalAtos" color="orange-3" text-color="orange-9" class="q-ml-xs" />
+            </div>
+          </q-route-tab>
+          <q-route-tab :to="{ name: 'protocolo.financeiro', params: { uuid: $route.params.uuid } }" name="financeiro"
+            class="oslo-tab-pill">
+            <div class="oslo-tab-pill__content">
+              <span>Financeiro</span>
+              <q-badge v-if="valorRestante > 0" label="!" color="red-3" text-color="red-9" class="q-ml-xs" />
+            </div>
+          </q-route-tab>
+          <q-route-tab :to="{ name: 'protocolo.anotacoes', params: { uuid: $route.params.uuid } }" name="anotacoes"
+            label="Anotações" class="oslo-tab-pill" />
+        </q-tabs>
+
+        <q-space />
+
+        <div class="q-gutter-sm flex justify-center items-center">
+          <!-- <q-btn v-if="protocolo && valorRestante > 0" flat dense icon="eva-credit-card-outline" label="Receber"
+            color="green-6" no-caps @click="receberPagamento">
+            <q-tooltip>Receber Pagamento</q-tooltip>
+          </q-btn> -->
+          <q-btn v-if="protocolo && protocolo.status !== 'cancelado'" flat dense icon="print" label="Imprimir"
+            color="grey-7" no-caps @click="imprimirProtocolo" />
+          <q-btn v-if="protocolo && (protocolo.status === 'aberto' || protocolo.status === 'pago_parcial')" flat dense
+            icon="cancel" label="Cancelar" color="negative" no-caps @click="confirmarCancelamento" />
+        </div>
+      </q-toolbar>
+
+      <!-- Linha de Informações -->
+      <q-toolbar v-if="protocolo" class="bg-grey-2">
+        <q-chip :color="getStatusColor(protocolo.status)" text-color="white" size="sm">
+          {{ getStatusLabel(protocolo.status) }}
+        </q-chip>
+        <span class="text-caption text-grey-7 q-mx-sm">
+          <strong>Solicitante:</strong> {{ protocolo.solicitante_nome }}
+        </span>
+        <span class="text-caption text-grey-7 q-mx-sm">
+          <strong>CPF/CNPJ:</strong> {{ protocolo.solicitante_cpf_cnpj || '-' }}
+        </span>
+        <span class="text-caption text-grey-7 q-mx-sm">
+          <strong>Data:</strong> {{ formatarData(protocolo.data_cadastro) }}
+        </span>
+        <span v-if="protocolo.matricula" class="text-caption text-grey-7 q-mx-sm">
+          <strong>Matrícula:</strong> {{ protocolo.matricula }}
+        </span>
       </q-toolbar>
     </q-header>
 
-    <!-- Conteúdo principal -->
-    <div class="protocolo-content-compact">
-      <router-view />
+    <!-- Conteúdo com Sidebar -->
+    <div class="protocolo-layout">
+      <!-- Conteúdo Principal -->
+      <div class="protocolo-content">
+        <router-view v-if="protocolo" :protocolo="protocolo" @atualizar="carregarProtocolo" />
+      </div>
+
+      <!-- Sidebar Direita -->
+      <protocolo-sidebar v-if="protocolo" :protocolo="protocolo" class="protocolo-sidebar-container" />
     </div>
 
-    <!-- Footer financeiro compacto -->
-    <q-footer class="bg-white text-dark protocolo-footer" elevated>
-      <q-card-section class="q-py-sm">
+    <!-- Footer Financeiro -->
+    <q-footer class=" bg-white text-dark">
+      <div class="q-pa-md">
         <div class="row items-center justify-between">
-          <!-- Resumo financeiro inline -->
+          <!-- Resumo financeiro -->
           <div class="col">
-            <div class="financial-summary-compact">
-              <div class="row items-center q-gutter-md">
-                <div class="summary-item-compact">
-                  <span class="text-caption text-grey-6">Total:</span>
-                  <span class="text-weight-bold text-grey-8 q-ml-xs">
-                    {{ formatarDinheiroBrasil(totalEmolumentoGeral) }}
-                  </span>
-                </div>
+            <div class="row items-center q-gutter-md">
+              <div class="summary-item">
+                <span class="text-caption text-grey-6">Total:</span>
+                <span class="text-weight-bold text-grey-8 q-ml-xs">
+                  {{ formatarDinheiroBrasil(totalEmolumentoGeral) }}
+                </span>
+              </div>
 
-                <div v-if="valorDesconto > 0" class="summary-item-compact">
-                  <span class="text-caption text-grey-6">Desconto:</span>
-                  <span class="text-weight-medium text-red-6 q-ml-xs">
-                    -{{ formatarDinheiroBrasil(valorDesconto) }}
-                  </span>
-                </div>
+              <div v-if="valorDesconto > 0" class="summary-item">
+                <span class="text-caption text-grey-6">Desconto:</span>
+                <span class="text-weight-medium text-red-6 q-ml-xs">
+                  -{{ formatarDinheiroBrasil(valorDesconto) }}
+                </span>
+              </div>
 
-                <div v-if="valorPago > 0" class="summary-item-compact">
-                  <span class="text-caption text-grey-6">Pago:</span>
-                  <span class="text-weight-medium text-green-6 q-ml-xs">
-                    {{ formatarDinheiroBrasil(valorPago) }}
-                  </span>
-                </div>
+              <div v-if="valorPago > 0" class="summary-item">
+                <span class="text-caption text-grey-6">Pago:</span>
+                <span class="text-weight-medium text-green-6 q-ml-xs">
+                  {{ formatarDinheiroBrasil(valorPago) }}
+                </span>
+              </div>
 
-                <div class="summary-item-compact">
-                  <span class="text-caption text-grey-6">Restante:</span>
-                  <span class="text-weight-bold text-primary q-ml-xs">
-                    {{
-                      formatarDinheiroBrasil(
-                        totalEmolumentoGeral - valorDesconto - valorPago
-                      )
-                    }}
-                  </span>
-                </div>
+              <div class="summary-item">
+                <span class="text-caption text-grey-6">Restante:</span>
+                <span class="text-weight-bold text-primary q-ml-xs">
+                  {{ formatarDinheiroBrasil(valorRestante) }}
+                </span>
               </div>
             </div>
           </div>
 
-          <!-- Status visual -->
+          <!-- Status -->
           <div class="col-auto">
             <q-chip v-if="valorRestante > 0" label="Pendente" color="orange-3" text-color="orange-8" size="sm"
-              class="rounded-borders" outline />
-            <q-chip v-else label="Quitado" color="green-3" text-color="green-8" size="sm" class="rounded-borders"
               outline />
+            <q-chip v-else label="Quitado" color="green-3" text-color="green-8" size="sm" outline />
           </div>
         </div>
-      </q-card-section>
+      </div>
     </q-footer>
+
+    <!-- Loading -->
+    <q-inner-loading :showing="carregando && !protocolo">
+      <q-spinner-dots color="primary" size="50px" />
+    </q-inner-loading>
   </q-page>
 </template>
 
 <script setup>
 import { storeToRefs } from "pinia";
 import { useProtocoloStore } from "src/stores/protocolo";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-
-const tab = ref("geral");
+import { useQuasar } from "quasar";
+import { formatarDinheiroBrasil, formatarData } from "src/Utils";
+import ProtocoloSidebar from "src/components/protocolo/ProtocoloSidebar.vue";
+import { usePageScroll } from 'src/composables/usePageScroll';
 
 defineOptions({
   name: "ProtocoloIndex",
 });
 
-import { useQuasar } from "quasar";
-import { formatarDinheiroBrasil } from "src/Utils";
-
 const protocoloStore = useProtocoloStore();
-const { protocolo, protocoloSelecionado, totalEmolumentoGeral } =
-  storeToRefs(protocoloStore);
+const { protocolo, carregando } = storeToRefs(protocoloStore);
+const { pageTweak } = usePageScroll();
 const $route = useRoute();
 const $router = useRouter();
 const $q = useQuasar();
+// Computed para rota ativa
+const rotaAtiva = computed(() => {
+  if ($route.name === 'protocolo.geral') return 'geral'
+  if ($route.name === 'protocolo.atos') return 'atos'
+  if ($route.name === 'protocolo.financeiro') return 'financeiro'
+  return 'geral'
+})
 
-const valorPago = ref(10.0);
-const desconto = ref(100.0);
-const valorDesconto = ref(0);
-
+// Valores financeiros do protocolo
+const totalEmolumentoGeral = computed(() => protocolo.value?.valor_total || 0);
+const valorDesconto = computed(() => protocolo.value?.valor_desconto || 0);
+const valorPago = computed(() => protocolo.value?.valor_pago || 0);
 const valorRestante = computed(() => {
-  return totalEmolumentoGeral.value - valorPago.value - desconto.value;
+  return (protocolo.value?.valor_final || 0) - (protocolo.value?.valor_pago || 0);
 });
 
 // Computed para as badges das tabs
 const totalAtos = computed(() => {
-  return protocolo.value?.atos?.length || 0;
+  return protocolo.value?.itens?.length || 0;
 });
 
-const titulo = computed(() =>
-  protocolo.value?.id
-    ? `#${protocolo.value.numero_protocolo_formatado}`
-    : "Novo Protocolo"
-);
+const titulo = computed(() => {
+  if (!protocolo.value?.numero) return "Novo Protocolo";
+  // Converte de "2026/000001" para "000001/2026"
+  const partes = protocolo.value.numero.split('/');
+  if (partes.length === 2) {
+    return `Protocolo RI ${partes[1]}/${partes[0]}`;
+  }
+  return `Protocolo RI ${protocolo.value.numero}`;
+});
 
 // Métodos de ação
 const receberPagamento = () => {
+  $router.push({ name: 'protocolo.financeiro', params: { uuid: $route.params.uuid } });
   $q.notify({
     color: "positive",
-    message: "Abrindo tela de pagamento",
+    message: "Navegando para financeiro",
     icon: "eva-credit-card-outline",
     position: "top-right",
   });
@@ -207,142 +196,226 @@ const imprimirProtocolo = () => {
   window.print();
 };
 
-const duplicarProtocolo = () => {
+const confirmarCancelamento = () => {
   $q.dialog({
-    title: "Duplicar Protocolo",
-    message: "Deseja criar uma cópia deste protocolo?",
+    title: 'Confirmar Cancelamento',
+    message: 'Deseja cancelar este protocolo? Esta ação não pode ser desfeita.',
+    prompt: {
+      model: '',
+      type: 'text',
+      label: 'Motivo do cancelamento *',
+      isValid: (val) => val && val.length > 3,
+    },
     cancel: true,
     persistent: true,
-  }).onOk(() => {
+  }).onOk(async (motivo) => {
+    await excluirProtocolo(motivo);
+  });
+};
+
+const excluirProtocolo = async (motivo) => {
+  try {
+    await protocoloStore.cancelar(protocolo.value.id, motivo);
     $q.notify({
       color: "positive",
-      message: "Protocolo duplicado com sucesso",
-      icon: "eva-copy-outline",
-      position: "top-right",
-    });
-  });
-};
-
-const arquivarProtocolo = () => {
-  $q.dialog({
-    title: "Arquivar Protocolo",
-    message: "Este protocolo será movido para o arquivo.",
-    cancel: true,
-    persistent: true,
-  }).onOk(() => {
-    $q.notify({
-      color: "info",
-      message: "Protocolo arquivado",
-      icon: "eva-archive-outline",
-      position: "top-right",
-    });
-  });
-};
-
-const excluirProtocolo = () => {
-  $q.dialog({
-    title: "Excluir Protocolo",
-    message: "ATENÇÃO: Esta ação não pode ser desfeita. Confirma a exclusão?",
-    cancel: true,
-    persistent: true,
-    color: "negative",
-  }).onOk(() => {
-    $q.notify({
-      color: "negative",
-      message: "Protocolo excluído",
+      message: "Protocolo cancelado com sucesso",
       icon: "eva-trash-2-outline",
       position: "top-right",
     });
-    // $router.push({ name: "home" });
-  });
+    $router.push({ name: "protocolo.lista" });
+  } catch (error) {
+    $q.notify({
+      color: "negative",
+      message: "Erro ao cancelar protocolo",
+      icon: "eva-alert-circle-outline",
+      position: "top-right",
+    });
+  }
 };
 
-onMounted(async () => {
-  if (!protocoloStore.protocoloSelecionado) {
-    try {
-      await protocoloStore.show($route.params.id);
-    } catch (error) {
-      console.warn("Erro ao carregar protocolo após refresh:", error);
-      $q.notify({
-        color: "negative",
-        message: "Não foi possível carregar o protocolo.",
-        icon: "eva-alert-circle-outline",
-        position: "top-right",
-      });
-      // $router.push({ name: "home" });
-    } finally {
-    }
+function voltar() {
+  $router.push({ name: 'protocolo.lista' })
+}
+
+function getStatusColor(status) {
+  const cores = {
+    aberto: 'blue',
+    pago: 'green',
+    pago_parcial: 'orange',
+    isento: 'grey',
+    cancelado: 'red',
+  }
+  return cores[status] || 'grey'
+}
+
+function getStatusLabel(status) {
+  const labels = {
+    aberto: 'Aberto',
+    pago: 'Pago',
+    pago_parcial: 'Pago Parcial',
+    isento: 'Isento',
+    cancelado: 'Cancelado',
+  }
+  return labels[status] || status
+}
+
+// Carregar protocolo
+async function carregarProtocolo() {
+  try {
+    await protocoloStore.carregar($route.params.uuid);
+  } catch (error) {
+    console.error("Erro ao carregar protocolo:", error);
+    $q.notify({
+      color: "negative",
+      message: "Não foi possível carregar o protocolo.",
+      icon: "eva-alert-circle-outline",
+      position: "top-right",
+    });
+    $router.push({ name: "protocolo.lista" });
+  }
+}
+
+onMounted(() => {
+  carregarProtocolo();
+});
+
+watch(() => $route.params.uuid, (newUuid) => {
+  if (newUuid) {
+    carregarProtocolo();
   }
 });
 </script>
 
 <style lang="scss" scoped>
-.compact-header {
-  border-bottom: 1px solid var(--border-color);
-}
-
-.protocolo-titulo {
-  font-weight: 600;
-  font-size: 1.1rem;
-  color: var(--text-color);
-  text-overflow: ellipsis;
-  text-transform: uppercase;
-}
-
-.tab-with-badge {
+.protocolo-page {
   display: flex;
-  align-items: center;
-  text-transform: uppercase;
-  font-size: var(--font-size-xs);
-  font-weight: 600;
-  letter-spacing: 0.5px;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-.protocolo-content-compact {
-  min-height: calc(100vh - 160px);
-  padding-bottom: 60px;
+.protocolo-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid #E8EAED;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.protocolo-layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.protocolo-content {
+  flex: 1;
+  padding: 24px;
+  background: #F8F9FA;
+  overflow-y: auto;
+}
+
+.protocolo-sidebar-container {
+  width: 320px;
+  flex-shrink: 0;
+  overflow-y: auto;
 }
 
 .protocolo-footer {
-  border-top: 1px solid var(--border-color);
-  box-shadow: 0 1px 3px 0 #0000001a, 0 1px 2px -1px #0000001a !important;
+  position: sticky;
+  bottom: 0;
+  z-index: 100;
+  border-top: 1px solid #E8EAED;
+  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.financial-summary-compact {
-  .summary-item-compact {
-    display: flex;
-    align-items: center;
-    white-space: nowrap;
+.summary-item {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+// Tabs estilo pill
+:deep(.oslo-tabs-pill) {
+  .q-tabs__content {
+    gap: 8px;
   }
+
+  // Remover indicador underline
+  .q-tab__indicator {
+    display: none !important;
+  }
+}
+
+:deep(.oslo-tab-pill) {
+  border-radius: 20px !important;
+  border: 1px solid #E8EAED !important;
+  background: transparent !important;
+  color: #5F6368 !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  padding: 6px 16px !important;
+  min-height: 36px !important;
+  text-transform: none !important;
+  transition: all 0.15s ease !important;
+
+  .q-tab__content {
+    min-width: auto;
+    padding: 0;
+  }
+
+  .q-tab__label {
+    color: #5F6368 !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+  }
+
+  // Hover (inativa)
+  &:hover:not(.q-tab--active) {
+    background: #F5F5F5 !important;
+    border-color: #D1D5DB !important;
+  }
+
+  // ATIVA
+  &.q-tab--active {
+    background: #FF7A00 !important;
+    border-color: #FF7A00 !important;
+    color: #FFFFFF !important;
+
+    .q-tab__label,
+    .oslo-tab-pill__content,
+    .oslo-tab-pill__content span {
+      color: #FFFFFF !important;
+    }
+
+    // Badge na tab ativa
+    .q-badge {
+      background: rgba(255, 255, 255, 0.25) !important;
+      color: #FFFFFF !important;
+    }
+  }
+}
+
+.oslo-tab-pill__content {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 @media (max-width: 768px) {
-  .compact-header {
-    min-height: 88px;
+  .protocolo-content {
+    padding: 16px;
   }
 
-  .protocolo-content-compact {
-    min-height: calc(100vh - 148px);
-  }
-
-  .financial-summary-compact {
-    .row {
-      gap: 8px;
-    }
-
-    .summary-item-compact {
-      font-size: 0.8rem;
-    }
+  .summary-item {
+    font-size: 0.8rem;
   }
 }
 
 @media (max-width: 480px) {
-  .financial-summary-compact {
-    .row {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 4px;
-    }
+  .protocolo-footer .row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
   }
 }
 </style>

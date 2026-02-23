@@ -5,7 +5,7 @@
       <div class="col-7 login-left gt-sm">
         <div class="login-left__content">
           <div class="login-left__brand">
-            <q-icon name="fa-duotone fa-building-columns" size="40px" class="login-left__icon" />
+            <l-icon name="landmark" :size="40" class="login-left__icon" />
             <div class="login-left__title">OSLO</div>
             <div class="login-left__tagline">Sistema de Gestão Cartorária</div>
           </div>
@@ -20,7 +20,7 @@
         <div class="login-form-container">
           <!-- Mobile logo -->
           <div class="login-mobile-brand lt-md">
-            <q-icon name="fa-duotone fa-building-columns" size="28px" color="primary" />
+            <l-icon name="landmark" :size="28" />
             <span class="login-mobile-brand__text">OSLO</span>
           </div>
 
@@ -84,6 +84,13 @@
                 Entrando...
               </template>
             </q-btn>
+
+            <div class="text-center q-mt-lg">
+              <span class="text-grey-7">Não tem conta?</span>
+              <router-link to="/cadastro" class="text-primary text-weight-medium q-ml-xs">
+                Criar conta grátis
+              </router-link>
+            </div>
           </q-form>
 
           <div class="login-footer lt-md">
@@ -221,7 +228,7 @@ checkRememberedUser();
 }
 
 .login-left__icon {
-  color: #FF7A00;
+  color: #ffffff;
   margin-bottom: 1rem;
 }
 
@@ -346,7 +353,7 @@ checkRememberedUser();
 
   &:after {
     border-width: 1px !important;
-    box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
+    box-shadow: 0 0 0 3px rgba(9, 9, 11, 0.10);
   }
 }
 
@@ -362,7 +369,7 @@ checkRememberedUser();
   transition: background var(--transition);
 
   &:hover {
-    background: var(--primary-light) !important;
+    background: var(--primary-dark) !important;
   }
 
   &:disabled {

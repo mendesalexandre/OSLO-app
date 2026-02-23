@@ -1,85 +1,84 @@
 <template>
   <modal v-model="model" :titulo="titulo" tamanho="lg" cor-titulo-cabecalho="modal-titulo" @close="onCancelar">
     <!-- Seção Principal -->
-    <q-card bordered>
-      <q-card-section class="q-pa-none">
-        <div class="corpo-secao">
-          <q-icon name="fa-regular fa-file-plus" class="q-mr-sm" />
-          <span class="titulo-secao">Informações do Protocolo</span>
-        </div>
-      </q-card-section>
+    <q-card-section class="q-pa-none">
+      <div class="corpo-secao">
+        <l-icon name="file-plus" :size="16" class="q-mr-sm" />
+        <span class="titulo-secao">Informações do Protocolo</span>
+      </div>
+    </q-card-section>
 
-      <q-card-section>
-        <!-- Tipo de Protocolo -->
-        <div class="col-12 grupo-tipo-protocolo">
-          <v-label label="Tipo de Protocolo" obrigatorio />
-          <q-btn-toggle v-model="getOpcaoSelecionada" :options="[
-            { label: 'Normal', value: 'NORMAL', icon: 'fa-regular fa-file' },
-            { label: 'Orçamento', value: 'ORCAMENTO', icon: 'fa-regular fa-calculator' },
-            { label: 'Processo Interno', value: 'PROCESSO_INTERNO', icon: 'fa-regular fa-folder-gear' },
-            { label: 'Exame e Cálculo', value: 'EXAME_CALCULO', icon: 'fa-regular fa-magnifying-glass-chart' }
-          ]" spread unelevated class="tipo-protocolo" />
-        </div>
-      </q-card-section>
+    <q-card-section>
+      <!-- Tipo de Protocolo -->
+      <div class="col-12 grupo-tipo-protocolo">
+        <v-label label="Tipo de Protocolo" obrigatorio />
+        <q-btn-toggle v-model="getOpcaoSelecionada" :options="[
+          { label: 'Normal', value: 'NORMAL' },
+          { label: 'Orçamento', value: 'ORCAMENTO' },
+          { label: 'Processo Interno', value: 'PROCESSO_INTERNO' },
+          { label: 'Exame e Cálculo', value: 'EXAME_CALCULO' }
+        ]" spread unelevated class="tipo-protocolo" />
+      </div>
+    </q-card-section>
 
-      <q-card-section>
-        <div class="row q-col-gutter-md">
-          <!-- Meio de Solicitação -->
-          <div class="col-md-12 col-sm-12 col-xs-12">
-            <v-label label="Origem da Solicitação" obrigatorio />
-            <q-select v-model="protocolo.meio_solicitacao_id" :options="meiosSolicitacao" option-value="id" dense
-              option-label="nome" outlined input-debounce="500" placeholder="Selecione o meio de solicitação" emit-value
-              map-options>
-              <!-- <template v-slot:prepend>
+    <q-card-section>
+      <div class="row q-col-gutter-md">
+        <!-- Meio de Solicitação -->
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <v-label label="Origem da Solicitação" obrigatorio />
+          <q-select v-model="protocolo.meio_solicitacao_id" :options="meiosSolicitacao" option-value="id" dense
+            option-label="nome" outlined input-debounce="500" placeholder="Selecione o meio de solicitação" emit-value
+            map-options>
+            <!-- <template v-slot:prepend>
                 <q-icon name="fa-duotone fa-envelope" size="14px" />
               </template> -->
 
-              <template v-slot:selected-item="scope">
-                <q-item v-bind="scope.itemProps">
-                  <q-item-section>
-                    <q-item-label>
-                      <q-chip icon-remove="none">
-                        {{ scope.opt.nome }}
-                      </q-chip>
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-              </template>
+            <template v-slot:selected-item="scope">
+              <q-item v-bind="scope.itemProps">
+                <q-item-section>
+                  <q-item-label>
+                    <q-chip icon-remove="none">
+                      {{ scope.opt.nome }}
+                    </q-chip>
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+            </template>
 
-              <template v-slot:option="scope">
-                <q-item v-bind="scope.itemProps">
-                  <q-item-section>
-                    <q-item-label>{{ scope.opt.nome }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-              </template>
+            <template v-slot:option="scope">
+              <q-item v-bind="scope.itemProps">
+                <q-item-section>
+                  <q-item-label>{{ scope.opt.nome }}</q-item-label>
+                </q-item-section>
+              </q-item>
+            </template>
 
-              <template v-slot:no-option>
-                <q-item>
-                  <q-item-section class="text-center text-grey">
-                    <div>Nenhum meio de solicitação encontrado</div>
-                  </q-item-section>
-                </q-item>
-              </template>
-            </q-select>
-          </div>
+            <template v-slot:no-option>
+              <q-item>
+                <q-item-section class="text-center text-grey">
+                  <div>Nenhum meio de solicitação encontrado</div>
+                </q-item-section>
+              </q-item>
+            </template>
+          </q-select>
+        </div>
 
-          <!-- NATUREZA FORMAL DO TITULO -->
-          <div class="col-12">
-            <v-label label="Natureza Formal do Título" obrigatorio />
-            <div class="row q-gutter-sm">
-              <div class="col">
-                <q-select ref="selectNatureza" v-model="naturezaSelecionado" :options="options" option-value="id"
-                  option-label="nome" use-input outlined dense input-debounce="300" @filter="getNaturezaByNome"
-                  :loading="loading" hide-dropdown-icon
-                  :placeholder="naturezaSelecionado ? '' : 'digite a natureza para buscar...'" clearable
-                  @update:model-value="removerFoco">
+        <!-- NATUREZA FORMAL DO TITULO -->
+        <div class="col-12">
+          <v-label label="Natureza Formal do Título" obrigatorio />
+          <div class="row q-gutter-sm">
+            <div class="col">
+              <q-select ref="selectNatureza" v-model="naturezaSelecionado" :options="options" option-value="id"
+                option-label="nome" use-input outlined dense input-debounce="300" @filter="getNaturezaByNome"
+                :loading="loading" hide-dropdown-icon
+                :placeholder="naturezaSelecionado ? '' : 'digite a natureza para buscar...'" clearable
+                @update:model-value="removerFoco">
 
-                  <!-- <template v-slot:before>
+                <!-- <template v-slot:before>
                     <q-icon name="fa-regular fa-search" size="14px" />
                   </template> -->
 
-                  <!-- <template v-slot:selected-item="scope">
+                <!-- <template v-slot:selected-item="scope">
                     <q-item v-bind="scope.itemProps">
                       <q-item-section>
                         <q-item-label class="text-weight-medium text-primary">
@@ -89,325 +88,327 @@
                     </q-item>
                   </template> -->
 
-                  <template v-slot:selected-item="scope">
-                    <q-item v-bind="scope.itemProps">
-                      <q-item-section>
-                        <q-item-label>
-                          <q-chip icon-remove="none">
-                            <!-- {{ scope.opt.nome }}/{{ scope.opt.sigla }} -->
-                            {{ scope.opt.nome }}
-                          </q-chip>
-                        </q-item-label>
-                      </q-item-section>
-                    </q-item>
-                  </template>
-
-                  <template v-slot:option="scope">
-                    <q-item v-bind="scope.itemProps">
-                      <q-item-section>
-                        <q-item-label>
+                <template v-slot:selected-item="scope">
+                  <q-item v-bind="scope.itemProps">
+                    <q-item-section>
+                      <q-item-label>
+                        <q-chip icon-remove="none">
+                          <!-- {{ scope.opt.nome }}/{{ scope.opt.sigla }} -->
                           {{ scope.opt.nome }}
-                        </q-item-label>
-                      </q-item-section>
-                    </q-item>
-                  </template>
+                        </q-chip>
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </template>
 
-                  <template v-slot:no-option>
-                    <q-item>
-                      <q-item-section class="text-center">
-                        <div class="text-grey-5 q-py-md">
-                          <q-icon name="fa-duotone fa-magnifying-glass" size="2em" />
-                          <div class="q-mt-sm">Nenhuma natureza encontrada</div>
-                          <div class="text-caption">
-                            Digite pelo menos 2 caracteres
-                          </div>
-                        </div>
-                      </q-item-section>
-                    </q-item>
-                  </template>
-                </q-select>
-              </div>
-
-
-              <div class="col-auto">
-                <q-btn icon="fa-regular fa-user-plus" color="grey-5" outline @click="abrirModalCriarCliente" size="8px"
-                  class="full-height">
-                  <q-tooltip>Adicionar novo cliente</q-tooltip>
-                </q-btn>
-              </div>
-            </div>
-          </div>
-
-          <!-- Serviço Principal e Estado -->
-          <div class="col-md-8 col-sm-12">
-            <v-label label="Serviço Principal" obrigatorio />
-
-            <q-select v-model="protocolo.natureza_id" :options="servicos" option-value="id" option-label="nome" outlined
-              dense input-debounce="500" placeholder="Selecione o serviço principal">
-              <template v-slot:selected-item="scope">
-                <q-item v-bind="scope.itemProps">
-                  <q-item-section>
-                    <q-item-label>
-                      <q-chip icon-remove="none">
+                <template v-slot:option="scope">
+                  <q-item v-bind="scope.itemProps">
+                    <q-item-section>
+                      <q-item-label>
                         {{ scope.opt.nome }}
-                      </q-chip>
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-              </template>
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </template>
 
-              <template v-slot:option="scope">
-                <q-item v-bind="scope.itemProps">
-                  <q-item-section>
-                    <q-item-label>{{ scope.opt.nome }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-              </template>
-
-              <template v-slot:no-option>
-                <q-item>
-                  <q-item-section class="text-center text-grey">
-                    <q-icon name="fa-duotone fa-circle-exclamation" size="2em" class="q-mb-sm" />
-                    <div>Nenhum serviço encontrado</div>
-                  </q-item-section>
-                </q-item>
-              </template>
-            </q-select>
-          </div>
-
-          <div class="col-md-4 col-sm-12 col-xs-12">
-            <v-label label="Estado" obrigatorio />
-
-            <q-select v-model="protocolo.estado_id" :options="estados" option-value="id" option-label="nome" outlined
-              dense input-debounce="500" placeholder="Selecione o estado">
-              <template v-slot:selected-item="scope">
-                <q-item v-bind="scope.itemProps">
-                  <q-item-section>
-                    <q-item-label>
-                      <q-chip icon-remove="none">
-                        <!-- {{ scope.opt.nome }}/{{ scope.opt.sigla }} -->
-                        {{ scope.opt.nome }}
-                      </q-chip>
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-              </template>
-
-              <template v-slot:option="scope">
-                <q-item v-bind="scope.itemProps">
-                  <q-item-section>
-                    <!-- <q-item-label>{{ scope.opt.nome }}/{{ scope.opt.sigla }}</q-item-label> -->
-                    <q-item-label>{{ scope.opt.nome }}</q-item-label>
-                    <!-- <q-item-label caption>{{ scope.opt.sigla }}</q-item-label> -->
-                  </q-item-section>
-                </q-item>
-              </template>
-
-              <template v-slot:no-option>
-                <q-item>
-                  <q-item-section class="text-center text-grey">
-                    <q-icon name="fa-duotone fa-circle-exclamation" size="2em" class="q-mb-sm" />
-                    <div>Nenhum estado encontrado</div>
-                  </q-item-section>
-                </q-item>
-              </template>
-            </q-select>
-          </div>
-
-          <!-- Solicitante -->
-          <div class="col-12">
-            <v-label label="Solicitante" obrigatorio />
-            <div class="row q-gutter-sm">
-              <div class="col">
-                <q-select v-model="clienteSelecionado" :options="options" option-value="id" option-label="nome"
-                  use-input outlined dense input-debounce="300" @filter="filterClients" :loading="loading"
-                  hide-dropdown-icon placeholder="digite o nome ou documento para buscar...">
-                  <!-- <template v-slot:before>
-                    <q-icon name="fa-regular fa-search" size="14px" />
-                  </template> -->
-
-                  <template v-slot:selected-item="scope">
-                    <q-item v-bind="scope.itemProps">
-                      <q-item-section avatar>
-                        <q-avatar size="24px" color="blue-grey-6" text-color="white">
-                          {{ scope.opt.nome.charAt(0).toUpperCase() }}
-                        </q-avatar>
-                      </q-item-section>
-                      <q-item-section>
-                        <q-item-label class="text-weight-medium text-primary">
-                          {{ scope.opt.nome }}
-                        </q-item-label>
-                        <q-item-label caption class="text-grey-6">
-                          {{ scope.opt.cpf_cnpj }}
-                        </q-item-label>
-                      </q-item-section>
-                    </q-item>
-                  </template>
-
-                  <template v-slot:option="scope">
-                    <q-item v-bind="scope.itemProps">
-                      <q-item-section>
-                        <q-item-label class="text-weight-medium text-primary">
-                          {{ scope.opt.nome }}
-                        </q-item-label>
-                        <q-item-label caption class="text-grey-6">
-                          {{ scope.opt.cpf_cnpj }} • {{ scope.opt.tipo || 'Cliente' }}
-                        </q-item-label>
-                      </q-item-section>
-                    </q-item>
-                  </template>
-
-                  <template v-slot:no-option>
-                    <q-item>
-                      <q-item-section class="text-center">
-                        <div class="text-grey-5 q-py-md">
-                          <q-icon name="fa-duotone fa-magnifying-glass" size="2em" />
-                          <div class="q-mt-sm">Nenhum cliente encontrado</div>
-                          <div class="text-caption">
-                            Digite pelo menos 2 caracteres
-                          </div>
+                <template v-slot:no-option>
+                  <q-item>
+                    <q-item-section class="text-center">
+                      <div class="text-grey-5 q-py-md">
+                        <l-icon name="search" :size="32" />
+                        <div class="q-mt-sm">Nenhuma natureza encontrada</div>
+                        <div class="text-caption">
+                          Digite pelo menos 2 caracteres
                         </div>
-                      </q-item-section>
-                    </q-item>
-                  </template>
-                </q-select>
-              </div>
-
-              <div class="col-auto">
-                <q-btn icon="fa-regular fa-user-plus" color="grey-5" outline @click="abrirModalCriarCliente"
-                  class="full-height" size="8px">
-                  <q-tooltip>Adicionar novo cliente</q-tooltip>
-                </q-btn>
-              </div>
+                      </div>
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
             </div>
-          </div>
 
-          <div class="col-12">
-            <v-label label="Interessado" obrigatorio />
-            <div class="row q-gutter-sm">
-              <div class="col">
-                <q-select v-model="clienteSelecionado" :options="options" option-value="id" option-label="nome"
-                  use-input outlined dense input-debounce="300" @filter="filterClients" :loading="loading"
-                  hide-dropdown-icon placeholder="digite o nome ou documento para buscar...">
-                  <template v-slot:prepend>
-                    <q-icon name="fa-regular fa-user" size="14px" />
-                  </template>
 
-                  <template v-slot:selected-item="scope">
-                    <q-item v-bind="scope.itemProps">
-                      <q-item-section avatar>
-                        <q-avatar size="24px" color="blue-grey-6" text-color="white">
-                          {{ scope.opt.nome.charAt(0).toUpperCase() }}
-                        </q-avatar>
-                      </q-item-section>
-                      <q-item-section>
-                        <q-item-label class="text-weight-medium text-primary">
-                          {{ scope.opt.nome }}
-                        </q-item-label>
-                        <q-item-label caption class="text-grey-6">
-                          {{ scope.opt.cpf_cnpj }}
-                        </q-item-label>
-                      </q-item-section>
-                    </q-item>
-                  </template>
-
-                  <template v-slot:option="scope">
-                    <q-item v-bind="scope.itemProps">
-                      <q-item-section avatar>
-                        <q-avatar size="32px" color="blue-grey-6" text-color="white">
-                          {{ scope.opt.nome.charAt(0).toUpperCase() }}
-                        </q-avatar>
-                      </q-item-section>
-                      <q-item-section>
-                        <q-item-label class="text-weight-medium text-primary">
-                          {{ scope.opt.nome }}
-                        </q-item-label>
-                        <q-item-label caption class="text-grey-6">
-                          {{ scope.opt.cpf_cnpj }} • {{ scope.opt.tipo || 'Cliente' }}
-                        </q-item-label>
-                      </q-item-section>
-                    </q-item>
-                  </template>
-
-                  <template v-slot:no-option>
-                    <q-item>
-                      <q-item-section class="text-center">
-                        <div class="text-grey-5 q-py-md">
-                          <q-icon name="fa-duotone fa-magnifying-glass" size="2em" />
-                          <div class="q-mt-sm">Nenhum cliente encontrado</div>
-                          <div class="text-caption">
-                            Digite pelo menos 2 caracteres
-                          </div>
-                        </div>
-                      </q-item-section>
-                    </q-item>
-                  </template>
-                </q-select>
-              </div>
-
-              <div class="col-auto">
-                <q-btn icon="fa-regular fa-user-plus" color="grey-5" outline @click="abrirModalCriarCliente" size="8px"
-                  class="full-height">
-                  <q-tooltip>Adicionar novo cliente</q-tooltip>
-                </q-btn>
-              </div>
+            <div class="col-auto">
+              <q-btn color="grey-5" outline @click="abrirModalCriarCliente" size="8px"
+                class="full-height">
+                <l-icon name="user-plus" :size="16" />
+                <q-tooltip>Adicionar novo cliente</q-tooltip>
+              </q-btn>
             </div>
-          </div>
-
-          <!-- Cartório -->
-          <div class="col-12">
-            <v-label label="Cartório" obrigatorio />
-
-            <q-select v-model="protocolo.cartorio_id" :options="cartorios" option-value="id" option-label="nome"
-              outlined dense input-debounce="500" placeholder="Selecione o cartório">
-
-              <template v-slot:selected-item="scope">
-                <q-item v-bind="scope.itemProps">
-                  <q-item-section>
-                    <q-item-label>
-                      <q-chip icon-remove="none">
-                        {{ scope.opt.nome }}
-                      </q-chip>
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-              </template>
-
-              <template v-slot:option="scope">
-                <q-item v-bind="scope.itemProps">
-                  <q-item-section avatar>
-                    <q-icon name="fa-duotone fa-building-columns" />
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label>{{ scope.opt.nome }}</q-item-label>
-                    <q-item-label caption>{{ scope.opt.endereco || 'Cartório' }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-              </template>
-
-              <template v-slot:no-option>
-                <q-item>
-                  <q-item-section class="text-center text-grey">
-                    <q-icon name="fa-duotone fa-circle-exclamation" size="2em" class="q-mb-sm" />
-                    <div>Nenhum cartório encontrado</div>
-                  </q-item-section>
-                </q-item>
-              </template>
-            </q-select>
           </div>
         </div>
-      </q-card-section>
-    </q-card>
+
+        <!-- Serviço Principal e Estado -->
+        <div class="col-md-8 col-sm-12">
+          <v-label label="Serviço Principal" obrigatorio />
+
+          <q-select v-model="protocolo.natureza_id" :options="servicos" option-value="id" option-label="nome" outlined
+            dense input-debounce="500" placeholder="Selecione o serviço principal">
+            <template v-slot:selected-item="scope">
+              <q-item v-bind="scope.itemProps">
+                <q-item-section>
+                  <q-item-label>
+                    <q-chip icon-remove="none">
+                      {{ scope.opt.nome }}
+                    </q-chip>
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+            </template>
+
+            <template v-slot:option="scope">
+              <q-item v-bind="scope.itemProps">
+                <q-item-section>
+                  <q-item-label>{{ scope.opt.nome }}</q-item-label>
+                </q-item-section>
+              </q-item>
+            </template>
+
+            <template v-slot:no-option>
+              <q-item>
+                <q-item-section class="text-center text-grey">
+                  <l-icon name="alert-circle" :size="32" class="q-mb-sm" />
+                  <div>Nenhum serviço encontrado</div>
+                </q-item-section>
+              </q-item>
+            </template>
+          </q-select>
+        </div>
+
+        <div class="col-md-4 col-sm-12 col-xs-12">
+          <v-label label="Estado" obrigatorio />
+
+          <q-select v-model="protocolo.estado_id" :options="estados" option-value="id" option-label="nome" outlined
+            dense input-debounce="500" placeholder="Selecione o estado">
+            <template v-slot:selected-item="scope">
+              <q-item v-bind="scope.itemProps">
+                <q-item-section>
+                  <q-item-label>
+                    <q-chip icon-remove="none">
+                      <!-- {{ scope.opt.nome }}/{{ scope.opt.sigla }} -->
+                      {{ scope.opt.nome }}
+                    </q-chip>
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+            </template>
+
+            <template v-slot:option="scope">
+              <q-item v-bind="scope.itemProps">
+                <q-item-section>
+                  <!-- <q-item-label>{{ scope.opt.nome }}/{{ scope.opt.sigla }}</q-item-label> -->
+                  <q-item-label>{{ scope.opt.nome }}</q-item-label>
+                  <!-- <q-item-label caption>{{ scope.opt.sigla }}</q-item-label> -->
+                </q-item-section>
+              </q-item>
+            </template>
+
+            <template v-slot:no-option>
+              <q-item>
+                <q-item-section class="text-center text-grey">
+                  <l-icon name="alert-circle" :size="32" class="q-mb-sm" />
+                  <div>Nenhum estado encontrado</div>
+                </q-item-section>
+              </q-item>
+            </template>
+          </q-select>
+        </div>
+
+        <!-- Solicitante -->
+        <div class="col-12">
+          <v-label label="Solicitante" obrigatorio />
+          <div class="row q-gutter-sm">
+            <div class="col">
+              <q-select v-model="clienteSelecionado" :options="options" option-value="id" option-label="nome" use-input
+                outlined dense input-debounce="300" @filter="filterClients" :loading="loading" hide-dropdown-icon
+                placeholder="digite o nome ou documento para buscar...">
+                <!-- <template v-slot:before>
+                    <q-icon name="fa-regular fa-search" size="14px" />
+                  </template> -->
+
+                <template v-slot:selected-item="scope">
+                  <q-item v-bind="scope.itemProps">
+                    <q-item-section avatar>
+                      <q-avatar size="24px" color="blue-grey-6" text-color="white">
+                        {{ scope.opt.nome.charAt(0).toUpperCase() }}
+                      </q-avatar>
+                    </q-item-section>
+                    <q-item-section>
+                      <q-item-label class="text-weight-medium text-primary">
+                        {{ scope.opt.nome }}
+                      </q-item-label>
+                      <q-item-label caption class="text-grey-6">
+                        {{ scope.opt.cpf_cnpj }}
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </template>
+
+                <template v-slot:option="scope">
+                  <q-item v-bind="scope.itemProps">
+                    <q-item-section>
+                      <q-item-label class="text-weight-medium text-primary">
+                        {{ scope.opt.nome }}
+                      </q-item-label>
+                      <q-item-label caption class="text-grey-6">
+                        {{ scope.opt.cpf_cnpj }} • {{ scope.opt.tipo || 'Cliente' }}
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </template>
+
+                <template v-slot:no-option>
+                  <q-item>
+                    <q-item-section class="text-center">
+                      <div class="text-grey-5 q-py-md">
+                        <l-icon name="search" :size="32" />
+                        <div class="q-mt-sm">Nenhum cliente encontrado</div>
+                        <div class="text-caption">
+                          Digite pelo menos 2 caracteres
+                        </div>
+                      </div>
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
+            </div>
+
+            <div class="col-auto">
+              <q-btn color="grey-5" outline @click="abrirModalCriarCliente"
+                class="full-height" size="8px">
+                <l-icon name="user-plus" :size="16" />
+                <q-tooltip>Adicionar novo cliente</q-tooltip>
+              </q-btn>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <v-label label="Interessado" obrigatorio />
+          <div class="row q-gutter-sm">
+            <div class="col">
+              <q-select v-model="clienteSelecionado" :options="options" option-value="id" option-label="nome" use-input
+                outlined dense input-debounce="300" @filter="filterClients" :loading="loading" hide-dropdown-icon
+                placeholder="digite o nome ou documento para buscar...">
+                <template v-slot:prepend>
+                  <l-icon name="user" :size="14" />
+                </template>
+
+                <template v-slot:selected-item="scope">
+                  <q-item v-bind="scope.itemProps">
+                    <q-item-section avatar>
+                      <q-avatar size="24px" color="blue-grey-6" text-color="white">
+                        {{ scope.opt.nome.charAt(0).toUpperCase() }}
+                      </q-avatar>
+                    </q-item-section>
+                    <q-item-section>
+                      <q-item-label class="text-weight-medium text-primary">
+                        {{ scope.opt.nome }}
+                      </q-item-label>
+                      <q-item-label caption class="text-grey-6">
+                        {{ scope.opt.cpf_cnpj }}
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </template>
+
+                <template v-slot:option="scope">
+                  <q-item v-bind="scope.itemProps">
+                    <q-item-section avatar>
+                      <q-avatar size="32px" color="blue-grey-6" text-color="white">
+                        {{ scope.opt.nome.charAt(0).toUpperCase() }}
+                      </q-avatar>
+                    </q-item-section>
+                    <q-item-section>
+                      <q-item-label class="text-weight-medium text-primary">
+                        {{ scope.opt.nome }}
+                      </q-item-label>
+                      <q-item-label caption class="text-grey-6">
+                        {{ scope.opt.cpf_cnpj }} • {{ scope.opt.tipo || 'Cliente' }}
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </template>
+
+                <template v-slot:no-option>
+                  <q-item>
+                    <q-item-section class="text-center">
+                      <div class="text-grey-5 q-py-md">
+                        <l-icon name="search" :size="32" />
+                        <div class="q-mt-sm">Nenhum cliente encontrado</div>
+                        <div class="text-caption">
+                          Digite pelo menos 2 caracteres
+                        </div>
+                      </div>
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
+            </div>
+
+            <div class="col-auto">
+              <q-btn color="grey-5" outline @click="abrirModalCriarCliente" size="8px"
+                class="full-height">
+                <l-icon name="user-plus" :size="16" />
+                <q-tooltip>Adicionar novo cliente</q-tooltip>
+              </q-btn>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cartório -->
+        <div class="col-12">
+          <v-label label="Cartório" obrigatorio />
+
+          <q-select v-model="protocolo.cartorio_id" :options="cartorios" option-value="id" option-label="nome" outlined
+            dense input-debounce="500" placeholder="Selecione o cartório">
+
+            <template v-slot:selected-item="scope">
+              <q-item v-bind="scope.itemProps">
+                <q-item-section>
+                  <q-item-label>
+                    <q-chip icon-remove="none">
+                      {{ scope.opt.nome }}
+                    </q-chip>
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+            </template>
+
+            <template v-slot:option="scope">
+              <q-item v-bind="scope.itemProps">
+                <q-item-section avatar>
+                  <l-icon name="landmark" :size="18" />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>{{ scope.opt.nome }}</q-item-label>
+                  <q-item-label caption>{{ scope.opt.endereco || 'Cartório' }}</q-item-label>
+                </q-item-section>
+              </q-item>
+            </template>
+
+            <template v-slot:no-option>
+              <q-item>
+                <q-item-section class="text-center text-grey">
+                  <l-icon name="alert-circle" :size="32" class="q-mb-sm" />
+                  <div>Nenhum cartório encontrado</div>
+                </q-item-section>
+              </q-item>
+            </template>
+          </q-select>
+        </div>
+      </div>
+    </q-card-section>
 
     <template v-slot:rodape>
       <q-card-section class="bg-grey-3">
         <div class="flex justify-between">
           <div>
-            <q-btn label="Cancelar" color="negative" outline @click="cancelar" icon="fa-duotone fa-xmark"
+            <q-btn label="Cancelar" color="negative" outline @click="cancelar"
               :disable="salvando" />
           </div>
           <div class="q-mr-md">
-            <q-btn label="Salvar" color="primary" icon="fa-regular fa-check" @click="salvar" outline
+            <q-btn label="Salvar" color="primary" @click="salvar" outline
               :loading="salvando">
               <template v-slot:loading>
                 <q-spinner class="q-mr-sm" />
@@ -493,7 +494,6 @@ const salvar = async () => {
     $q.notify({
       color: "warning",
       message: "Preencha todos os campos obrigatórios",
-      icon: "fa-duotone fa-triangle-exclamation",
       position: "top-right",
     });
     return;
@@ -516,7 +516,6 @@ const salvar = async () => {
     $q.notify({
       color: "positive",
       message: `Protocolo ${protocoloCriadoMock.codigo} criado! Redirecionando...`,
-      icon: "fa-duotone fa-circle-check",
       timeout: 2000,
       position: "top-right",
     });
@@ -532,7 +531,6 @@ const salvar = async () => {
     $q.notify({
       color: "negative",
       message: error?.response?.data?.message || "Erro ao criar o protocolo.",
-      icon: "fa-duotone fa-circle-exclamation",
       position: "top-right",
     });
   } finally {
@@ -654,9 +652,8 @@ watch(model, (newVal) => {
     letter-spacing: 0.5px;
   }
 
-  .q-icon {
+  :deep(svg) {
     color: var(--text-secondary);
-    font-size: 1rem;
   }
 }
 

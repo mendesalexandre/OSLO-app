@@ -13,7 +13,15 @@ export default defineConfig((ctx) => {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-webpack/boot-files
-    boot: ["fontawesome", "i18n", "axios", "auth", "permissao", "setDefaults", "components"],
+    boot: [
+      "fontawesome",
+      "i18n",
+      "axios",
+      "auth",
+      "permissao",
+      "setDefaults",
+      "components",
+    ],
 
     // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-file#css
     css: [
@@ -81,7 +89,9 @@ export default defineConfig((ctx) => {
 
     // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-file#framework
     framework: {
-      config: {},
+      config: {
+        brand: { primary: '#09090b' },
+      },
 
       // iconSet: 'material-icons', // Quasar icon set
       // lang: 'en-US', // Quasar language pack
@@ -104,7 +114,7 @@ export default defineConfig((ctx) => {
         "LocalStorage",
         "SessionStorage",
         "AppFullscreen",
-        "LoadingBar",
+        // "LoadingBar",
         "BottomSheet",
         "Platform",
         "Cookies",

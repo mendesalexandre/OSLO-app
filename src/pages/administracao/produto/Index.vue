@@ -11,10 +11,11 @@
         <q-btn
           v-permissao="'PRODUTO_CRIAR'"
           unelevated color="primary" no-caps
-          icon="fa-regular fa-plus"
-          label="Novo Produto"
           @click="abrirModalCriar"
-        />
+        >
+          <l-icon name="plus" :size="16" class="q-mr-sm" />
+          Novo Produto
+        </q-btn>
       </div>
     </div>
 
@@ -31,7 +32,7 @@
               @update:model-value="buscarDebounce"
             >
               <template #prepend>
-                <q-icon name="fa-regular fa-magnifying-glass" size="14px" />
+                <l-icon name="search" :size="14" />
               </template>
             </q-input>
           </div>
@@ -46,7 +47,7 @@
               @update:model-value="buscar"
             >
               <template #prepend>
-                <q-icon name="fa-regular fa-layer-group" size="14px" />
+                <l-icon name="layers" :size="14" />
               </template>
             </q-select>
           </div>
@@ -61,7 +62,7 @@
               @update:model-value="buscar"
             >
               <template #prepend>
-                <q-icon name="fa-regular fa-toggle-on" size="14px" />
+                <l-icon name="toggle-right" :size="14" />
               </template>
             </q-select>
           </div>
@@ -136,10 +137,10 @@
               <!-- Calcular -->
               <q-btn
                 flat dense round
-                icon="fa-regular fa-calculator"
                 color="primary" size="sm"
                 @click="abrirCalcular(props.row)"
               >
+                <l-icon name="calculator" :size="16" />
                 <q-tooltip>Calcular</q-tooltip>
               </q-btn>
 
@@ -147,10 +148,10 @@
               <q-btn
                 v-permissao="'PRODUTO_EDITAR'"
                 flat dense round
-                icon="fa-regular fa-pen"
                 color="grey-7" size="sm"
                 @click="abrirModalEditar(props.row)"
               >
+                <l-icon name="pen" :size="16" />
                 <q-tooltip>Editar</q-tooltip>
               </q-btn>
 
@@ -158,10 +159,10 @@
               <q-btn
                 v-permissao="'PRODUTO_EXCLUIR'"
                 flat dense round
-                icon="fa-regular fa-trash"
                 color="negative" size="sm"
                 @click="confirmarExcluir(props.row)"
               >
+                <l-icon name="trash-2" :size="16" />
                 <q-tooltip>Excluir</q-tooltip>
               </q-btn>
 

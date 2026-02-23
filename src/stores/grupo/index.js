@@ -9,24 +9,24 @@ export const useGrupoStore = defineStore("grupo", () => {
 
   const index = async (params = {}) => {
     const { data } = await api.get("/grupo", { params });
-    grupos.value = data.data?.data ?? data.data ?? [];
+    grupos.value = data.dados?.data ?? data.dados ?? [];
     return grupos.value;
   };
 
   const show = async (id) => {
     const { data } = await api.get(`/grupo/${id}`);
-    grupo.value = data.data;
+    grupo.value = data.dados;
     return grupo.value;
   };
 
   const create = async (payload) => {
     const { data } = await api.post("/grupo", payload);
-    return data.data;
+    return data.dados;
   };
 
   const update = async (id, payload) => {
     const { data } = await api.put(`/grupo/${id}`, payload);
-    return data.data;
+    return data.dados;
   };
 
   const destroy = async (id) => {
@@ -37,7 +37,7 @@ export const useGrupoStore = defineStore("grupo", () => {
     const { data } = await api.put(`/grupo/${id}/permissoes`, {
       permissao_ids: permissaoIds,
     });
-    return data.data;
+    return data.dados;
   };
 
   return {

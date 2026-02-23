@@ -21,7 +21,7 @@
         <q-item v-bind="scope.itemProps">
           <q-item-section>
             <q-item-label>
-              <q-chip :icon-remove="showRemoveIcon ? '' : 'fa-solid fa-xmark'" :color="chipColor"
+              <q-chip :icon-remove="showRemoveIcon ? '' : 'cancel'" :color="chipColor"
                 :text-color="chipTextColor">
                 {{ scope.opt.label || scope.opt.nome }}
               </q-chip>

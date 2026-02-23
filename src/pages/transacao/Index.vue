@@ -457,36 +457,22 @@ const tiposLancamento = computed(() => [
   {
     label: 'Entrada',
     value: 'ENTRADA',
-    icon: 'fa-regular fa-circle-down',
     color: 'positive',
     class: 'btn-entrada'
   },
   {
     label: 'Saída',
     value: 'SAIDA',
-    icon: 'fa-regular fa-circle-up',
-    // color: 'negative',
     class: 'btn-saida'
   },
-  // {
-  //   label: 'Ajuste',
-  //   value: 'AJUSTE',
-  //   icon: 'fa-regular fa-pen-to-square',
-  //   // color: 'warning',
-  //   class: 'btn-ajuste'
-  // },
   {
     label: 'Sangria',
     value: 'SANGRIA',
-    icon: 'fa-regular fa-money-bill-wave',
-    // color: 'orange',
     class: 'btn-sangria'
   },
   {
     label: 'Transferência',
     value: 'TRANSFERENCIA',
-    icon: 'fa-regular fa-right-left',
-    // color: 'info',
     class: 'btn-transferencia'
   },
 ])

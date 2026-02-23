@@ -2,12 +2,17 @@
   <modal v-model="model" persistente :titulo="titulo" tamanho="xl" card-completo @fechar="onCancelar">
     <template #controles>
       <div class="justify-between items-center ">
-        <q-btn color="blue-8" flat round size="sm" outline icon="fa-solid fa-microchip-ai">
+        <q-btn color="blue-8" flat round size="sm" outline>
+          <l-icon name="cpu" :size="16" />
           <q-tooltip>Sincronizar arquivos</q-tooltip>
         </q-btn>
 
-        <q-btn icon="fa-regular fa-xmark" flat round dense @click="onCancelar" size="sm" />
-        <q-btn icon="fa-regular fa-print" flat round dense @click="onCancelar" size="sm" />
+        <q-btn flat round dense @click="onCancelar" size="sm">
+          <l-icon name="x" :size="16" />
+        </q-btn>
+        <q-btn flat round dense @click="onCancelar" size="sm">
+          <l-icon name="printer" :size="16" />
+        </q-btn>
       </div>
 
     </template>

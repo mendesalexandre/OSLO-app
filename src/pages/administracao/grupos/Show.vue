@@ -1,11 +1,14 @@
 <template>
   <modal v-model="model" :titulo="titulo" tamanho="lg">
-    <q-tabs v-model="tab" no-caps class="q-mb-md" active-color="primary" indicator-color="primary" dense align="left">
-      <q-tab name="dados" label="Dados" />
-      <q-tab name="permissoes" label="Permissões" />
-    </q-tabs>
+    <template #tabs>
+      <q-tabs v-model="tab" no-caps active-color="primary" indicator-color="primary" dense align="left">
+        <q-tab name="dados" label="Dados" />
+        <q-tab name="permissoes" label="Permissões" />
+      </q-tabs>
+    </template>
 
-    <q-tab-panels v-model="tab" animated>
+    <template #default>
+      <q-tab-panels v-model="tab" animated>
       <!-- Tab Dados -->
       <q-tab-panel name="dados" class="q-pa-none">
         <q-card flat bordered>
@@ -17,7 +20,7 @@
               </div>
               <div class="col-md-4 col-12">
                 <label class="oslo-label">Ativo?</label>
-                <q-toggle v-model="form.is_ativo" color="positive" />
+                <q-toggle v-model="form.ativo" color="positive" />
               </div>
               <div class="col-12">
                 <label class="oslo-label">Descrição</label>
@@ -98,6 +101,7 @@
         </q-card>
       </q-tab-panel>
     </q-tab-panels>
+    </template>
 
     <template #rodape>
       <div class="flex justify-end q-gutter-sm">
@@ -114,10 +118,6 @@ import { useQuasar } from "quasar";
 import { useGrupoStore } from "src/stores/grupo";
 import { usePermissaoStore } from "src/stores/permissao";
 
-const props = defineProps({
-  grupoId: { type: Number, default: null },
-});
-
 const emit = defineEmits(["salvo"]);
 const model = defineModel({ default: false });
 
@@ -133,13 +133,13 @@ const buscaPermissao = ref("");
 const form = ref({
   nome: "",
   descricao: "",
-  is_ativo: true,
+  ativo: true,
 });
 
 const todasPermissoes = ref([]);
 const permissoesSelecionadas = ref([]);
 
-const titulo = computed(() => (props.grupoId ? "Editar Grupo" : "Novo Grupo"));
+const titulo = computed(() => (grupoStore.grupo?.id ? "Editar Grupo" : "Novo Grupo"));
 
 const modulosAgrupados = computed(() => {
   const mapa = {};
@@ -193,16 +193,16 @@ const carregarDados = async () => {
   try {
     todasPermissoes.value = await permissaoStore.listarTodas();
 
-    if (props.grupoId) {
-      const grupo = await grupoStore.show(props.grupoId);
+    if (grupoStore.grupo?.id) {
+      const grupo = grupoStore.grupo;
       form.value = {
         nome: grupo.nome,
         descricao: grupo.descricao || "",
-        is_ativo: grupo.is_ativo ?? true,
+        ativo: grupo.ativo ?? true,
       };
       permissoesSelecionadas.value = (grupo.permissoes || []).map((p) => p.id);
     } else {
-      form.value = { nome: "", descricao: "", is_ativo: true };
+      form.value = { nome: "", descricao: "", ativo: true };
       permissoesSelecionadas.value = [];
     }
   } catch {
@@ -220,7 +220,7 @@ const salvar = async () => {
 
   salvando.value = true;
   try {
-    let grupoId = props.grupoId;
+    let grupoId = grupoStore.grupo?.id;
 
     if (grupoId) {
       await grupoStore.update(grupoId, form.value);
@@ -235,7 +235,7 @@ const salvar = async () => {
     model.value = false;
     emit("salvo");
   } catch (error) {
-    const msg = error?.response?.data?.message || "Erro ao salvar grupo.";
+    const msg = error?.response?.data?.mensagem || "Erro ao salvar grupo.";
     $q.notify({ type: "negative", message: msg });
   } finally {
     salvando.value = false;
@@ -247,6 +247,9 @@ watch(model, (val) => {
     tab.value = "dados";
     buscaPermissao.value = "";
     carregarDados();
+  } else {
+    // Limpar store ao fechar
+    grupoStore.grupo = {};
   }
 });
 </script>

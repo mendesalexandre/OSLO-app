@@ -33,10 +33,10 @@
           </q-td>
 
           <q-td key="is_ativo" :props="props">
-            <q-icon
-              size="xs"
-              :name="props.row.is_ativo ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-xmark'"
-              :color="props.row.is_ativo ? 'positive' : 'negative'"
+            <l-icon
+              :name="props.row.is_ativo ? 'circle-check' : 'circle-x'"
+              :size="16"
+              :color="props.row.is_ativo ? 'var(--success)' : 'var(--danger)'"
             />
           </q-td>
 

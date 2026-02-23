@@ -1,7 +1,7 @@
 <template>
   <q-page class="flex flex-center">
     <div class="text-center" style="max-width: 400px">
-      <q-icon name="fa-duotone fa-lock" size="56px" style="color: var(--text-muted)" class="q-mb-md" />
+      <l-icon name="lock" :size="56" style="color: var(--text-muted)" class="q-mb-md" />
       <h5 style="color: var(--text-color); font-weight: 600" class="q-mb-xs">Acesso Negado</h5>
       <p style="color: var(--text-secondary); font-size: 14px">
         Você não possui permissão para acessar esta página.

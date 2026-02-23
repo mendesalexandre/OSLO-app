@@ -8,12 +8,12 @@
       <div class="row q-col-gutter-sm">
         <div class="col-md-6 col-sm-12 col-xs-12">
           <v-label label="Cliente ID" obrigatorio />
-          <q-input outline />
+          <q-input outlined />
         </div>
 
         <div class="col-md-6 col-sm-12 col-xs-12">
           <v-label label="Cliente Secret" obrigatorio />
-          <q-input outline />
+          <q-input outlined />
         </div>
       </div>
     </q-card-section>
@@ -29,12 +29,12 @@
       <div class="row q-col-gutter-sm">
         <div class="col-md-6 col-sm-12 col-xs-12">
           <v-label label="Usuário (E-mail)" obrigatorio />
-          <q-input outline />
+          <q-input outlined />
         </div>
 
         <div class="col-md-6 col-sm-12 col-xs-12">
           <v-label label="Senha" obrigatorio />
-          <q-input outline type="password" />
+          <q-input outlined type="password" />
         </div>
       </div>
     </q-card-section>

@@ -9,26 +9,26 @@ export const usePermissaoStore = defineStore("permissao", () => {
 
   const index = async (params = {}) => {
     const { data } = await api.get("/permissao", { params });
-    permissoes.value = data.data?.data ?? data.data ?? [];
+    permissoes.value = data.dados?.data ?? data.dados ?? [];
     return permissoes.value;
   };
 
   const listarModulos = async () => {
     const { data } = await api.get("/permissao/modulos");
-    modulos.value = data.data;
+    modulos.value = data.dados;
     return modulos.value;
   };
 
   const listarPorModulo = async (modulo) => {
     const { data } = await api.get(`/permissao/modulo/${modulo}`);
-    return data.data;
+    return data.dados;
   };
 
   const listarTodas = async () => {
     const { data } = await api.get("/permissao", {
       params: { sem_paginacao: true },
     });
-    return data.data ?? [];
+    return data.dados ?? [];
   };
 
   return {

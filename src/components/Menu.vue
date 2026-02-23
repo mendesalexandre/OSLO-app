@@ -5,11 +5,13 @@
       <q-layout view="lHh Lpr lFf" container class="bg-white text-dark" style="width: 300px">
         <q-header class="bg-white text-dark">
           <q-toolbar>
-            <q-btn flat @click="model = false" round dense icon="fa-regular fa-bars" class="btn-small-icon"
-              color="dark" />
+            <q-btn flat @click="model = false" round dense class="btn-small-icon" color="dark">
+              <l-icon name="menu" :size="16" />
+            </q-btn>
             <q-toolbar-title class="menu-titulo">Menu</q-toolbar-title>
-            <q-btn flat @click="model = false" round dense icon="fa-regular fa-xmark" class="btn-small-icon"
-              color="dark" />
+            <q-btn flat @click="model = false" round dense class="btn-small-icon" color="dark">
+              <l-icon name="x" :size="16" />
+            </q-btn>
           </q-toolbar>
         </q-header>
 
@@ -19,20 +21,20 @@
               <q-list>
                 <!-- SEÇÃO: CADASTRO DE PESSOAS -->
                 <q-item-label header class="section-header">
-                  <q-icon name="fa-regular fa-users" class="q-mr-sm" color="slate-600" />
+                  <l-icon name="users" :size="14" class="q-mr-sm" />
                   Cadastro de Pessoas
                 </q-item-label>
 
                 <q-item clickable v-ripple class="menu-item" @click="openModalConsultarPessoa">
                   <q-item-section avatar>
-                    <q-icon name="fa-regular fa-magnifying-glass" color="slate-500" />
+                    <l-icon name="search" :size="16" />
                   </q-item-section>
                   <q-item-section>Consultar Pessoas</q-item-section>
                 </q-item>
 
                 <q-item clickable v-ripple class="menu-item" @click="navigateTo('nova-pessoa')">
                   <q-item-section avatar>
-                    <q-icon name="fa-regular fa-user-plus" color="blue-600" size="16px" />
+                    <l-icon name="user-plus" :size="16" />
                   </q-item-section>
                   <q-item-section>Nova Pessoa</q-item-section>
                 </q-item>
@@ -41,14 +43,14 @@
 
                 <!-- SEÇÃO: REGISTRO DE IMÓVEIS (RI) -->
                 <q-item-label header class="section-header">
-                  <q-icon name="fa-regular fa-house" class="q-mr-sm" color="slate-600" size="16px" />
+                  <l-icon name="home" :size="14" class="q-mr-sm" />
                   Registro de Imóveis (RI)
                 </q-item-label>
 
                 <q-item v-for="(item, index) in riItems" :key="index" clickable v-ripple class="menu-item"
                   @click="handleRiItemClick(item)">
                   <q-item-section avatar>
-                    <q-icon :name="getRiIcon(item.id)" :color="getRiIconColor(item.id)" size="16px" />
+                    <l-icon :name="getRiIcon(item.id)" :size="16" />
                   </q-item-section>
                   <q-item-section>{{ item.nome }}</q-item-section>
                 </q-item>
@@ -57,14 +59,14 @@
 
                 <!-- SEÇÃO: REGISTRO DE TÍTULOS E DOCUMENTOS (RTD) -->
                 <q-item-label header class="section-header">
-                  <q-icon name="fa-regular fa-file-lines" class="q-mr-sm" color="slate-600" size="16px" />
+                  <l-icon name="file-text" :size="14" class="q-mr-sm" />
                   RTD
                 </q-item-label>
 
                 <q-item v-for="(item, index) in rtdItems" :key="index" clickable v-ripple class="menu-item"
                   @click="navigateTo(`rtd-${index}`)">
                   <q-item-section avatar>
-                    <q-icon :name="getRtdIcon(index)" :color="getRtdIconColor(index)" size="16px" />
+                    <l-icon :name="getRtdIcon(index)" :size="16" />
                   </q-item-section>
                   <q-item-section>{{ item.nome }}</q-item-section>
                 </q-item>
@@ -73,27 +75,27 @@
 
                 <!-- SEÇÃO: FINANCEIRO -->
                 <q-item-label header class="section-header">
-                  <q-icon name="fa-regular fa-credit-card" class="q-mr-sm" color="slate-600" size="16px" />
+                  <l-icon name="credit-card" :size="14" class="q-mr-sm" />
                   Financeiro
                 </q-item-label>
 
                 <q-item clickable v-ripple class="menu-item" @click="navigateTo('conta-pagar')">
                   <q-item-section avatar>
-                    <q-icon name="fa-regular fa-arrow-up" color="red-600" size="16px" />
+                    <l-icon name="arrow-up" :size="16" />
                   </q-item-section>
                   <q-item-section>Conta a Pagar</q-item-section>
                 </q-item>
 
                 <q-item clickable v-ripple class="menu-item" @click="navigateTo('conta-receber')">
                   <q-item-section avatar>
-                    <q-icon name="fa-regular fa-arrow-down" color="green-600" size="16px" />
+                    <l-icon name="arrow-down" :size="16" />
                   </q-item-section>
                   <q-item-section>Conta a Receber</q-item-section>
                 </q-item>
 
                 <q-item clickable v-ripple class="menu-item" @click="navigateTo('financeiro.caixa.index')">
                   <q-item-section avatar>
-                    <q-icon name="fa-regular fa-box-archive" color="blue-600" size="16px" />
+                    <l-icon name="archive" :size="16" />
                   </q-item-section>
                   <q-item-section>Caixa</q-item-section>
                 </q-item>
@@ -102,20 +104,20 @@
 
                 <!-- SEÇÃO: RELATÓRIOS -->
                 <q-item-label header class="section-header">
-                  <q-icon name="fa-regular fa-chart-column" class="q-mr-sm" color="slate-600" size="16px" />
+                  <l-icon name="bar-chart-2" :size="14" class="q-mr-sm" />
                   Relatórios
                 </q-item-label>
 
                 <q-item clickable v-ripple class="menu-item" @click="navigateTo('relatorio-movimento')">
                   <q-item-section avatar>
-                    <q-icon name="fa-regular fa-chart-line" color="blue-600" size="16px" />
+                    <l-icon name="trending-up" :size="16" />
                   </q-item-section>
                   <q-item-section>Movimento Diário</q-item-section>
                 </q-item>
 
                 <q-item clickable v-ripple class="menu-item" @click="navigateTo('relatorio-receita')">
                   <q-item-section avatar>
-                    <q-icon name="fa-regular fa-chart-pie" color="green-600" size="16px" />
+                    <l-icon name="pie-chart" :size="16" />
                   </q-item-section>
                   <q-item-section>Relatório de Receita</q-item-section>
                 </q-item>
@@ -246,59 +248,34 @@ const rtdItems = [
 
 const getRiIcon = (id) => {
   const icons = {
-    PRENOTACAO: "fa-regular fa-list",
-    MATRICULA: "fa-regular fa-house",
-    REGISTRO_AUXILIAR: "fa-regular fa-book",
-    INDICADOR_REAL: "fa-regular fa-map",
-    ONR_EPROTOCOLO: "fa-regular fa-desktop",
-    ONR_EINTIMACAO: "fa-regular fa-bell",
-    ONR_ECERTIDAO: "fa-regular fa-award",
-    OFICIO: "fa-regular fa-paper-plane",
-    CONTRADITORIO: "fa-regular fa-shield-halved",
-    NOTA_DEVOLUTIVA: "fa-regular fa-file-lines",
-    INTIMACAO: "fa-regular fa-bell",
-    ONR_COMUNICACAO_PREFEITURA: "fa-regular fa-layer-group",
-    ONR_VISUALIZACAO_MATRICULA: "fa-regular fa-eye",
-    SELO_DIGITAL: "fa-regular fa-stamp",
-    DECLARACAO_IMOBILIARIA: "fa-regular fa-file-contract",
+    PRENOTACAO: "list",
+    MATRICULA: "home",
+    REGISTRO_AUXILIAR: "book",
+    INDICADOR_REAL: "map",
+    ONR_EPROTOCOLO: "monitor",
+    ONR_EINTIMACAO: "bell",
+    ONR_ECERTIDAO: "award",
+    OFICIO: "send",
+    CONTRADITORIO: "shield",
+    NOTA_DEVOLUTIVA: "file-text",
+    INTIMACAO: "bell",
+    ONR_COMUNICACAO_PREFEITURA: "layers",
+    ONR_VISUALIZACAO_MATRICULA: "eye",
+    SELO_DIGITAL: "stamp",
+    DECLARACAO_IMOBILIARIA: "file-text",
   };
-  return icons[id] || "fa-regular fa-file-lines";
-};
-
-const getRiIconColor = (id) => {
-  const colors = {
-    PRENOTACAO: "slate-500",
-    MATRICULA: "blue-600",
-    REGISTRO_AUXILIAR: "slate-500",
-    INDICADOR_REAL: "slate-500",
-    ONR_EPROTOCOLO: "blue-600",
-    ONR_EINTIMACAO: "amber-500",
-    ONR_ECERTIDAO: "green-600",
-    OFICIO: "blue-600",
-    CONTRADITORIO: "red-600",
-    NOTA_DEVOLUTIVA: "slate-500",
-    INTIMACAO: "amber-500",
-    ONR_COMUNICACAO_PREFEITURA: "slate-500",
-    ONR_VISUALIZACAO_MATRICULA: "blue-600",
-    SELO_DIGITAL: "green-600",
-  };
-  return colors[id] || "slate-500";
+  return icons[id] || "file-text";
 };
 
 const getRtdIcon = (index) => {
   const icons = [
-    "fa-regular fa-clipboard",
-    "fa-regular fa-pen-to-square",
-    "fa-regular fa-box-archive",
-    "fa-regular fa-bell",
-    "fa-regular fa-award",
+    "clipboard",
+    "pen-square",
+    "archive",
+    "bell",
+    "award",
   ];
-  return icons[index] || "fa-regular fa-file-lines";
-};
-
-const getRtdIconColor = (index) => {
-  const colors = ["slate-500", "blue-600", "slate-500", "amber-500", "green-600"];
-  return colors[index] || "slate-500";
+  return icons[index] || "file-text";
 };
 
 // Nova função para abrir modal de consultar pessoa
@@ -336,19 +313,10 @@ const handleRiItemClick = (item) => {
 };
 
 const navigateTo = (route, options = {}) => {
-  const { closeModal = true, showNotification = false } = options;
+  const { closeModal = true } = options;
 
   console.log(`Navegando para: ${route}`);
   router.push({ name: route });
-
-  if (showNotification) {
-    $q.notify({
-      message: `Navegando para ${route}`,
-      color: "slate-600",
-      position: "top-right",
-      icon: "fa-regular fa-location-arrow",
-    });
-  }
 
   if (closeModal) {
     model.value = false; // Fecha o modal do menu
@@ -357,10 +325,6 @@ const navigateTo = (route, options = {}) => {
 </script>
 
 <style lang="scss" scoped>
-:deep(.btn-small-icon .q-icon) {
-  font-size: 1rem;
-}
-
 .section-header {
   display: flex;
   align-items: center;
@@ -391,11 +355,7 @@ const navigateTo = (route, options = {}) => {
 
   .q-item__section--avatar {
     min-width: 40px;
-
-    .q-icon {
-      font-size: 1.1rem;
-      color: var(--text-secondary);
-    }
+    color: var(--text-secondary);
   }
 
   .q-item__section--main {

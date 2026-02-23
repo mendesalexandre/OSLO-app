@@ -9,7 +9,7 @@
 
     <!-- SEÇÃO: Dados do Produto -->
     <div class="produto-section-header">
-      <q-icon name="fa-regular fa-box-open" size="14px" class="q-mr-xs" />
+      <l-icon name="package-open" :size="14" class="q-mr-xs" />
       <span class="produto-section-title">Dados do Produto</span>
     </div>
     <div class="row q-col-gutter-md q-mb-md q-mt-none">
@@ -55,7 +55,7 @@
     <!-- SEÇÃO: Referência Tabela de Custa (somente TABELA_CUSTA) -->
     <template v-if="form.tipo === 'TABELA_CUSTA'">
       <div class="produto-section-header">
-        <q-icon name="fa-regular fa-table-list" size="14px" class="q-mr-xs" />
+        <l-icon name="table-2" :size="14" class="q-mr-xs" />
         <span class="produto-section-title">Referência Tabela de Custa</span>
       </div>
       <div class="row q-col-gutter-md q-mb-md q-mt-none">
@@ -91,7 +91,7 @@
     <!-- SEÇÃO: Valores (somente PROPRIO) -->
     <template v-if="form.tipo === 'PROPRIO'">
       <div class="produto-section-header">
-        <q-icon name="fa-regular fa-circle-dollar" size="14px" class="q-mr-xs" />
+        <l-icon name="circle-dollar-sign" :size="14" class="q-mr-xs" />
         <span class="produto-section-title">Valores</span>
       </div>
       <div class="row q-col-gutter-md q-mb-md q-mt-none">
@@ -121,7 +121,7 @@
 
     <!-- SEÇÃO: Configurações -->
     <div class="produto-section-header">
-      <q-icon name="fa-regular fa-sliders" size="14px" class="q-mr-xs" />
+      <l-icon name="sliders-horizontal" :size="14" class="q-mr-xs" />
       <span class="produto-section-title">Configurações</span>
     </div>
     <div class="row q-col-gutter-md q-mb-md q-mt-none">
@@ -140,12 +140,13 @@
       <q-btn flat no-caps label="Cancelar" color="grey-7" @click="fechar" />
       <q-btn
         unelevated no-caps
-        icon="fa-regular fa-floppy-disk"
-        label="Salvar"
         color="primary"
         :loading="salvando"
         @click="salvar"
-      />
+      >
+        <l-icon name="save" :size="16" class="q-mr-sm" />
+        Salvar
+      </q-btn>
     </template>
 
   </modal>

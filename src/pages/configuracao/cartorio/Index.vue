@@ -4,12 +4,12 @@
       <div class="row q-col-gutter-sm">
         <div class="col-md-6 col-sm-12 col-xs-12">
           <v-label label="Estado" obrigatorio />
-          <q-select outline :options="estados" emit-value map-options option-label="nome" option-value="id"
+          <q-select :options="estados" emit-value map-options option-label="nome" option-value="id"
             v-model="configuracao.estado_id" outlined dense />
         </div>
         <div class="col-md-6 col-sm-12 col-xs-12">
           <v-label label="Cidade" obrigatorio />
-          <q-select outline v-model="configuracao.cidade_id" outlined dense />
+          <q-select v-model="configuracao.cidade_id" outlined dense />
         </div>
       </div>
     </q-card-section>
@@ -22,11 +22,11 @@
       <div class="row q-col-gutter-sm">
         <div class="col-md-10 col-sm-12 col-xs-12">
           <v-label label="Nome da Serventia (Vai ser usado nos Livros e Recibos)" obrigatorio />
-          <q-input outline v-model="configuracao.nome" outlined dense />
+          <q-input v-model="configuracao.nome" outlined dense />
         </div>
         <div class="col-md-2 col-sm-12 col-xs-12">
           <v-label label="CNS" obrigatorio />
-          <q-input outline mask="##.###-#" unmasked-value fill-mask="__.___-_" v-model="configuracao.cns" outlined
+          <q-input mask="##.###-#" unmasked-value fill-mask="__.___-_" v-model="configuracao.cns" outlined
             dense />
         </div>
         <div class="col-md-12 col-sm-12 col-xs-12">
@@ -82,7 +82,7 @@
             </template>
 
             <template v-slot:after>
-              <q-btn class="shadcn-btn" outline dense icon="add" />
+              <q-btn class="shadcn-btn" dense icon="add" />
             </template>
           </q-select>
         </div>
