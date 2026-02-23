@@ -1,620 +1,395 @@
-  <template>
-    <q-page padding>
-      <!-- Header -->
-      <div class="row items-center q-mb-md">
-        <div class="col">
-          <div class="text-h4">Transações</div>
-          <div class="text-subtitle2 text-grey-7">Gerenciamento de entradas e saídas</div>
-        </div>
-        <div class="col-auto">
-          <q-btn color="primary" icon="add" label="Nova Transação" @click="openDialog()" />
-        </div>
+<template>
+  <q-page padding>
+
+    <!-- Header -->
+    <div class="row items-center q-mb-lg">
+      <div class="col">
+        <div class="oslo-page-title">Transações</div>
+        <div class="oslo-page-subtitle">Entradas e saídas financeiras</div>
       </div>
+      <div class="col-auto">
+        <q-btn
+          v-permissao="'TRANSACAO_CRIAR'"
+          unelevated color="primary" no-caps
+          @click="abrirModalCriar"
+        >
+          <l-icon name="plus" :size="16" class="q-mr-sm" />
+          Nova Transação
+        </q-btn>
+      </div>
+    </div>
 
-      <!-- Filtros -->
-      <q-card flat bordered class="q-mb-md">
-        <q-card-section>
-          <div class="row q-col-gutter-md">
-            <div class="col-12 col-md-3">
-              <v-label label="Buscar"></v-label>
-              <q-input v-model="filters.search" outlined dense placeholder="Buscar..." @keyup.enter="loadTransactions">
-                <template v-slot:prepend>
-                  <q-icon name="search" />
-                </template>
-              </q-input>
-            </div>
+    <!-- Filtros -->
+    <q-card flat bordered class="q-mb-md">
+      <q-card-section class="q-py-sm">
+        <div class="row q-col-gutter-md items-end">
 
-            <div class="col-12 col-md-2">
-              <v-label label="Tipo"></v-label>
-              <q-select v-model="filters.type" outlined dense :options="typeOptions" emit-value map-options clearable />
-            </div>
-
-            <div class="col-12 col-md-2">
-              <v-label label="Data Inicial"></v-label>
-              <v-date v-model="filters.date_from" outlined dense />
-            </div>
-
-            <!-- <div class="col-12 col-md-2">
-              <v-label label="Data Final"></v-label>
-              <q-input v-model="filters.date_to" outlined dense type="date" />
-            </div> -->
-
-            <div class="col-md-3 col-sm-12 col-xs-12">
-              <v-label label="&nbsp;"> </v-label>
-              <q-btn color="primary" label="Filtrar" icon="filter_list" @click="loadTransactions" class="q-mr-sm" />
-              <q-btn flat label="Limpar" @click="clearFilters" />
-            </div>
+          <div class="col-12 col-sm-5 col-md-4">
+            <v-label label="Buscar" />
+            <q-input
+              v-model="filtros.busca"
+              outlined dense clearable
+              placeholder="Descrição..."
+              @update:model-value="buscarDebounce"
+            >
+              <template #prepend><l-icon name="search" :size="14" /></template>
+            </q-input>
           </div>
-        </q-card-section>
-      </q-card>
 
-      <!-- Resumo -->
-      <div class="row q-col-gutter-md q-mb-md">
-        <div class="col-12 col-md-4">
-          <q-card flat bordered>
-            <q-card-section>
-              <div class="text-subtitle2 text-grey-7">Total Entradas</div>
-              <div class="text-h5 text-positive">{{ formatCurrency(summary.total_entradas) }}</div>
-            </q-card-section>
-          </q-card>
+          <div class="col-12 col-sm-3 col-md-2">
+            <v-label label="Tipo" />
+            <q-select
+              v-model="filtros.tipo"
+              :options="tiposOpcoes"
+              option-value="value" option-label="label"
+              emit-value map-options
+              outlined dense clearable
+              @update:model-value="buscar"
+            />
+          </div>
+
+          <div class="col-12 col-sm-4 col-md-2">
+            <v-label label="Status" />
+            <q-select
+              v-model="filtros.status"
+              :options="statusOpcoes"
+              option-value="value" option-label="label"
+              emit-value map-options
+              outlined dense clearable
+              @update:model-value="buscar"
+            />
+          </div>
+
+          <div class="col-12 col-sm-4 col-md-2">
+            <v-label label="Caixa" />
+            <q-select
+              v-model="filtros.caixa_id"
+              :options="caixaStore.caixas"
+              option-value="id" option-label="nome"
+              emit-value map-options
+              outlined dense clearable
+              @update:model-value="buscar"
+            />
+          </div>
+
         </div>
-        <div class="col-12 col-md-4">
-          <q-card flat bordered>
-            <q-card-section>
-              <div class="text-subtitle2 text-grey-7">Total Saídas</div>
-              <div class="text-h5 text-negative">{{ formatCurrency(summary.total_saidas) }}</div>
-            </q-card-section>
-          </q-card>
-        </div>
-        <div class="col-12 col-md-4">
-          <q-card flat bordered>
-            <q-card-section>
-              <div class="text-subtitle2 text-grey-7">Saldo</div>
-              <div class="text-h5" :class="summary.saldo >= 0 ? 'text-positive' : 'text-negative'">
-                {{ formatCurrency(summary.saldo) }}
-              </div>
-            </q-card-section>
-          </q-card>
-        </div>
-      </div>
+      </q-card-section>
+    </q-card>
 
-      <!-- Tabela -->
-      <q-card flat bordered>
-        <q-table :rows="transactions" :columns="columns" row-key="id" :loading="loading" :pagination="pagination"
-          @request="onRequest" flat>
-          <template #header-cell="props">
-            <q-th :props="props" class="text-uppercase text-weight-medium tabela-cabecalho text-blue-grey-8">
-              {{ props.col.label }}
-            </q-th>
-          </template>
-          <template v-slot:body-cell-type="props">
-            <q-td :props="props">
-              <q-chip :color="props.row.type === 'entrada' ? 'positive' : 'negative'" text-color="white" size="sm">
-                {{ props.row.type === 'entrada' ? 'Entrada' : 'Saída' }}
-              </q-chip>
-            </q-td>
-          </template>
+    <!-- Tabela -->
+    <q-card flat bordered>
+      <q-table
+        :rows="transacaoStore.transacoes"
+        :columns="colunas"
+        :loading="transacaoStore.loading"
+        row-key="id"
+        flat
+        hide-bottom
+        :rows-per-page-options="[0]"
+        no-data-label="Nenhuma transação encontrada"
+        loading-label="Carregando..."
+      >
 
-          <template v-slot:body-cell-amount="props">
-            <q-td :props="props">
-              <span :class="props.row.type === 'entrada' ? 'text-positive' : 'text-negative'">
-                {{ formatCurrency(props.row.amount) }}
-              </span>
-            </q-td>
-          </template>
+        <template #body-cell-tipo="props">
+          <q-td :props="props">
+            <q-badge
+              :color="props.row.tipo === 'ENTRADA' ? 'positive' : 'negative'"
+              :label="props.row.tipo === 'ENTRADA' ? 'Entrada' : 'Saída'"
+            />
+          </q-td>
+        </template>
 
-          <template v-slot:body-cell-date="props">
-            <q-td :props="props">
-              {{ formatDate(props.row.date) }}
-            </q-td>
-          </template>
+        <template #body-cell-status="props">
+          <q-td :props="props">
+            <q-badge :color="statusCor(props.row.status)" :label="statusLabel(props.row.status)" />
+          </q-td>
+        </template>
 
-          <template v-slot:body-cell-actions="props">
-            <q-td :props="props">
-              <q-btn flat dense round icon="edit" size="sm" color="primary" @click="openDialog(props.row)">
+        <template #body-cell-valor="props">
+          <q-td :props="props" class="text-right">
+            <span :class="props.row.tipo === 'ENTRADA' ? 'text-positive' : 'text-negative'" class="text-weight-medium">
+              {{ formatCurrency(props.row.valor) }}
+            </span>
+          </q-td>
+        </template>
+
+        <template #body-cell-data_vencimento="props">
+          <q-td :props="props">{{ formatData(props.row.data_vencimento) }}</q-td>
+        </template>
+
+        <template #body-cell-acoes="props">
+          <q-td :props="props" auto-width>
+            <div class="row no-wrap q-gutter-x-xs justify-end">
+
+              <!-- Pagar -->
+              <q-btn
+                v-if="props.row.status === 'PENDENTE'"
+                v-permissao="'TRANSACAO_EDITAR'"
+                flat dense round color="positive" size="sm"
+                @click="abrirPagar(props.row)"
+              >
+                <l-icon name="dollar-sign" :size="16" />
+                <q-tooltip>Pagar</q-tooltip>
+              </q-btn>
+
+              <!-- Editar -->
+              <q-btn
+                v-permissao="'TRANSACAO_EDITAR'"
+                flat dense round color="grey-7" size="sm"
+                @click="abrirModalEditar(props.row)"
+              >
+                <l-icon name="pen" :size="16" />
                 <q-tooltip>Editar</q-tooltip>
               </q-btn>
-              <q-btn flat dense round icon="delete" size="sm" color="negative" @click="confirmDelete(props.row)">
+
+              <!-- Cancelar -->
+              <q-btn
+                v-if="props.row.status !== 'CANCELADO'"
+                v-permissao="'TRANSACAO_EDITAR'"
+                flat dense round color="orange-8" size="sm"
+                @click="confirmarCancelar(props.row)"
+              >
+                <l-icon name="x-circle" :size="16" />
+                <q-tooltip>Cancelar</q-tooltip>
+              </q-btn>
+
+              <!-- Excluir -->
+              <q-btn
+                v-permissao="'TRANSACAO_EXCLUIR'"
+                flat dense round color="negative" size="sm"
+                @click="confirmarExcluir(props.row)"
+              >
+                <l-icon name="trash-2" :size="16" />
                 <q-tooltip>Excluir</q-tooltip>
               </q-btn>
-            </q-td>
-          </template>
-        </q-table>
-      </q-card>
 
-      <!-- Dialog de Cadastro/Edição -->
-      <modal v-model="dialog" tamanho="md" titulo="Transação" @close="fecharModal">
-        <q-card bordered>
-          <q-card-section>
-            <!-- Tipo de Lançamento -->
-            <div class="col-md-12 col-sm-12 col-xs-12 grupo-tipo-protocolo">
-              <v-label label="Tipo de Lançamento" obrigatorio />
-              <q-btn-toggle dense v-model="form.tipo" :options="tiposLancamento" spread unelevated
-                class="tipo-protocolo" />
             </div>
-          </q-card-section>
-          <q-card-section>
-            <div class="row q-col-gutter-sm">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <v-label label="Valor" obrigatorio />
-                <v-money v-model.number="form.valor" outlined type="number" dense />
-              </div>
-
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <v-label label="Descrição" obrigatorio />
-                <q-input v-model="form.descricao" outlined type="textarea" rows="3"
-                  :rules="[val => !!val || 'Campo obrigatório']" hide-bottom-space />
-              </div>
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <v-label label="Categoria" obrigatorio />
-                <v-select v-model="form.categoria_id" outlined dense :options="categorias" option-value="id"
-                  option-label="nome" emit-value map-options />
-              </div>
-              <div class="col-md-6 col-sm-12 col-xs-12">
-                <v-label label="Data" obrigatorio />
-                <v-date v-model="form.data" outlined :rules="[val => !!val || 'Campo obrigatório']" />
-              </div>
-              <div class="col-md-6 col-sm-12 col-xs-12">
-                <v-label label="Caixa" obrigatorio />
-                <v-select v-model="form.caixa_id" outlined :options="caixas" dense option-value="id" option-label="nome"
-                  emit-value map-options :rules="[val => !!val || 'Campo obrigatório']" />
-              </div>
-            </div>
-          </q-card-section>
-        </q-card>
-
-        <template #rodape>
-          <!-- <q-card-section class="flex justify-end bg-grey-3">
-            <q-btn outline label="Cancelar" />
-            <q-btn color="primary" label="Salvar" @click="saveTransaction" :loading="saving" outline />
-          </q-card-section> -->
-          <q-card-section>
-            <div class="flex justify-between">
-              <div>
-                <q-btn label="Cancelar" color="negative" outline @click="cancelar" :disable="salvando" />
-              </div>
-              <div>
-                <q-btn label="Salvar" color="primary" @click="saveTransaction" outline :loading="saving">
-                  <template v-slot:loading>
-                    <q-spinner class="q-mr-sm" />
-                    Salvando...
-                  </template>
-                </q-btn>
-              </div>
-            </div>
-          </q-card-section>
+          </q-td>
         </template>
-      </modal>
-    </q-page>
-  </template>
+
+      </q-table>
+    </q-card>
+
+    <!-- Modal Criar/Editar -->
+    <ModalTransacao
+      v-model="modalAberto"
+      :transacao="transacaoSelecionada"
+      @salvo="buscar"
+    />
+
+    <!-- Modal Pagar -->
+    <modal
+      v-model="modalPagarAberto"
+      titulo="Registrar Pagamento"
+      tamanho="sm"
+      @close="modalPagarAberto = false"
+    >
+      <div class="q-gutter-md" v-if="transacaoParaPagar">
+
+        <!-- Resumo -->
+        <div class="row justify-between text-body2 q-pa-sm rounded-borders" style="background: var(--surface)">
+          <span style="color: var(--text-secondary)">{{ transacaoParaPagar.descricao }}</span>
+          <span class="text-weight-bold">{{ formatCurrency(transacaoParaPagar.valor) }}</span>
+        </div>
+
+        <!-- Tipo de pagamento -->
+        <div>
+          <v-label label="Forma de Pagamento *" />
+          <q-select
+            v-model="formPagar.tipo_pagamento_id"
+            :options="tipoPagamentoStore.tipos"
+            option-value="id"
+            option-label="nome"
+            emit-value map-options
+            outlined dense
+            :loading="tipoPagamentoStore.loading"
+            :rules="[v => !!v || 'Obrigatório']"
+          >
+            <template #prepend><l-icon name="credit-card" :size="14" /></template>
+          </q-select>
+        </div>
+
+        <!-- Valor -->
+        <div>
+          <v-label label="Valor a Pagar *" />
+          <v-money v-model.number="formPagar.valor_pago" outlined dense />
+        </div>
+
+        <!-- Observação -->
+        <div>
+          <v-label label="Observação" />
+          <q-input v-model="formPagar.observacao" outlined dense type="textarea" rows="2" autogrow />
+        </div>
+
+      </div>
+      <template #rodape>
+        <div class="row justify-end q-gutter-sm">
+          <q-btn flat no-caps label="Cancelar" @click="modalPagarAberto = false" />
+          <q-btn unelevated color="positive" no-caps :loading="pagando" @click="registrarPagamento">
+            <l-icon name="check" :size="16" class="q-mr-sm" />
+            Confirmar Pagamento
+          </q-btn>
+        </div>
+      </template>
+    </modal>
+
+  </q-page>
+</template>
 
 <script setup>
-import { ref, reactive, onMounted, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
-import { api } from 'src/boot/axios'
-import { useNaturezaStore } from 'src/stores/natureza'
-import { useCategoriaStore } from 'src/stores/categoria'
+import { useTransacaoStore } from 'src/stores/transacao'
 import { useCaixaStore } from 'src/stores/caixa'
-import { storeToRefs } from 'pinia'
-import moment from 'moment'
+import { useTipoPagamentoStore } from 'src/stores/tipoPagamento'
+import ModalTransacao from 'src/components/transacao/ModalTransacao.vue'
 
-const $q = useQuasar()
+defineOptions({ name: 'TransacaoIndex' })
 
-// Estado
-const loading = ref(false)
-const saving = ref(false)
-const dialog = ref(false)
-const transactions = ref([])
-const cashiers = ref([])
-const fecharModal = () => {
-  dialog.value = !dialog.value
-}
+const $q                 = useQuasar()
+const transacaoStore     = useTransacaoStore()
+const caixaStore         = useCaixaStore()
+const tipoPagamentoStore = useTipoPagamentoStore()
 
-const filters = reactive({
-  search: '',
-  type: null,
-  date_from: '',
-  date_to: ''
-})
+// ── Estado ────────────────────────────────────────────────────────────────────
+const modalAberto         = ref(false)
+const modalPagarAberto    = ref(false)
+const transacaoSelecionada = ref(null)
+const transacaoParaPagar  = ref(null)
+const pagando             = ref(false)
 
-const summary = reactive({
-  total_entradas: 0,
-  total_saidas: 0,
-  saldo: 0
-})
+const formPagar = ref({ valor_pago: 0, tipo_pagamento_id: null, observacao: '' })
 
-const pagination = ref({
-  page: 1,
-  rowsPerPage: 10,
-  rowsNumber: 0
-})
-
-const form = reactive({
-  categoria_id: null,
+const filtros = ref({
+  busca:    '',
+  tipo:     null,
+  status:   null,
   caixa_id: null,
-  tipo: 'ENTRADA',
-  valor: null,
-  descricao: '',
-  data: new Date().toISOString().split('T')[0]
 })
 
-// Opções
-const typeOptions = [
-  { label: 'Entrada', value: 'ENTRADA' },
-  { label: 'Saída', value: 'SAIDA' }
+// ── Opções ────────────────────────────────────────────────────────────────────
+const tiposOpcoes = [
+  { value: 'ENTRADA', label: 'Entrada' },
+  { value: 'SAIDA',   label: 'Saída'   },
 ]
 
-const columns = [
-  {
-    name: 'id',
-    label: 'ID',
-    field: 'id',
-    align: 'left',
-  },
-  {
-    name: 'data_cadastro',
-    label: 'Data',
-    field: 'data_cadastro',
-    align: 'left',
-  },
-  {
-    name: 'type',
-    label: 'Tipo',
-    field: 'type',
-    align: 'center',
-  },
-  {
-    name: 'descricao',
-    label: 'Descrição',
-    field: 'descricao',
-    align: 'left'
-  },
-  {
-    name: 'categoria',
-    label: 'Categoria',
-    field: 'categoria',
-    align: 'left'
-  },
-  {
-    name: 'amount',
-    label: 'Valor',
-    field: 'amount',
-    align: 'right',
-  },
-  {
-    name: 'usuario',
-    label: 'Usuário',
-    field: 'usuario',
-    align: 'left'
-  },
-  {
-    name: 'actions',
-    label: 'Ações',
-    align: 'center'
-  }
+const statusOpcoes = [
+  { value: 'PENDENTE',  label: 'Pendente'  },
+  { value: 'PAGO',      label: 'Pago'      },
+  { value: 'CANCELADO', label: 'Cancelado' },
 ]
 
-// Métodos
-const loadTransactions = async () => {
-  loading.value = true
+const colunas = [
+  { name: 'id',              label: 'ID',          field: 'id',              align: 'left',  sortable: true },
+  { name: 'tipo',            label: 'Tipo',         field: 'tipo',            align: 'center'               },
+  { name: 'descricao',       label: 'Descrição',    field: 'descricao',       align: 'left',  sortable: true },
+  { name: 'valor',           label: 'Valor',        field: 'valor',           align: 'right', sortable: true },
+  { name: 'status',          label: 'Status',       field: 'status',          align: 'center'               },
+  { name: 'data_vencimento', label: 'Vencimento',   field: 'data_vencimento', align: 'left'                 },
+  { name: 'acoes',           label: '',             field: 'acoes',           align: 'right'                },
+]
+
+// ── Busca ─────────────────────────────────────────────────────────────────────
+let debounceTimer = null
+
+const buscarDebounce = () => {
+  clearTimeout(debounceTimer)
+  debounceTimer = setTimeout(buscar, 400)
+}
+
+const buscar = async () => {
+  const params = {}
+  if (filtros.value.busca)             params.busca    = filtros.value.busca
+  if (filtros.value.tipo !== null)     params.tipo     = filtros.value.tipo
+  if (filtros.value.status !== null)   params.status   = filtros.value.status
+  if (filtros.value.caixa_id !== null) params.caixa_id = filtros.value.caixa_id
+  await transacaoStore.listar(params)
+}
+
+// ── Modais ────────────────────────────────────────────────────────────────────
+const abrirModalCriar = () => {
+  transacaoSelecionada.value = null
+  modalAberto.value          = true
+}
+
+const abrirModalEditar = (t) => {
+  transacaoSelecionada.value = t
+  modalAberto.value          = true
+}
+
+const abrirPagar = async (t) => {
+  transacaoParaPagar.value = t
+  formPagar.value          = { valor_pago: parseFloat(t.valor) - parseFloat(t.valor_pago ?? 0), tipo_pagamento_id: null, observacao: '' }
+  modalPagarAberto.value   = true
+  await tipoPagamentoStore.listar()
+}
+
+// ── Ações ─────────────────────────────────────────────────────────────────────
+const registrarPagamento = async () => {
+  pagando.value = true
   try {
-    const params = {
-      page: pagination.value.page,
-      per_page: pagination.value.rowsPerPage,
-      ...filters
-    }
-
-    const response = await api.get('/transacao', { params })
-
-    transactions.value = response.data
-    pagination.value.rowsNumber = response.data.meta.total
-
-    // Atualizar resumo
-    summary.total_entradas = response.data.summary?.total_entradas || 0
-    summary.total_saidas = response.data.summary?.total_saidas || 0
-    summary.saldo = response.data.summary?.saldo || 0
-  } catch (error) {
-    $q.notify({
-      type: 'negative',
-      message: 'Erro ao carregar transações',
-      caption: error.response?.data?.message || error.message
-    })
+    await transacaoStore.pagar(transacaoParaPagar.value.id, formPagar.value)
+    $q.notify({ type: 'positive', message: 'Pagamento registrado com sucesso', position: 'top' })
+    modalPagarAberto.value = false
+    buscar()
+  } catch (e) {
+    $q.notify({ type: 'negative', message: 'Erro ao registrar pagamento', caption: e.response?.data?.error })
   } finally {
-    loading.value = false
+    pagando.value = false
   }
 }
 
-const loadCashiers = async () => {
-  try {
-    const response = await api.get('/caixa')
-    cashiers.value = response.data.data
-  } catch (error) {
-    console.error('Erro ao carregar caixas:', error)
-  }
-}
-
-const onRequest = (props) => {
-  pagination.value = props.pagination
-  loadTransactions()
-}
-
-const openDialog = (transaction = null) => {
-  if (transaction) {
-    Object.assign(form, transaction)
-  } else {
-    resetForm()
-  }
-  dialog.value = true
-}
-
-const saveTransaction = async () => {
-  saving.value = true
-  try {
-    // if (form.id) {
-    //   await api.put(`/transacao/${form.id}`, {
-    //     id: form.id,
-    //     categoria_id: form.categoria_id,
-    //     caixa_id: form.caixa_id,
-    //     tipo: form.tipo,
-    //     valor: form.valor,
-    //     descricao: form.descricao,
-    //     data: form.data
-    //   })
-    //   $q.notify({
-    //     type: 'positive',
-    //     message: 'Transação atualizada com sucesso!'
-    //   })
-    // } else {
-
-    //   $q.notify({
-    //     type: 'positive',
-    //     message: 'Transação criada com sucesso!'
-    //   })
-    await api.post(`/transacao`, {
-      natureza: 'CONTA_RECEBER',
-      categoria_id: form.categoria_id,
-      caixa_id: form.caixa_id,
-      tipo: form.tipo,
-      valor: form.valor,
-      descricao: form.descricao,
-      data: form.data,
-      data_vencimento: moment(form.data).add(7, 'days').format('YYYY-MM-DD')
-    })
-    dialog.value = false
-    loadTransactions()
-  } catch (error) {
-    $q.notify({
-      type: 'negative',
-      message: 'Erro ao salvar transação',
-      caption: error.response?.data?.message || error.message
-    })
-  } finally {
-    saving.value = false
-  }
-}
-
-const confirmDelete = (transaction) => {
+const confirmarCancelar = (t) => {
   $q.dialog({
-    title: 'Confirmar exclusão',
-    message: `Deseja realmente excluir a transação "${transaction.description}"?`,
-    cancel: true,
-    persistent: true
+    title:   'Cancelar transação',
+    message: `Deseja cancelar a transação "<strong>${t.descricao}</strong>"?`,
+    html:    true,
+    cancel:  { label: 'Não', flat: true, color: 'grey-7' },
+    ok:      { label: 'Cancelar', unelevated: true, color: 'orange-8', noCaps: true },
   }).onOk(async () => {
     try {
-      await api.delete(`/transactions/${transaction.id}`)
-      $q.notify({
-        type: 'positive',
-        message: 'Transação excluída com sucesso!'
-      })
-      loadTransactions()
-    } catch (error) {
-      $q.notify({
-        type: 'negative',
-        message: 'Erro ao excluir transação',
-        caption: error.response?.data?.message || error.message
-      })
+      await transacaoStore.cancelar(t.id)
+      $q.notify({ type: 'positive', message: 'Transação cancelada', position: 'top' })
+      buscar()
+    } catch (e) {
+      $q.notify({ type: 'negative', message: 'Erro ao cancelar' })
     }
   })
 }
 
-const clearFilters = () => {
-  filters.search = ''
-  filters.type = null
-  filters.date_from = ''
-  filters.date_to = ''
-  loadTransactions()
+const confirmarExcluir = (t) => {
+  $q.dialog({
+    title:   'Excluir transação',
+    message: `Deseja excluir a transação "<strong>${t.descricao}</strong>"?`,
+    html:    true,
+    cancel:  { label: 'Cancelar', flat: true, color: 'grey-7' },
+    ok:      { label: 'Excluir',  unelevated: true, color: 'negative', noCaps: true },
+  }).onOk(async () => {
+    try {
+      await transacaoStore.excluir(t.id)
+      $q.notify({ type: 'positive', message: 'Transação excluída', position: 'top' })
+      buscar()
+    } catch (e) {
+      $q.notify({ type: 'negative', message: 'Erro ao excluir' })
+    }
+  })
 }
 
-const resetForm = () => {
-  // form.id = null
-  form.tipo = 'ENTRADA'
-  form.amount = null
-  form.descricao = ''
-  form.categoria_id = null
-  form.data = new Date().toISOString().split('T')[0]
-  form.caixa_id = null
+// ── Helpers ───────────────────────────────────────────────────────────────────
+const statusCor = (s) => ({ PENDENTE: 'orange', PAGO: 'positive', CANCELADO: 'grey' }[s] ?? 'grey')
+const statusLabel = (s) => ({ PENDENTE: 'Pendente', PAGO: 'Pago', CANCELADO: 'Cancelado' }[s] ?? s)
+
+const formatCurrency = (v) =>
+  new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(v ?? 0)
+
+const formatData = (d) => {
+  if (!d) return '-'
+  return new Date(d + 'T00:00:00').toLocaleDateString('pt-BR')
 }
 
-const formatCurrency = (value) => {
-  return new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL'
-  }).format(value || 0)
-}
-
-const formatDate = (date) => {
-  if (!date) return '-'
-  return new Date(date + 'T00:00:00').toLocaleDateString('pt-BR')
-}
-
-const categoriaStore = useCategoriaStore();
-const { categorias } = storeToRefs(categoriaStore);
-const caixaStore = useCaixaStore();
-const { caixas } = storeToRefs(caixaStore);
-const naturezaStore = useNaturezaStore();
-
-const tiposLancamento = computed(() => [
-  {
-    label: 'Entrada',
-    value: 'ENTRADA',
-    color: 'positive',
-    class: 'btn-entrada'
-  },
-  {
-    label: 'Saída',
-    value: 'SAIDA',
-    class: 'btn-saida'
-  },
-  {
-    label: 'Sangria',
-    value: 'SANGRIA',
-    class: 'btn-sangria'
-  },
-  {
-    label: 'Transferência',
-    value: 'TRANSFERENCIA',
-    class: 'btn-transferencia'
-  },
-])
-
-// Lifecycle
+// ── Inicialização ─────────────────────────────────────────────────────────────
 onMounted(async () => {
-  loadTransactions()
-  loadCashiers()
-  await categoriaStore.index()
-  await caixaStore.index()
+  await caixaStore.listar()
+  buscar()
 })
 </script>
-<style scoped lang="scss">
-.text-positive {
-  color: var(--success);
-}
-
-.text-negative {
-  color: var(--danger);
-}
-
-.grupo-tipo-protocolo {
-  :deep(.q-btn) {
-    border-radius: var(--radius-sm) !important;
-    border: 1px solid var(--border-color) !important;
-
-    .q-btn__content {
-      padding: 0;
-      margin: 0;
-    }
-
-    .q-icon {
-      font-size: 14px;
-    }
-
-    &.q-btn--outline {
-      // border: 1px solid #e0e0e0;
-      // background-color: white;
-    }
-
-    // &[aria-pressed="true"] {
-    //   // border-color: $primary !important;
-    // }
-
-    .q-focus-helper {
-      // background-color: currentColor;
-      opacity: 0;
-      border-radius: inherit;
-    }
-
-    &:hover .q-focus-helper {
-      opacity: 0.1;
-    }
-  }
-
-  // Mover os estilos customizados para dentro do .grupo-tipo-protocolo
-  .tipo-protocolo {
-    :deep(.btn-entrada) {
-      color: var(--q-positive) !important;
-      border: 1px solid var(--q-positive) !important;
-      background-color: white !important;
-      border: 1px solid var(--q-positive) !important;
-
-      &.q-btn--active {
-        background-color: var(--q-positive) !important;
-        color: white !important;
-      }
-
-      &[aria-pressed="true"] {
-        background-color: var(--q-positive) !important;
-        color: white !important;
-      }
-    }
-
-    :deep(.btn-saida) {
-      // color: var(--q-negative) !important;
-      border: 1px solid var(--q-negative) !important;
-      color: var(--q-negative) !important;
-
-      &.q-btn--active {
-        background-color: var(--q-negative) !important;
-        color: white !important;
-      }
-
-      &[aria-pressed="true"] {
-        background-color: var(--q-negative) !important;
-        color: white !important;
-      }
-    }
-
-    :deep(.btn-ajuste) {
-      color: var(--q-warning) !important;
-      border: 1px solid var(--q-warning) !important;
-
-      &.q-btn--active {
-        background-color: var(--q-warning) !important;
-        color: white !important;
-      }
-
-      &[aria-pressed="true"] {
-        background-color: var(--q-warning) !important;
-        color: white !important;
-      }
-    }
-
-    :deep(.btn-sangria) {
-      color: orange !important;
-      border: 1px solid orange !important;
-
-      &.q-btn--active {
-        background-color: orange !important;
-        color: white !important;
-      }
-
-      &[aria-pressed="true"] {
-        background-color: orange !important;
-        color: white !important;
-      }
-    }
-
-    :deep(.btn-transferencia) {
-      color: var(--q-info) !important;
-      border: 1px solid var(--q-info) !important;
-
-      &.q-btn--active {
-        background-color: var(--q-info) !important;
-        color: white !important;
-      }
-
-      &[aria-pressed="true"] {
-        background-color: var(--q-info) !important;
-        color: white !important;
-      }
-    }
-  }
-}
-
-:deep(.q-btn-group) {
-  column-gap: 4px !important;
-}
-
-:deep(.q-field__focusable-action) {
-  font-size: 20px !important;
-}
-</style>

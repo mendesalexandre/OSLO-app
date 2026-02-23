@@ -69,6 +69,17 @@ const routes = [
       },
 
       {
+        path: "administracao/categoria",
+        component: () => import("pages/administracao/categoria/Index.vue"),
+        name: "administracao.categoria",
+        meta: {
+          title: "Categorias",
+          publico: false,
+          permissao: ["CATEGORIA_LISTAR"],
+        },
+      },
+
+      {
         path: "configuracao",
         component: () => import("src/pages/configuracao/Index.vue"),
         name: "configuracao.index",
